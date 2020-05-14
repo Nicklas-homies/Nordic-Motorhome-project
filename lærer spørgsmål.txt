@@ -1,0 +1,8 @@
+Spørgsmål til douglas:
+Hvilke klasser skal vi inkludere i vores domæne model(interface, modeller)
+Vil han fortrække hvis vi retter i vores diagrammer efter vi er færdige med vores kode, eller skal vi lave nye så man kan se den originale ide vi havde
+Hvad tænkes der ift. package diagrammer, vi har ikke arbejdet med det før og har sjældent lavet vores egne packages
+Hvad er GRASP???
+
+spørgsmål til nicklas:
+skal vi lave en ny sql user så det ikke er nødvendigt at ændre i application.properties eller kan du selv ændre det?
