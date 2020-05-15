@@ -2,7 +2,6 @@ package com.nmh.project.repositories;
 
 import com.nmh.project.models.Motorhome;
 import com.nmh.project.util.DatabaseConnectionManager;
-import sun.security.krb5.internal.APRep;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -83,6 +82,21 @@ public class MotorhomeRepository {
         }
         catch (SQLException e){
             System.out.println("error at create() motorhomeRepository");
+            System.out.println(e.getMessage());
+        }
+        return false;
+    }
+
+    public boolean delete(int id){
+        String deleteString = "DELETE FROM motorhomes WHERE motorhomeId=?";
+        try {
+            PreparedStatement statement = connection.prepareStatement(deleteString);
+            statement.setInt(1,id);
+            statement.executeUpdate();
+            return true;
+        }
+        catch (SQLException e){
+            System.out.println("error : motorhomeRepository delete()");
             System.out.println(e.getMessage());
         }
         return false;
