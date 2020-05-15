@@ -1,6 +1,7 @@
 package com.nmh.project.controllers;
 
 import com.nmh.project.models.Motorhome;
+import java.util.HashMap;
 import com.nmh.project.repositories.MotorhomeRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,6 +27,9 @@ public class MotorhomeController {
         testHome.setExtraPrice(4.2);
         testHome.setBrand("this fat bizz");
         testHome.setModel("dizz fat bizz");
+
+        motorhomeRepository.addDamage("Hjulet har røget hash", 4);
+        System.out.println(motorhomeRepository.getAllDmg());
 
         motorhomeRepository.create(testHome);
         motorhomeRepository.delete(testHome.getId());

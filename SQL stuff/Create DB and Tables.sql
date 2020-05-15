@@ -73,7 +73,7 @@ ENGINE = InnoDB;
 
 DROP TABLE IF EXISTS `NMH_company`.`damages` ;
 CREATE TABLE IF NOT EXISTS `NMH_company`.`damages` (
-  `damageId` INT NOT NULL,
+  `damageId` INT NOT NULL AUTO_INCREMENT,
   `damageDesc` VARCHAR(500) NULL,
   `motorhomeDmgId` INT NOT NULL,
   PRIMARY KEY (`damageId`),

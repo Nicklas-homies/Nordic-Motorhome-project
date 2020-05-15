@@ -8,6 +8,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class MotorhomeRepository {
 
@@ -15,6 +16,40 @@ public class MotorhomeRepository {
 
     public MotorhomeRepository() {
         this.connection = DatabaseConnectionManager.getDatabaseConnection();
+    }
+
+    public boolean addDamage(String dmgDescription, int motorhomeID){
+        //Skal den her metode flyttes til sin egen repository?
+        try {
+            String addString = "INSERT INTO damages(damageDesc, motorhomeDmgId) VALUES (?,?)";
+            PreparedStatement statement = connection.prepareStatement(addString);
+            statement.setInt(2,motorhomeID);
+            statement.setString(1,dmgDescription);
+            statement.executeUpdate();
+            return true;
+        }
+        catch (SQLException e){
+            System.out.println("error : motorhomeRepository addDamage");
+            System.out.println(e.getMessage());
+        }
+        return false;
+    }
+
+    public HashMap<Integer,String> getAllDmg(){
+        HashMap<Integer,String> damages = new HashMap<>();
+        try {
+            String getAllString = "SELECT * FROM damages";
+            PreparedStatement statement =  connection.prepareStatement(getAllString);
+            ResultSet results = statement.executeQuery();
+            while (results.next()){
+                damages.put(results.getInt(3),results.getString(2));
+            }
+        }
+        catch (SQLException e){
+            System.out.println("error : getAllDmg()");
+            System.out.println(e.getMessage());
+        }
+        return damages;
     }
 
     public ArrayList<Motorhome> readAll(){
