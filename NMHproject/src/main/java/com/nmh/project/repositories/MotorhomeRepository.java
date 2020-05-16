@@ -2,16 +2,18 @@ package com.nmh.project.repositories;
 
 import com.nmh.project.models.Motorhome;
 import com.nmh.project.util.DatabaseConnectionManager;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 
 public class MotorhomeRepository {
-
+//todo: Split up this repository into smaller repositories, as said in design diagrams.
     private Connection connection;
 
     public MotorhomeRepository() {
@@ -30,6 +32,51 @@ public class MotorhomeRepository {
         }
         catch (SQLException e){
             System.out.println("error : motorhomeRepository addDamage");
+            System.out.println(e.getMessage());
+        }
+        return false;
+    }
+
+    public ArrayList<Motorhome> avaibleByDate(@DateTimeFormat(pattern = "yyyy-MM-dd") Date startDate,@DateTimeFormat(pattern = "yyyy-MM-dd") Date endDate){
+        ArrayList<Integer> motorhomeIdAvaible = new ArrayList<>();
+        try {
+            String getString = "SELECT * FROM custusemotor WHERE (startDate < ? OR startDate > ?) and (endDate < ? OR endDate > ?)";
+            PreparedStatement statement = connection.prepareStatement(getString);
+            statement.setDate(1,new java.sql.Date(startDate.getTime()));
+            statement.setDate(2,new java.sql.Date(endDate.getTime()));
+            statement.setDate(3,new java.sql.Date(startDate.getTime()));
+            statement.setDate(4,new java.sql.Date(endDate.getTime()));
+            ResultSet results = statement.executeQuery();
+            while (results.next()){
+                motorhomeIdAvaible.add(results.getInt("motorhomeId"));
+            }
+
+        }
+        catch (SQLException e){
+            System.out.println(e.getMessage());
+        }
+        ArrayList<Motorhome> motorhomeAvaibleByDate = new ArrayList<>();
+        for (int id : motorhomeIdAvaible){
+            motorhomeAvaibleByDate.add(read(id));
+        }
+        return motorhomeAvaibleByDate;
+    }
+
+    public boolean rentHome(int motorhomeID, int customerID, Date startDate, Date endDate){
+        //warning warning:
+        //  THERE SHOULD BE A CHECK IF THE HOME IS AVAIBLE AT THE GIVEN TIME!!! CURRENTLY THERE ISNt!
+        try {
+            String insertString = "INSERT INTO custusemotor(startDate, endDate, customerId, motorhomeId) values (?,?,?,?)";
+            PreparedStatement statement = connection.prepareStatement(insertString);
+            statement.setInt(3, customerID);
+            statement.setInt(4,motorhomeID);
+            statement.setDate(1,new java.sql.Date(startDate.getTime()));
+            statement.setDate(2,new java.sql.Date(endDate.getTime()));
+            statement.executeUpdate();
+            return true;
+        }
+        catch (SQLException e){
+            System.out.println("error at rentHome");
             System.out.println(e.getMessage());
         }
         return false;

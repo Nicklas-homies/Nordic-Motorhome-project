@@ -1,21 +1,37 @@
 package com.nmh.project.controllers;
 
 import com.nmh.project.models.Motorhome;
+
+import java.awt.*;
+import java.util.Date;
 import java.util.HashMap;
 import com.nmh.project.repositories.MotorhomeRepository;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 public class MotorhomeController {
-
     MotorhomeRepository motorhomeRepository = new MotorhomeRepository();
 
     @GetMapping("/")
     public String index(){
         return "index";
+    }
+
+    @RequestMapping(value = "/rentMotorhome",method = RequestMethod.GET)
+    public String rentPage(){
+        return "rent";
+    }
+
+    @PostMapping("/rentMotorhome/date")
+    public String byDateRent(@RequestParam("startDate") @DateTimeFormat(pattern = "yyyy-MM-dd") Date startDate, @RequestParam("endDate") @DateTimeFormat(pattern = "yyyy-MM-dd") Date endDate){
+        System.out.println(startDate);
+        System.out.println(endDate);
+//now check whats avaible
+        System.out.println(motorhomeRepository.avaibleByDate(startDate,endDate)); //gets an arraylist with motorhomes. ez to put into table or some such.
+
+        return "redirect:/rentMotorhome";
     }
 
     @RequestMapping(value = "/testingTests", method = RequestMethod.GET)
