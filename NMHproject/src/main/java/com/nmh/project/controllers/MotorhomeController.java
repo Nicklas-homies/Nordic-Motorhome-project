@@ -3,6 +3,7 @@ package com.nmh.project.controllers;
 import com.nmh.project.models.Motorhome;
 
 import java.awt.*;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import com.nmh.project.repositories.MotorhomeRepository;
@@ -24,12 +25,45 @@ public class MotorhomeController {
         return "rent";
     }
 
-    @PostMapping("/rentMotorhome/date")
-    public String byDateRent(@RequestParam("startDate") @DateTimeFormat(pattern = "yyyy-MM-dd") Date startDate, @RequestParam("endDate") @DateTimeFormat(pattern = "yyyy-MM-dd") Date endDate){
-        System.out.println(startDate);
-        System.out.println(endDate);
-//now check whats avaible
-        System.out.println(motorhomeRepository.avaibleByDate(startDate,endDate)); //gets an arraylist with motorhomes. ez to put into table or some such.
+    @PostMapping("/rentMotorhome/avaible")
+    public String byDateRent(@RequestParam String maxPrice, @RequestParam String minPrice, @RequestParam("startDate") String startDate, @RequestParam("endDate") String endDate){
+        //tager maxPrice og minPrice som String, så man kan tage et tomt nummer. (ingen maks pris).
+
+        //overveje at finde en smart måde at tage alle variablerne.evt. bruge @RequestParam Map<String,String> allRequestParams
+        // problemer med allrequestparams er formateringen på dates.
+
+        //Changes data, so can tell difference between empty and filled in data.
+        int tempMinPrice = -1;
+        int tempMaxPrice = -1;
+        Date tempStartDate = null;
+        Date tempEndDate = null;
+        if (!maxPrice.equals("")){
+            tempMaxPrice = Integer.parseInt(maxPrice);
+        }
+        if (!minPrice.equals("")){
+            tempMinPrice = Integer.parseInt(minPrice);
+        }
+        if (!startDate.equals("")){
+            try {
+                tempStartDate = new SimpleDateFormat("yyyy-MM-dd").parse(startDate);
+            }
+            catch (Exception e){
+                //nothing
+            }
+        }
+        if (!endDate.equals("")){
+            try {
+                tempEndDate = new SimpleDateFormat("yyyy-MM-dd").parse(endDate);
+            }
+            catch (Exception e){
+                //nothing
+            }
+        }
+
+
+        System.out.println(tempMaxPrice + ", " +  tempMinPrice + ", " + tempStartDate + ", " + tempEndDate);
+        //motorhomeRepository.filter(maxPrice, minPrice, startDate, endDate);
+        System.out.println(motorhomeRepository.filter(tempMaxPrice, tempMinPrice, tempStartDate, tempEndDate));
 
         return "redirect:/rentMotorhome";
     }
