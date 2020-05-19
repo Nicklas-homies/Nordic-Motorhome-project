@@ -6,14 +6,18 @@ import java.awt.*;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
+
+import com.nmh.project.repositories.ActiveMotorhomeRepository;
 import com.nmh.project.repositories.MotorhomeRepository;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
 public class MotorhomeController {
     MotorhomeRepository motorhomeRepository = new MotorhomeRepository();
+    ActiveMotorhomeRepository activeMotorhomeRepository = new ActiveMotorhomeRepository();
 
     @GetMapping("/")
     public String index(){
@@ -21,12 +25,17 @@ public class MotorhomeController {
     }
 
     @RequestMapping(value = "/rentMotorhome",method = RequestMethod.GET)
-    public String rentPage(){
-        return "rent";
+    public String rentMotorhomePage(){
+        return "rentMotorhome/available";
     }
 
-    @PostMapping("/rentMotorhome/avaible")
-    public String byDateRent(@RequestParam String maxPrice, @RequestParam String minPrice, @RequestParam("startDate") String startDate, @RequestParam("endDate") String endDate){
+    @RequestMapping(value = "/rentMotorhome/rent",method = RequestMethod.GET)
+    public String rentPage(){
+        return "rentMotorhome/rent";
+    }
+
+    @PostMapping("/rentMotorhome/available")
+    public String byDateRent(Model model, @RequestParam String maxPrice, @RequestParam String minPrice, @RequestParam("startDate") String startDate, @RequestParam("endDate") String endDate){
         //tager maxPrice og minPrice som String, så man kan tage et tomt nummer. (ingen maks pris).
 
         //overveje at finde en smart måde at tage alle variablerne.evt. bruge @RequestParam Map<String,String> allRequestParams
@@ -60,12 +69,10 @@ public class MotorhomeController {
             }
         }
 
-
         System.out.println(tempMaxPrice + ", " +  tempMinPrice + ", " + tempStartDate + ", " + tempEndDate);
-        //motorhomeRepository.filter(maxPrice, minPrice, startDate, endDate);
-        System.out.println(motorhomeRepository.filter(tempMaxPrice, tempMinPrice, tempStartDate, tempEndDate));
+        model.addAttribute("motorhomes", activeMotorhomeRepository.filter(tempMaxPrice, tempMinPrice, tempStartDate, tempEndDate));
 
-        return "redirect:/rentMotorhome";
+        return "rentMotorhome/available";
     }
 
     @RequestMapping(value = "/testingTests", method = RequestMethod.GET)
@@ -78,8 +85,8 @@ public class MotorhomeController {
         testHome.setBrand("this fat bizz");
         testHome.setModel("dizz fat bizz");
 
-        motorhomeRepository.addDamage("Hjulet har røget hash", 4);
-        System.out.println(motorhomeRepository.getAllDmg());
+        activeMotorhomeRepository.addDamage("Hjulet har røget hash", 4);
+        System.out.println(activeMotorhomeRepository.getAllDmg());
 
         motorhomeRepository.create(testHome);
         motorhomeRepository.delete(testHome.getId());
