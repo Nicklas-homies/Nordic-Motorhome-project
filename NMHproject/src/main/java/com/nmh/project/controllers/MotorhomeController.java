@@ -12,12 +12,32 @@ import com.nmh.project.repositories.MotorhomeRepository;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
 
 @Controller
 public class MotorhomeController {
     MotorhomeRepository motorhomeRepository = new MotorhomeRepository();
     ActiveMotorhomeRepository activeMotorhomeRepository = new ActiveMotorhomeRepository();
+
+    @GetMapping("/createMotorhome")
+    public String createMotorhome(Motorhome motorhome){
+        return "createMotorhome";
+    }
+    @PostMapping("/createMotorhome/add")
+    public String createMotorhomeAdd(@Valid Motorhome motorhome, BindingResult bindingResult){
+        if (bindingResult.hasErrors()){
+            return "createMotorhome";
+        }
+        if (!motorhomeRepository.create(motorhome)) {
+            System.out.println("failed to create a motorhome AAHRRHAHRAHRH");
+        } else {
+            System.out.println("made a brand new home!!!");
+        }
+        return "redirect:/";
+    }
 
     @GetMapping("/")
     public String index(){

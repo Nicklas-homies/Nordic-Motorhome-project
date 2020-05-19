@@ -1,14 +1,22 @@
 package com.nmh.project.models;
 
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+
 public class Motorhome {
 
     public int id;
+    @NotEmpty
     public String brand;
+    @NotEmpty
     public String model;
+    @NotNull
     public int timesUsed;
+    @NotNull
     public int kmDriven;
     public double extraPrice;
     public int activeState;
+    @NotNull
     public int typeId;
 
     public Motorhome(int id, String brand, String model, int timesUsed, int kmDriven, double extraPrice, int typeId) {

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>add a brand new motorhome</title>
+    <link rel="stylesheet" type="text/css" href="/static/css/styles.css">
+</head>
+<body>
+<div class="container">
+    <form action="#" th:action="@{/createMotorhome/add}" th:object="${motorhome}" method="post">
+        <table>
+            <tr>
+                <th>Brand name:</th>
+                <th>Model name:</th>
+                <th>Times used</th>
+                <th>km driven</th>
+                <th>type ID</th>
+            </tr>
+            <tr>
+                <td><input type="text" th:field="*{brand}"></td>
+                <td><input type="text" th:field="*{model}"></td>
+                <td><input type="number" th:field="*{timesUsed}"></td>
+                <td><input type="number" th:field="*{kmDriven}"></td>
+                <td><input type="number" th:field="*{typeId}" step="1" max="8" min="1"></td>
+
+            </tr>
+            <tr>
+                <td th:if="${#fields.hasErrors('brand')}" th:errors="*{brand}">brand Error</td>
+                <td th:if="${#fields.hasErrors('model')}" th:errors="*{model}">model Error</td>
+                <td th:if="${#fields.hasErrors('timesUsed')}" th:errors="*{timesUsed}">timesUsed error</td>
+                <td th:if="${#fields.hasErrors('kmDriven')}" th:errors="*{kmDriven}">kmDriven error</td>
+                <td th:if="${#fields.hasErrors('typeId')}" th:errors="*{typeId}">typeId error</td>
+            </tr>
+
+        </table>
+        <input type="submit" name="submit" id="submit">
+    </form>
+</div>
+</body>
+</html>
