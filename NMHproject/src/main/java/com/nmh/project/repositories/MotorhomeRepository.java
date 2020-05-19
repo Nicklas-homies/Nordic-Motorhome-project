@@ -8,12 +8,24 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 
 public class MotorhomeRepository {
     private Connection connection;
 
     public MotorhomeRepository() {
         this.connection = DatabaseConnectionManager.getDatabaseConnection();
+    }
+
+    public ArrayList<Motorhome> returnAvailableMotorhomeByState(int activeState){
+        ArrayList<Motorhome> tempAllMotorhome = readAll();
+        ArrayList<Motorhome> tempHome = new ArrayList<>();
+        for (Motorhome motorhome : tempAllMotorhome) {
+            if (motorhome.getActiveState() == activeState) {
+                tempHome.add(motorhome);
+            }
+        }
+        return tempHome;
     }
 
     public ArrayList<Motorhome> readAll(){
@@ -30,7 +42,8 @@ public class MotorhomeRepository {
                 tempHome.setTimesUsed(results.getInt(4));
                 tempHome.setKmDriven(results.getInt(5));
                 tempHome.setExtraPrice(results.getDouble(6));
-                tempHome.setTypeId(results.getInt(7));
+                tempHome.setActiveState(results.getInt(7));
+                tempHome.setTypeId(results.getInt(8));
                 allHomes.add(tempHome);
             }
         }
@@ -55,7 +68,8 @@ public class MotorhomeRepository {
                 homeToReturn.setTimesUsed(results.getInt(4));
                 homeToReturn.setKmDriven(results.getInt(5));
                 homeToReturn.setExtraPrice(results.getDouble(6));
-                homeToReturn.setTypeId(results.getInt(7));
+                homeToReturn.setActiveState(results.getInt(7));
+                homeToReturn.setTypeId(results.getInt(8));
             }
         }
         catch (SQLException e){

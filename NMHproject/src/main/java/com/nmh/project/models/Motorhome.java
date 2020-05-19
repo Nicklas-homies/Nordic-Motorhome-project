@@ -8,6 +8,7 @@ public class Motorhome {
     public int timesUsed;
     public int kmDriven;
     public double extraPrice;
+    public int activeState;
     public int typeId;
 
     public Motorhome(int id, String brand, String model, int timesUsed, int kmDriven, double extraPrice, int typeId) {
@@ -19,6 +20,7 @@ public class Motorhome {
         this.kmDriven = kmDriven;
         this.extraPrice = extraPrice;
         this.typeId = typeId;
+        this.activeState = 0;
     }
 
     public Motorhome() {
@@ -95,5 +97,13 @@ public class Motorhome {
 
     public void setTypeId(int typeId) {
         this.typeId = typeId;
+    }
+
+    public int getActiveState() {
+        return activeState;
+    }
+
+    public void setActiveState(int activeState) {
+        this.activeState = activeState;
     }
 }

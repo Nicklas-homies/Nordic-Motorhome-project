@@ -11,6 +11,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 
 public class ActiveMotorhomeRepository extends MotorhomeRepository{
     private Connection connection;
@@ -36,14 +37,13 @@ public class ActiveMotorhomeRepository extends MotorhomeRepository{
     }
 
     // Filter methods, should they be in a different class? how do we do this when thinking of grasp and smart design?
-    public ArrayList<Motorhome> filter(int maxPrice, int minPrice, @DateTimeFormat(pattern = "yyyy-MM-dd") Date startDate,
+    public ArrayList<Motorhome> filter(int activeState, int maxPrice, int minPrice, @DateTimeFormat(pattern = "yyyy-MM-dd") Date startDate,
                                        @DateTimeFormat(pattern = "yyyy-MM-dd") Date endDate){
-        ArrayList<Motorhome> filteredList = readAll();
-        filteredList = filterByMaxPrice(filteredList,maxPrice);
-        filteredList = filterByMinPrice(filteredList,minPrice);
-        filteredList = filterByStartDate(filteredList,startDate);
-        filteredList = filterByEndDate(filteredList,endDate);
-
+        ArrayList<Motorhome> filteredList = returnAvailableMotorhomeByState(activeState);
+        filteredList = filterByMaxPrice(filteredList, maxPrice);
+        filteredList = filterByMinPrice(filteredList, minPrice);
+        filteredList = filterByStartDate(filteredList, startDate);
+        filteredList = filterByEndDate(filteredList, endDate);
         return filteredList;
     }
 

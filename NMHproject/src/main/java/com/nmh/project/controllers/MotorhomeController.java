@@ -70,7 +70,8 @@ public class MotorhomeController {
         }
 
         System.out.println(tempMaxPrice + ", " +  tempMinPrice + ", " + tempStartDate + ", " + tempEndDate);
-        model.addAttribute("motorhomes", activeMotorhomeRepository.filter(tempMaxPrice, tempMinPrice, tempStartDate, tempEndDate));
+        activeMotorhomeRepository.filter(1, tempMaxPrice, tempMinPrice, tempStartDate, tempEndDate);
+        model.addAttribute("motorhomes", activeMotorhomeRepository.filter(0, tempMaxPrice, tempMinPrice, tempStartDate, tempEndDate));
 
         return "rentMotorhome/available";
     }
