@@ -11,10 +11,10 @@ import java.util.HashMap;
 import java.util.List;
 
 public class MotorhomeRepository {
-    private Connection connection;
+    private Connection conn;
 
     public MotorhomeRepository() {
-        this.connection = DatabaseConnectionManager.getDatabaseConnection();
+        this.conn = DatabaseConnectionManager.getDatabaseConnection();
     }
 
     public ArrayList<Motorhome> returnAvailableMotorhomeByState(int activeState){
@@ -32,7 +32,7 @@ public class MotorhomeRepository {
         ArrayList<Motorhome> allHomes = new ArrayList<>();
         try{
             String selectAll = "SELECT * FROM motorhomes";
-            PreparedStatement statement = connection.prepareStatement(selectAll);
+            PreparedStatement statement = conn.prepareStatement(selectAll);
             ResultSet results = statement.executeQuery();
             while (results.next()){
                 Motorhome tempHome = new Motorhome();
@@ -58,7 +58,7 @@ public class MotorhomeRepository {
         Motorhome homeToReturn = new Motorhome();
         try{
             String getById = "SELECT * FROM motorhomes WHERE motorhomeId=?";
-            PreparedStatement statement = connection.prepareStatement(getById);
+            PreparedStatement statement = conn.prepareStatement(getById);
             statement.setInt(1, id);
             ResultSet results = statement.executeQuery();
             while(results.next()){
@@ -82,7 +82,7 @@ public class MotorhomeRepository {
     public boolean create(Motorhome motorhome){
         try {
             String insertString = "INSERT INTO motorhomes (brand,model,timesUsed,kmDriven,extraPrice,typeId) VALUES (?,?,?,?,?,?)";
-            PreparedStatement statement = connection.prepareStatement(insertString);
+            PreparedStatement statement = conn.prepareStatement(insertString);
             statement.setString(1,motorhome.getBrand());
             statement.setString(2,motorhome.getModel());
             statement.setInt(3,motorhome.getTimesUsed());
@@ -102,7 +102,7 @@ public class MotorhomeRepository {
     public boolean delete(int id){
         String deleteString = "DELETE FROM motorhomes WHERE motorhomeId=?";
         try {
-            PreparedStatement statement = connection.prepareStatement(deleteString);
+            PreparedStatement statement = conn.prepareStatement(deleteString);
             statement.setInt(1,id);
             statement.executeUpdate();
             return true;
@@ -110,6 +110,26 @@ public class MotorhomeRepository {
         catch (SQLException e){
             System.out.println("error : motorhomeRepository delete()");
             System.out.println(e.getMessage());
+        }
+        return false;
+    }
+
+    public boolean update(Motorhome motorhome) {
+        try{
+            String update = "UPDATE motorhomes SET brand=?,model=?,timesUsed=?,kmDriven=?,extraPrice=?,activeState=?,typeId=? WHERE motorhomeId=?";
+            PreparedStatement updateStatement = conn.prepareStatement(update);
+            updateStatement.setString(1, motorhome.getBrand());
+            updateStatement.setString(2, motorhome.getModel());
+            updateStatement.setInt(3, motorhome.getTimesUsed());
+            updateStatement.setInt(4, motorhome.getKmDriven());
+            updateStatement.setDouble(5, motorhome.getExtraPrice());
+            updateStatement.setInt(6, motorhome.getActiveState());
+            updateStatement.setInt(7, motorhome.getTypeId());
+            updateStatement.setInt(8,motorhome.getId());
+            updateStatement.executeUpdate();
+            return true;
+        }catch(SQLException e){
+            e.printStackTrace();
         }
         return false;
     }

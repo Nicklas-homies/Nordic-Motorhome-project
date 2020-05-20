@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Delete customer</title>
+    <!-- stylesheet -->
+    <link rel="stylesheet" type="text/css" href="/css/styles.css">
+</head>
+<body>
+
+<div class="pad-left">
+    <h1>Delete</h1>
+    <h3>Are you sure you want to delete</h3>
+    <h3 th:text="${Customer.getcName()}"></h3>
+
+    <table>
+
+        <tr>
+            <a th:href="@{/customer/delete/yes/__${Customer.id}__}">
+                <button class="btn-del btn">Delete</button>
+            </a>
+        </tr>
+
+        <tr>
+            <a href="/">
+                <button class="btn">No</button>
+            </a>
+        </tr>
+    </table>
+</div>
+
+</body>
+</html>

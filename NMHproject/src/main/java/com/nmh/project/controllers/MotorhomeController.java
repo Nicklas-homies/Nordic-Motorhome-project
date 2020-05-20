@@ -2,14 +2,11 @@ package com.nmh.project.controllers;
 
 import com.nmh.project.models.Motorhome;
 
-import java.awt.*;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.HashMap;
 
 import com.nmh.project.repositories.ActiveMotorhomeRepository;
 import com.nmh.project.repositories.MotorhomeRepository;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -22,7 +19,13 @@ public class MotorhomeController {
     MotorhomeRepository motorhomeRepository = new MotorhomeRepository();
     ActiveMotorhomeRepository activeMotorhomeRepository = new ActiveMotorhomeRepository();
 
+    @GetMapping("/")
+    public String index(){
+        return "index";
+    }
+
     @GetMapping("/createMotorhome")
+    // slet ikke motorhome her selvom det ligner den ikke bruges
     public String createMotorhome(Motorhome motorhome){
         return "createMotorhome";
     }
@@ -32,21 +35,11 @@ public class MotorhomeController {
             return "createMotorhome";
         }
         if (!motorhomeRepository.create(motorhome)) {
-            System.out.println("failed to create a motorhome AAHRRHAHRAHRH");
+            System.out.println("failed to create a motorhome");
         } else {
             System.out.println("made a brand new home!!!");
         }
         return "redirect:/";
-    }
-
-    @GetMapping("/")
-    public String index(){
-        return "index";
-    }
-
-    @RequestMapping(value = "/rentMotorhome",method = RequestMethod.GET)
-    public String rentMotorhomePage(){
-        return "rentMotorhome/available";
     }
 
     @RequestMapping(value = "/rentMotorhome/rent",method = RequestMethod.GET)
@@ -55,17 +48,21 @@ public class MotorhomeController {
     }
 
     @PostMapping("/rentMotorhome/available")
-    public String byDateRent(Model model, @RequestParam String maxPrice, @RequestParam String minPrice, @RequestParam("startDate") String startDate, @RequestParam("endDate") String endDate){
+    public String byDateRent(Model model,@RequestParam int typeId,@RequestParam String maxPrice,@RequestParam String minPrice,@RequestParam("startDate") String startDate, @RequestParam("endDate") String endDate){
         //tager maxPrice og minPrice som String, så man kan tage et tomt nummer. (ingen maks pris).
 
         //overveje at finde en smart måde at tage alle variablerne.evt. bruge @RequestParam Map<String,String> allRequestParams
         // problemer med allrequestparams er formateringen på dates.
 
         //Changes data, so can tell difference between empty and filled in data.
+        int tempTypeId = -1;
         int tempMinPrice = -1;
         int tempMaxPrice = -1;
         Date tempStartDate = null;
         Date tempEndDate = null;
+        if (typeId != 0){
+            tempTypeId = typeId;
+        }
         if (!maxPrice.equals("")){
             tempMaxPrice = Integer.parseInt(maxPrice);
         }
@@ -89,33 +86,90 @@ public class MotorhomeController {
             }
         }
 
-        System.out.println(tempMaxPrice + ", " +  tempMinPrice + ", " + tempStartDate + ", " + tempEndDate);
-        activeMotorhomeRepository.filter(1, tempMaxPrice, tempMinPrice, tempStartDate, tempEndDate);
-        model.addAttribute("motorhomes", activeMotorhomeRepository.filter(0, tempMaxPrice, tempMinPrice, tempStartDate, tempEndDate));
+        System.out.println(tempTypeId + ", " + tempMaxPrice + ", " +  tempMinPrice + ", " + tempStartDate + ", " + tempEndDate);
+        model.addAttribute("motorhomes", activeMotorhomeRepository.filter(0,tempTypeId, tempMaxPrice, tempMinPrice, tempStartDate, tempEndDate));
 
         return "rentMotorhome/available";
     }
 
-    @RequestMapping(value = "/testingTests", method = RequestMethod.GET)
-    public String testingTests(){
-        Motorhome testHome = new Motorhome();
-        testHome.setId(4);
-        testHome.setKmDriven(343);
-        testHome.setTypeId(1);
-        testHome.setExtraPrice(4.2);
-        testHome.setBrand("this fat bizz");
-        testHome.setModel("dizz fat bizz");
+    @RequestMapping(value = "/rentMotorhome/rent/{id}", method = RequestMethod.GET)
+    public String rentMotorhomeById(@PathVariable int id) {
+        Motorhome homeToRent = motorhomeRepository.read(id);
+        homeToRent.setActiveState(1);
+        motorhomeRepository.update(homeToRent);
+        return "redirect:/rentMotorhome/rent";
+    }
 
-        activeMotorhomeRepository.addDamage("Hjulet har røget hash", 4);
-        System.out.println(activeMotorhomeRepository.getAllDmg());
+    @RequestMapping(value = "/pickUpMotorhome/filter",method = RequestMethod.GET)
+    public String pickUpFilter(){
+        return "pickUpMotorhome/filter";
+    }
 
-        motorhomeRepository.create(testHome);
-        motorhomeRepository.delete(testHome.getId());
-        motorhomeRepository.delete(testHome.getId());
-        motorhomeRepository.create(testHome);
+    @PostMapping("/pickUpMotorhome/available")
+    public String pickUpByDateRent(Model model, @RequestParam("startDate") String startDate, @RequestParam("endDate") String endDate){
+        int tempTypeId = -1;
+        int tempMinPrice = -1;
+        int tempMaxPrice = -1;
+        Date tempStartDate = null;
+        Date tempEndDate = null;
+        if (!startDate.equals("")){
+            try {
+                tempStartDate = new SimpleDateFormat("yyyy-MM-dd").parse(startDate);
+            }
+            catch (Exception e){
+                //nothing
+            }
+        }
+        if (!endDate.equals("")){
+            try {
+                tempEndDate = new SimpleDateFormat("yyyy-MM-dd").parse(endDate);
+            }
+            catch (Exception e){
+                //nothing
+            }
+        }
 
-        System.out.println(motorhomeRepository.readAll());
-        System.out.println(motorhomeRepository.read(4));
-        return "redirect:/";
+        System.out.println(tempTypeId + ", " + tempMaxPrice + ", " +  tempMinPrice + ", " + tempStartDate + ", " + tempEndDate);
+        model.addAttribute("motorhomes", activeMotorhomeRepository.filter(1,tempTypeId, tempMaxPrice, tempMinPrice, tempStartDate, tempEndDate));
+
+        return "pickUpMotorhome/available";
+    }
+
+    @RequestMapping(value = "/pickUpMotorhome/filter/{id}", method = RequestMethod.GET)
+    public String pickUpMotorhomeById(@PathVariable int id) {
+        Motorhome homeToRent = motorhomeRepository.read(id);
+        homeToRent.setActiveState(2);
+        motorhomeRepository.update(homeToRent);
+        return "redirect:/pickUpMotorhome/filter";
+    }
+
+    @RequestMapping(value = "/pickUpMotorhome/cancelPickUp/{id}", method = RequestMethod.GET)
+    public String cancelPickUpById(@PathVariable int id) {
+        Motorhome homeToPickUp = motorhomeRepository.read(id);
+        homeToPickUp.setActiveState(0);
+        motorhomeRepository.update(homeToPickUp);
+        return "redirect:/pickUpMotorhome/filter";
+    }
+
+    @RequestMapping("/activeMotorhome/available")
+    public String activeMotorhomes(Model model){
+        int tempTypeId = -1;
+        int tempMinPrice = -1;
+        int tempMaxPrice = -1;
+        Date tempStartDate = null;
+        Date tempEndDate = null;
+
+        System.out.println(tempTypeId + ", " + tempMaxPrice + ", " +  tempMinPrice + ", " + tempStartDate + ", " + tempEndDate);
+        model.addAttribute("motorhomes", activeMotorhomeRepository.filter(2,tempTypeId, tempMaxPrice, tempMinPrice, tempStartDate, tempEndDate));
+
+        return "activeMotorhome/available";
+    }
+
+    @RequestMapping(value = "/activeMotorhome/available/{id}", method = RequestMethod.GET)
+    public String returnMotorhomeById(@PathVariable int id) {
+        Motorhome homeToReturn = motorhomeRepository.read(id);
+        homeToReturn.setActiveState(0);
+        motorhomeRepository.update(homeToReturn);
+        return "redirect:/activeMotorhome/available";
     }
 }

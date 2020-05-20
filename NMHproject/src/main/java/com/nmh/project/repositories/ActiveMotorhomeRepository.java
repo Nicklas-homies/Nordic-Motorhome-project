@@ -37,9 +37,10 @@ public class ActiveMotorhomeRepository extends MotorhomeRepository{
     }
 
     // Filter methods, should they be in a different class? how do we do this when thinking of grasp and smart design?
-    public ArrayList<Motorhome> filter(int activeState, int maxPrice, int minPrice, @DateTimeFormat(pattern = "yyyy-MM-dd") Date startDate,
+    public ArrayList<Motorhome> filter(int activeState, int typeId, int maxPrice, int minPrice, @DateTimeFormat(pattern = "yyyy-MM-dd") Date startDate,
                                        @DateTimeFormat(pattern = "yyyy-MM-dd") Date endDate){
         ArrayList<Motorhome> filteredList = returnAvailableMotorhomeByState(activeState);
+        filteredList = filterByTypeId(filteredList, typeId);
         filteredList = filterByMaxPrice(filteredList, maxPrice);
         filteredList = filterByMinPrice(filteredList, minPrice);
         filteredList = filterByStartDate(filteredList, startDate);
@@ -137,6 +138,32 @@ public class ActiveMotorhomeRepository extends MotorhomeRepository{
             //finds all that are over price
             PreparedStatement statement = connection.prepareStatement(filterString);
             statement.setInt(1,maxPrice);
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()){
+                for (Motorhome home : theList){ //has to go through loop, because the list might have been modified by other filters.
+                    if (home.getId() == resultSet.getInt(1)){
+                        found.add(home);
+                    }
+                }
+            }
+        }
+        catch (SQLException e){
+            System.out.println(e.getMessage());
+        }
+        theList.removeAll(found);
+        return theList;
+    }
+
+    public ArrayList<Motorhome> filterByTypeId(ArrayList<Motorhome> theList, int typeId){
+        if (typeId == -1){
+            return theList;
+        }
+        ArrayList<Motorhome> found = new ArrayList<>();
+        try {
+            String filterString = "SELECT * FROM motorhomes INNER JOIN motorhometype ON motorhomes.typeId = motorhometype.typeId" +
+                    " WHERE motorhometype.typeId != ?";
+            PreparedStatement statement = connection.prepareStatement(filterString);
+            statement.setInt(1,typeId);
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()){
                 for (Motorhome home : theList){ //has to go through loop, because the list might have been modified by other filters.

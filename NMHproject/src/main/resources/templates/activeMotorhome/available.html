@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Rented motorhomes</title>
+    <link rel="stylesheet" type="text/css" href="/css/styles.css">
+</head>
+<body>
+
+<div class="container">
+    <table>
+        <tr>
+            <th>ID</th>
+            <th>Brand</th>
+            <th>Model</th>
+            <th>Times used</th>
+            <th>Km driven</th>
+            <th>Extra price</th>
+            <th>Type id</th>
+            <th></th>
+        </tr>
+
+        <tr th:each="motorhome : ${motorhomes}">
+            <td th:text="${motorhome.id}"></td>
+            <td th:text="${motorhome.brand}"></td>
+            <td th:text="${motorhome.model}"></td>
+            <td th:text="${motorhome.timesUsed}"></td>
+            <td th:text="${motorhome.kmDriven}"></td>
+            <td th:text="${motorhome.extraPrice}"></td>
+            <td th:text="${motorhome.typeId}"></td>
+            <td>
+                <a th:href="@{/activeMotorhome/available/__${motorhome.id}__}"><button class="btn">Return motorhome</button></a>
+                <a th:href="@{/activeMotorhome/edit/__${motorhome.id}__}"><button class="btn-del btn">Edit</button></a>
+            </td>
+        </tr>
+    </table>
+</div>
+
+</body>
+</html>

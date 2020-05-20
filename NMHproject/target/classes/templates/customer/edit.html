@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"><head>
+    <meta charset="UTF-8">
+    <title>Edit customer information</title>
+    <!-- stylesheet -->
+    <link rel="stylesheet" type="text/css" href="/css/styles.css">
+</head>
+<body>
+
+<div class="pad-left container">
+    <h1>Current information</h1>
+
+    <table>
+        <tr>
+            <th>Name</th>
+            <th>Number</th>
+        </tr>
+
+        <tr>
+            <td th:text="${Customer.getcName()}"></td>
+            <td th:text="${Customer.getNumber()}"></td>
+        </tr>
+    </table>
+
+    <h1>New information</h1>
+    <form action="/customer/edited" method="post">
+        <p>Name:</p>
+        <input type="text" name="Name" id="name">
+        <p>Number:</p>
+        <input type="number" name="Number" id="number">
+        <input type="hidden" name="id" id="id" th:value="${Customer.id}">
+        <br>
+        <input class="btn" type="submit" name="submit form via POST">
+    </form>
+</div>
+
+</body>
+</html>

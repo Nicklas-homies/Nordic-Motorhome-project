@@ -7,19 +7,38 @@
 </head>
 <body>
 
-<div class="container input">
+<div class="container">
     <!-- tænker at man laver 1 input from ting, som kan bruges til at filtre i et table man laver nedenunder. -->
     <!-- det kræver 1 at man kan tage form, og give den samme side tilbage med redigerede arrayliste at vise -->
     <form action="/rentMotorhome/available" method="post">
-        <label>Put in tha date</label>
-        <input name="startDate" type="date" id="startDate">
-        <label>Put in to date</label>
-        <input name="endDate" id="endDate" type="date">
-        <label>max price</label>
-        <input type="text" name="maxPrice" id="maxPrice">
-        <label>min price</label>
-        <input type="text" id="minPrice" name="minPrice">
-        <input class="btn" type="submit" name="submit" id="submit">
+        <table>
+            <tr>
+                <th>From date:</th>
+                <td><input name="startDate" type="date" id="startDate"></td>
+            </tr>
+
+            <tr>
+                <th>To date:</th>
+                <td><input name="endDate" id="endDate" type="date"></td>
+            </tr>
+
+            <tr>
+                <TH>Max price:</TH>
+                <td><input type="text" name="maxPrice" id="maxPrice"></td>
+            </tr>
+
+            <tr>
+                <th>Min price:</th>
+                <td><input type="text" id="minPrice" name="minPrice"></td>
+            </tr>
+
+            <tr>
+                <th>Type id:</th>
+                <td><input required type="number" name="typeId" id="typeId" step="1" max="8" min="0" placeholder="1-8, 0 for all types"></td>
+            </tr>
+        </table>
+        <br>
+        <input class="fill-btn-input btn" type="submit" name="submit" id="submit">
     </form>
 </div>
 </body>

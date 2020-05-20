@@ -63,7 +63,7 @@ tr:nth-child(odd) {
 
 input {
     display: block;
-    width: 90%;  /*har ændret fra 50% fordi det fuckede input ved enrollment, så man ikke kunne skrive dat0*/
+    width: 96%;
     padding: .5rem .75rem;
     font-size: 1rem;
     line-height: 1.25;
@@ -73,6 +73,10 @@ input {
     background-clip: padding-box;
     border: 1px solid rgba(0, 0, 0, .15);
     border-radius: .25rem;
+}
+
+.fill-btn-input {
+    width: 100%;
 }
 
 /* Buttons */

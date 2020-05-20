@@ -7,7 +7,7 @@
 </head>
 <body>
 
-    <div>
+    <div class="container">
         <table>
             <tr>
                 <th>ID</th>
@@ -17,6 +17,7 @@
                 <th>Km driven</th>
                 <th>Extra price</th>
                 <th>Type id</th>
+                <th></th>
             </tr>
 
             <tr th:each="motorhome : ${motorhomes}">
@@ -27,6 +28,11 @@
                 <td th:text="${motorhome.kmDriven}"></td>
                 <td th:text="${motorhome.extraPrice}"></td>
                 <td th:text="${motorhome.typeId}"></td>
+                <td>
+                    <a th:href="@{/rentMotorhome/rent/__${motorhome.id}__}">
+                        <button class="btn">Rent</button>
+                    </a>
+                </td>
             </tr>
         </table>
     </div>
