@@ -22,6 +22,7 @@ CREATE TABLE IF NOT EXISTS `NMH_company`.`motorhomes` (
   `timesUsed` INT NULL,
   `kmDriven` INT NULL,
   `extraPrice` DOUBLE NULL,
+  `activeState` INT DEFAULT 0 NOT NULL,
   `typeId` INT NOT NULL,
   PRIMARY KEY (`motorhomeId`),
   INDEX `typeId_idx` (`typeId` ASC) VISIBLE,
