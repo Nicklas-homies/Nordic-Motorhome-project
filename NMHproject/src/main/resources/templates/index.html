@@ -1,14 +1,18 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <title>NMH index</title>
     <link href="css/styles.css" rel="stylesheet" type="text/css">
 </head>
 <body>
+<div th:insert="fragments/menu :: menu"></div>
+<div class="container">
     <a href="/rentMotorhome/rent"><button class="btn">Rent motorhome</button></a>
     <a href="/createMotorhome"><button class="btn">Create new motorhome</button></a>
     <a href="/pickUpMotorhome/filter"><button class="btn">Pick up motorhome</button></a>
     <a href="/activeMotorhome/available"><button class="btn">Active motorhomes</button></a>
+</div>
+<div th:insert="fragments/footer :: footer"></div>
 </body>
 </html>

@@ -6,7 +6,7 @@
     <link rel="stylesheet" type="text/css" href="/css/styles.css">
 </head>
 <body>
-
+<div th:insert="fragments/menu :: menu"></div>
 <div class="container">
     <!-- tænker at man laver 1 input from ting, som kan bruges til at filtre i et table man laver nedenunder. -->
     <!-- det kræver 1 at man kan tage form, og give den samme side tilbage med redigerede arrayliste at vise -->
@@ -26,5 +26,6 @@
         <input class="fill-btn-input btn" type="submit" name="submit" id="submit">
     </form>
 </div>
+<div th:insert="fragments/footer :: footer"></div>
 </body>
 </html>

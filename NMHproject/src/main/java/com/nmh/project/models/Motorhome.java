@@ -1,5 +1,7 @@
 package com.nmh.project.models;
 
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
@@ -17,6 +19,8 @@ public class Motorhome {
     public double extraPrice;
     public int activeState;
     @NotNull
+    @Min(1)
+    @Max(8)
     public int typeId;
 
     public Motorhome(int id, String brand, String model, int timesUsed, int kmDriven, double extraPrice, int typeId) {

@@ -32,7 +32,7 @@ public class MotorhomeController {
     @PostMapping("/createMotorhome/add")
     public String createMotorhomeAdd(@Valid Motorhome motorhome, BindingResult bindingResult){
         if (bindingResult.hasErrors()){
-            return "createMotorhome";
+            return "/createMotorhome";
         }
         if (!motorhomeRepository.create(motorhome)) {
             System.out.println("failed to create a motorhome");

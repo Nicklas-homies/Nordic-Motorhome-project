@@ -1,8 +1,71 @@
+.topNav {
+    background-color: #333;
+}
+.dropdown {
+    display: inline-block;
+    position: relative; /*makes the dropdown be relative to button*/
+}
+.topNav a:hover {
+    background-color: #dddddd;
+    color: black;
+}
+.dropdown-a {
+    font-size: 16px !important; /*makes dropdown a links smaller, looks better. sorta*/
+}
+.dropdown-content{ /*can't see content*/
+    display: none;
+    position: absolute;
+}
+.dropdown:hover .dropdown-content{ /*can see content when hover*/
+    display: block;
+}
+.dropdown-content a{ /*makes it go down instead of sideways*/
+    display: block;
+}
+.topNav button:hover{
+    background-color: #dddddd;
+    color: black;
+}
+.topNav button{
+    color: #f2f2f2;
+    text-align: center;
+    padding: 16px 18px;
+    font-size: 20px;
+    text-decoration: none;
+    background-color: inherit;
+    outline: none;
+    border: none;
+}
+.topNav a{
+    float: left;
+    color: #f2f2f2;
+    text-align: center;
+    padding: 16px 18px;
+    font-size: 20px;
+    text-decoration: none;
+    overflow: visible; /*allows dropdown a to be visible*/
+    background-color: #333; /* changes color on hover */
+}
+.a-topNav-border {
+    border-right-style: double;
+    border-color: #f2f2f2;
+}
+.topNav .active {
+    background-color: #4CAF50;
+    color: papayawhip;
+}
+
+
 body {
     font-family: arial, sans-serif;
     margin: 0;
     padding: 0;
     background-color: #99999910;
+}
+footer {
+    text-align: center;
+    color: grey;
+    font-size: 12px;
 }
 .mainTitle {
     text-align: center;
@@ -127,4 +190,16 @@ input {
 
 /* input fields */
 
+/*this shit makes a dropdown menu given the right html:
+    <div>
+        <div class="dropdown">
+            <button ">Dropdown</button>
+            <div class="dropdown-content">
+                <a href="#">Link 1</a>
+                <a href="#">Link 2</a>
+                <a href="#">Link 3</a>
+            </div>
+        </div>
+    </div>
+ */
 
