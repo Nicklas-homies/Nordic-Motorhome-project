@@ -48,7 +48,7 @@ public class MotorhomeController {
     }
 
     @PostMapping("/rentMotorhome/available")
-    public String byDateRent(Model model,@RequestParam int typeId,@RequestParam String maxPrice,@RequestParam String minPrice,@RequestParam("startDate") String startDate, @RequestParam("endDate") String endDate){
+    public String byDateRent(Model model,@RequestParam int typeId,@RequestParam String maxPrice,@RequestParam String minPrice,@RequestParam("startDate") String startDate, @RequestParam("endDate") String endDate, @RequestParam String bikeRack, @RequestParam String bedLinen, @RequestParam String childSeat, @RequestParam String picnicTable, @RequestParam String chairs){
         //tager maxPrice og minPrice som String, så man kan tage et tomt nummer. (ingen maks pris).
 
         //overveje at finde en smart måde at tage alle variablerne.evt. bruge @RequestParam Map<String,String> allRequestParams
@@ -58,36 +58,55 @@ public class MotorhomeController {
         int tempTypeId = -1;
         int tempMinPrice = -1;
         int tempMaxPrice = -1;
+        double price = -1;
         Date tempStartDate = null;
         Date tempEndDate = null;
+        boolean tempBike = false;
+        boolean tempBed = false;
+        boolean tempChild = false;
+        boolean tempPicnic = false;
+        boolean tempChairs = false;
+        double extraPrice = 0;
         if (typeId != 0){
             tempTypeId = typeId;
-        }
-        if (!maxPrice.equals("")){
+        }if (!maxPrice.equals("")){
             tempMaxPrice = Integer.parseInt(maxPrice);
-        }
-        if (!minPrice.equals("")){
+        }if (!minPrice.equals("")){
             tempMinPrice = Integer.parseInt(minPrice);
-        }
-        if (!startDate.equals("")){
+        }if (!startDate.equals("")){
             try {
                 tempStartDate = new SimpleDateFormat("yyyy-MM-dd").parse(startDate);
             }
             catch (Exception e){
                 //nothing
             }
-        }
-        if (!endDate.equals("")){
+        }if (!endDate.equals("")){
             try {
                 tempEndDate = new SimpleDateFormat("yyyy-MM-dd").parse(endDate);
             }
             catch (Exception e){
                 //nothing
             }
+        }if (bikeRack.equals("true")){
+            tempBike = true;
+            extraPrice += 25.0;
+        }if (bedLinen.equals("true")){
+            tempBed = true;
+            extraPrice += 15.0;
+        }if (childSeat.equals("true")){
+            tempChild = true;
+            extraPrice += 20.0;
+        }if (picnicTable.equals("true")){
+            tempPicnic = true;
+            extraPrice += 20.0;
+        }if (chairs.equals("true")){
+            tempChairs = true;
+            extraPrice += 20.0;
         }
 
         System.out.println(tempTypeId + ", " + tempMaxPrice + ", " +  tempMinPrice + ", " + tempStartDate + ", " + tempEndDate);
-        model.addAttribute("motorhomes", activeMotorhomeRepository.filter(0,tempTypeId, tempMaxPrice, tempMinPrice, tempStartDate, tempEndDate));
+        System.out.println(extraPrice + " " + tempBike);
+        model.addAttribute("motorhomes", activeMotorhomeRepository.filter(0,extraPrice,tempTypeId, tempMaxPrice, tempMinPrice, tempStartDate, tempEndDate));
 
         return "rentMotorhome/available";
     }
@@ -165,10 +184,16 @@ public class MotorhomeController {
         return "activeMotorhome/available";
     }
 
-    @RequestMapping(value = "/activeMotorhome/available/{id}", method = RequestMethod.GET)
+    @RequestMapping(value = "/activeMotorhome/return/{id}", method = RequestMethod.GET)
+    public String returnMotorhomePrompt(@PathVariable int id){
+        return "/activeMotorhome/return";
+    }
+
+    @PostMapping("/activeMotorhome/return/yes/{id}")
     public String returnMotorhomeById(@PathVariable int id) {
         Motorhome homeToReturn = motorhomeRepository.read(id);
         homeToReturn.setActiveState(0);
+        homeToReturn.setTimesUsed(homeToReturn.getTimesUsed() + 1);
         motorhomeRepository.update(homeToReturn);
         return "redirect:/activeMotorhome/available";
     }

@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Menu of everything! NICE</title>
+</head>
+<body>
+
+<div th:fragment="menu">
+    <div class="container topNav">
+        <!-- th if startsWith and then what they link to to get the active class on the right menu -->
+        <a href="/" class="a-topNav-border" th:classappend="${#httpServletRequest.getRequestURI().matches('/') ? 'active' : ''}">Home</a>
+        <a href="/rentMotorhome/rent" class="a-topNav-border" th:classappend="${#httpServletRequest.getRequestURI().startsWith('/rentMotorhome') ? 'active':''}"  >Rent</a>
+        <a href="/pickUpMotorhome/filter" class="a-topNav-border" th:classappend="${#httpServletRequest.getRequestURI().startsWith('/pickUpMotorhome') ? 'active':''}"  >Pick up</a>
+        <a href="/activeMotorhome/available" class="a-topNav-border" th:classappend="${#httpServletRequest.getRequestURI().startsWith('/activeMotorhome') ? 'active':''}"  >Active</a>
+        <div class="dropdown a-topNav-border" th:classappend="${#httpServletRequest.getRequestURI().startsWith('/createMotorhome') ? 'active':''}">
+            <button>Motorhome ↓</button>
+            <div class="dropdown-content" >
+                <a class="dropdown-a" href="/createMotorhome">New Motorhome</a>
+            </div>
+        </div>
+
+
+    </div>
+</div>
+
+</body>
+</html>

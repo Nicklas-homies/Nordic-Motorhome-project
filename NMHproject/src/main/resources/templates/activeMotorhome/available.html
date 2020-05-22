@@ -29,7 +29,7 @@
             <td th:text="${motorhome.extraPrice}"></td>
             <td th:text="${motorhome.typeId}"></td>
             <td>
-                <a th:href="@{/activeMotorhome/available/__${motorhome.id}__}"><button class="btn">Return motorhome</button></a>
+                <a th:href="@{/activeMotorhome/return/__${motorhome.id}__}"><button class="btn">Return motorhome</button></a>
                 <a th:href="@{/activeMotorhome/edit/__${motorhome.id}__}"><button class="btn-del btn">Edit</button></a>
             </td>
         </tr>

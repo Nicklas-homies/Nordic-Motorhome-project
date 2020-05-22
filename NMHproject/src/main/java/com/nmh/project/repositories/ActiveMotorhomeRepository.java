@@ -38,6 +38,17 @@ public class ActiveMotorhomeRepository extends MotorhomeRepository{
 
     // Filter methods, should they be in a different class? how do we do this when thinking of grasp and smart design?
     public ArrayList<Motorhome> filter(int activeState, int typeId, int maxPrice, int minPrice, @DateTimeFormat(pattern = "yyyy-MM-dd") Date startDate,
+                                        @DateTimeFormat(pattern = "yyyy-MM-dd") Date endDate){
+        ArrayList<Motorhome> filteredList = returnAvailableMotorhomeByState(activeState);
+        filteredList = filterByTypeId(filteredList, typeId);
+        filteredList = filterByMaxPrice(filteredList, maxPrice);
+        filteredList = filterByMinPrice(filteredList, minPrice);
+        filteredList = filterByStartDate(filteredList, startDate);
+        filteredList = filterByEndDate(filteredList, endDate);
+        return filteredList;
+    }
+
+    public ArrayList<Motorhome> filter(int activeState, double extraPrice, int typeId, int maxPrice, int minPrice, @DateTimeFormat(pattern = "yyyy-MM-dd") Date startDate,
                                        @DateTimeFormat(pattern = "yyyy-MM-dd") Date endDate){
         ArrayList<Motorhome> filteredList = returnAvailableMotorhomeByState(activeState);
         filteredList = filterByTypeId(filteredList, typeId);
@@ -45,6 +56,11 @@ public class ActiveMotorhomeRepository extends MotorhomeRepository{
         filteredList = filterByMinPrice(filteredList, minPrice);
         filteredList = filterByStartDate(filteredList, startDate);
         filteredList = filterByEndDate(filteredList, endDate);
+
+        for (Motorhome motorhome : filteredList) {
+            motorhome.setExtraPrice(extraPrice);
+        }
+
         return filteredList;
     }
 

@@ -16,21 +16,19 @@ public class Motorhome {
     public int timesUsed;
     @NotNull
     public int kmDriven;
-    public double extraPrice;
     public int activeState;
     @NotNull
     @Min(1)
     @Max(8)
     public int typeId;
 
-    public Motorhome(int id, String brand, String model, int timesUsed, int kmDriven, double extraPrice, int typeId) {
+    public Motorhome(int id, String brand, String model, int timesUsed, int kmDriven, int typeId) {
         //will atleast be used when reading from repository
         this.id = id;
         this.brand = brand;
         this.model = model;
         this.timesUsed = timesUsed;
         this.kmDriven = kmDriven;
-        this.extraPrice = extraPrice;
         this.typeId = typeId;
         this.activeState = 0;
     }
@@ -48,7 +46,6 @@ public class Motorhome {
                 ", model='" + model + '\'' +
                 ", timesUsed=" + timesUsed +
                 ", kmDriven=" + kmDriven +
-                ", extraPrice=" + extraPrice +
                 ", typeId=" + typeId +
                 '}';
     }
@@ -93,14 +90,6 @@ public class Motorhome {
 
     public void setKmDriven(int kmDriven) {
         this.kmDriven = kmDriven;
-    }
-
-    public double getExtraPrice() {
-        return extraPrice;
-    }
-
-    public void setExtraPrice(double extraPrice) {
-        this.extraPrice = extraPrice;
     }
 
     public int getTypeId() {
