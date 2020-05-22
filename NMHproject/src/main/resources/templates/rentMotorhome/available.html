@@ -15,7 +15,7 @@
                 <th>Model</th>
                 <th>Times used</th>
                 <th>Km driven</th>
-                <th>Extra price</th>
+                <th>Price per day</th>
                 <th>Type id</th>
                 <th></th>
             </tr>
@@ -26,7 +26,7 @@
                 <td th:text="${motorhome.model}"></td>
                 <td th:text="${motorhome.timesUsed}"></td>
                 <td th:text="${motorhome.kmDriven}"></td>
-                <td th:text="${motorhome.extraPrice}"}></td>
+                <td th:text="${motorhome.price}"></td>
                 <td th:text="${motorhome.typeId}"></td>
                 <td>
                     <a th:href="@{/rentMotorhome/rent/__${motorhome.id}__}">

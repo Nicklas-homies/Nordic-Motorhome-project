@@ -11,7 +11,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 
 public class ActiveMotorhomeRepository extends MotorhomeRepository{
     private Connection connection;
@@ -36,6 +35,26 @@ public class ActiveMotorhomeRepository extends MotorhomeRepository{
         return false;
     }
 
+    public int getMortorhomePrice(int motorhomeId, int typeId){
+        int price = 0;
+        try {
+            String filterString = "select price from motorhometype inner join motorhomes on motorhometype.typeid = motorhomes.typeid where " +
+                    "motorhometype.typeid = ? && motorhomes.motorhomeId = ?;";
+            PreparedStatement statement = connection.prepareStatement(filterString);
+            statement.setInt(1, typeId);
+            statement.setInt(2, motorhomeId);
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                price = resultSet.getInt(1);
+            }
+            return price;
+        }catch (SQLException  e){
+            System.out.println("error : ActiveMotorhomeRepository getMotorhomePrice");
+            System.out.println(e.getMessage());
+        }
+        return price;
+    }
+
     // Filter methods, should they be in a different class? how do we do this when thinking of grasp and smart design?
     public ArrayList<Motorhome> filter(int activeState, int typeId, int maxPrice, int minPrice, @DateTimeFormat(pattern = "yyyy-MM-dd") Date startDate,
                                         @DateTimeFormat(pattern = "yyyy-MM-dd") Date endDate){
@@ -45,22 +64,9 @@ public class ActiveMotorhomeRepository extends MotorhomeRepository{
         filteredList = filterByMinPrice(filteredList, minPrice);
         filteredList = filterByStartDate(filteredList, startDate);
         filteredList = filterByEndDate(filteredList, endDate);
-        return filteredList;
-    }
-
-    public ArrayList<Motorhome> filter(int activeState, double extraPrice, int typeId, int maxPrice, int minPrice, @DateTimeFormat(pattern = "yyyy-MM-dd") Date startDate,
-                                       @DateTimeFormat(pattern = "yyyy-MM-dd") Date endDate){
-        ArrayList<Motorhome> filteredList = returnAvailableMotorhomeByState(activeState);
-        filteredList = filterByTypeId(filteredList, typeId);
-        filteredList = filterByMaxPrice(filteredList, maxPrice);
-        filteredList = filterByMinPrice(filteredList, minPrice);
-        filteredList = filterByStartDate(filteredList, startDate);
-        filteredList = filterByEndDate(filteredList, endDate);
-
         for (Motorhome motorhome : filteredList) {
-            motorhome.setExtraPrice(extraPrice);
+            motorhome.setPrice(getMortorhomePrice(motorhome.getId(), motorhome.getTypeId()));
         }
-
         return filteredList;
     }
 
