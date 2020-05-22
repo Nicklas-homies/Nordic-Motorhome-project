@@ -79,7 +79,7 @@ public class MotorhomeRepository {
 
     public boolean create(Motorhome motorhome){
         try {
-            String insertString = "INSERT INTO motorhomes (brand,model,timesUsed,kmDriven,extraPrice,typeId) VALUES (?,?,?,?,?)";
+            String insertString = "INSERT INTO motorhomes (brand,model,timesUsed,kmDriven,typeId) VALUES (?,?,?,?,?)";
             PreparedStatement statement = conn.prepareStatement(insertString);
             statement.setString(1,motorhome.getBrand());
             statement.setString(2,motorhome.getModel());
