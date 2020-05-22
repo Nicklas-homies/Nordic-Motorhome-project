@@ -113,7 +113,7 @@ public class MotorhomeRepository {
 
     public boolean update(Motorhome motorhome) {
         try{
-            String update = "UPDATE motorhomes SET brand=?,model=?,timesUsed=?,kmDriven=?,extraPrice=?,activeState=?,typeId=? WHERE motorhomeId=?";
+            String update = "UPDATE motorhomes SET brand=?,model=?,timesUsed=?,kmDriven=?,activeState=?,typeId=? WHERE motorhomeId=?";
             PreparedStatement updateStatement = conn.prepareStatement(update);
             updateStatement.setString(1, motorhome.getBrand());
             updateStatement.setString(2, motorhome.getModel());

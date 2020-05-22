@@ -1,12 +1,16 @@
 package com.nmh.project.controllers;
 
+import com.nmh.project.models.Customer;
+import com.nmh.project.repositories.CustomerRepository;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
+
+@Controller
 public class CustomerController {
+        CustomerRepository customerRepository = new CustomerRepository();
 
-    public CustomerController() {
-        CustomerRepository costumerRepository = new CustomerRepository();
-    }
-
-    @GetMapping("/Customer")
+    @GetMapping("/customer")
     @ResponseBody
     public String getCustomerByParameter(@RequestParam int id) {
         Customer cus = customerRepository.read(id);
@@ -42,7 +46,7 @@ public class CustomerController {
 
     @PostMapping("/customer/edited")
     public String editCustomer(Customer customer){
-        Customer CustomerToEdit = customer;
+        Customer customerToEdit = customer;
         boolean found = false;
 
         for (Customer customer2 : customerRepository.readAll()){
@@ -57,6 +61,8 @@ public class CustomerController {
         }
         if (!customer.getcName().equals("")){
             customerToEdit.setcName(customer.getcName());
+        }if (customer.getNumber() != 00000000){
+            customerToEdit.setNumber(customer.getNumber());
         }
         customerRepository.update(customerToEdit);
         return "redirect:/";
