@@ -16,19 +16,21 @@ public class Motorhome {
     public int timesUsed;
     @NotNull
     public int kmDriven;
+    public int price;
     public int activeState;
     @NotNull
     @Min(1)
     @Max(8)
     public int typeId;
 
-    public Motorhome(int id, String brand, String model, int timesUsed, int kmDriven, int typeId) {
+    public Motorhome(int id, String brand, String model, int timesUsed, int kmDriven, int price, int typeId) {
         //will atleast be used when reading from repository
         this.id = id;
         this.brand = brand;
         this.model = model;
         this.timesUsed = timesUsed;
         this.kmDriven = kmDriven;
+        this.price = price;
         this.typeId = typeId;
         this.activeState = 0;
     }
@@ -39,13 +41,14 @@ public class Motorhome {
 
     @Override
     public String toString() {
-        //basic intellij toString();
-        return "motorhome{" +
+        return "Motorhome{" +
                 "id=" + id +
                 ", brand='" + brand + '\'' +
                 ", model='" + model + '\'' +
                 ", timesUsed=" + timesUsed +
                 ", kmDriven=" + kmDriven +
+                ", price=" + price +
+                ", activeState=" + activeState +
                 ", typeId=" + typeId +
                 '}';
     }
@@ -90,6 +93,14 @@ public class Motorhome {
 
     public void setKmDriven(int kmDriven) {
         this.kmDriven = kmDriven;
+    }
+
+    public int getPrice() {
+        return price;
+    }
+
+    public void setPrice(int price) {
+        this.price = price;
     }
 
     public int getTypeId() {
