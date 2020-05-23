@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Confirm rent data</title>
+    <link rel="stylesheet" type="text/css" href="/css/styles.css">
+</head>
+<body>
+<div th:insert="fragments/menu :: menu"></div>
+<div class="container">
+    <form action="/rentMotorhome/confirmed" method="post">
+        <input type="hidden" name="motorhomeId" id="motorhomeId" th:value="${motorhome.id}">
+        <h3>Selected motorhome</h3>
+        <table>
+            <tr>
+                <th>ID</th>
+                <th>Brand</th>
+                <th>Model</th>
+                <th>Times used</th>
+                <th>Km driven</th>
+                <th>Type id</th>
+            </tr>
+
+            <tr>
+                <td th:text="${motorhome.id}"></td>
+                <td th:text="${motorhome.brand}"></td>
+                <td th:text="${motorhome.model}"></td>
+                <td th:text="${motorhome.timesUsed}"></td>
+                <td th:text="${motorhome.kmDriven}"></td>
+                <td th:text="${motorhome.typeId}"></td>
+        </table>
+
+        <h3>Confirm date:</h3>
+        <div class="block_container">
+            <div class="block" >
+                <table>
+                    <tr>
+                        <th>Start of Renting</th>
+                        <td><input type="Date" name="startDate" id="startDate" th:value="*{startDate}"></td>
+                    </tr>
+                </table>
+            </div>
+            <div class="block" >
+                <table>
+                    <tr>
+                        <th>Return of motorhome</th>
+                        <td><input type="Date" name="endDate" id="endDate" th:field="*{endDate}"></td>
+                    </tr>
+                </table>
+            </div>
+
+        </div>
+        <h3>Ekstra tilkøb:</h3>
+        <div>
+            <table>
+                <tr>
+                    <th>Bike Rack +25€</th>
+                    <th>Bed linen +15€</th>
+                    <th>Child seat + 20€</th>
+                    <th>Picnic table + 20€</th>
+                    <th>Chairs +20€</th>
+                </tr>
+                <tr>
+                    <td><input type="checkbox" name="bikeRack" id="bikeRack"></td>
+                    <td><input type="checkbox" name="bedLinen" id="bedLinen"></td>
+                    <td><input type="checkbox" name="childSeat" id="childSeat"></td>
+                    <td><input type="checkbox" name="picnicTable" id="picnicTable"></td>
+                    <td><input type="checkbox" name="chairs" id="chairs"></td>
+                </tr>
+            </table>
+        </div>
+
+        <h3>Kunde information</h3>
+
+        <div>
+            <table>
+                <tr>
+                    <th>Customer Name</th>
+                    <th>Customer Number</th>
+                </tr>
+                <tr>
+                    <td><input type="text" name="customerName" ></td>
+                    <td><input type="number" name="customerNumber" ></td> <!-- should do a check if real number-->
+                </tr>
+            </table>
+        </div>
+
+        <input type="submit" class="btn" name="submit" id="submit" value="confirm and rent">
+    </form>
+</div>
+
+<div th:insert="fragments/footer :: footer"></div>
+</body>
+</html>

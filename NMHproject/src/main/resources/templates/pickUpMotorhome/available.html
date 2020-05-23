@@ -15,7 +15,6 @@
             <th>Model</th>
             <th>Times used</th>
             <th>Km driven</th>
-            <th>Extra price</th>
             <th>Type id</th>
             <th></th>
         </tr>
@@ -26,7 +25,6 @@
             <td th:text="${motorhome.model}"></td>
             <td th:text="${motorhome.timesUsed}"></td>
             <td th:text="${motorhome.kmDriven}"></td>
-            <td th:text="${motorhome.extraPrice}"></td>
             <td th:text="${motorhome.typeId}"></td>
             <td>
                 <a th:href="@{/pickUpMotorhome/filter/__${motorhome.id}__}"><button class="btn">Pick up</button></a>

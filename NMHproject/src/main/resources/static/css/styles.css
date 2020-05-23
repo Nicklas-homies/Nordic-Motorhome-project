@@ -1,3 +1,15 @@
+.block_container {
+    text-align: justify;
+    overflow: auto;
+}
+.block_container input {
+    box-sizing: border-box; /*prevents input overflow into other cells*/
+}
+.block {
+    display: inline-block;
+    vertical-align: middle;
+    width: 49%; /* if 50 %, there isn't enough space*/
+}
 .topNav {
     background-color: #333;
 }

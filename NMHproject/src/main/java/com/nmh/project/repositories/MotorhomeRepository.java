@@ -1,10 +1,13 @@
 package com.nmh.project.repositories;
 
+import com.nmh.project.models.Customer;
 import com.nmh.project.models.Motorhome;
 import com.nmh.project.util.DatabaseConnectionManager;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.sql.*;
+import java.time.Duration;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -41,9 +44,8 @@ public class MotorhomeRepository {
                 tempHome.setModel(results.getString(3));
                 tempHome.setTimesUsed(results.getInt(4));
                 tempHome.setKmDriven(results.getInt(5));
-                tempHome.setExtraPrice(results.getDouble(6));
-                tempHome.setActiveState(results.getInt(7));
-                tempHome.setTypeId(results.getInt(8));
+                tempHome.setActiveState(results.getInt(6));
+                tempHome.setTypeId(results.getInt(7));
                 allHomes.add(tempHome);
             }
         }
@@ -67,9 +69,8 @@ public class MotorhomeRepository {
                 homeToReturn.setModel(results.getString(3));
                 homeToReturn.setTimesUsed(results.getInt(4));
                 homeToReturn.setKmDriven(results.getInt(5));
-                homeToReturn.setExtraPrice(results.getDouble(6));
-                homeToReturn.setActiveState(results.getInt(7));
-                homeToReturn.setTypeId(results.getInt(8));
+                homeToReturn.setActiveState(results.getInt(6));
+                homeToReturn.setTypeId(results.getInt(7));
             }
         }
         catch (SQLException e){
@@ -81,14 +82,13 @@ public class MotorhomeRepository {
 
     public boolean create(Motorhome motorhome){
         try {
-            String insertString = "INSERT INTO motorhomes (brand,model,timesUsed,kmDriven,extraPrice,typeId) VALUES (?,?,?,?,?,?)";
+            String insertString = "INSERT INTO motorhomes (brand,model,timesUsed,kmDriven,typeId) VALUES (?,?,?,?,?)";
             PreparedStatement statement = conn.prepareStatement(insertString);
             statement.setString(1,motorhome.getBrand());
             statement.setString(2,motorhome.getModel());
             statement.setInt(3,motorhome.getTimesUsed());
             statement.setInt(4,motorhome.getKmDriven());
-            statement.setDouble(5,motorhome.getExtraPrice());
-            statement.setInt(6,motorhome.getTypeId());
+            statement.setInt(5,motorhome.getTypeId());
             statement.executeUpdate();
             return true;
         }
@@ -116,22 +116,79 @@ public class MotorhomeRepository {
 
     public boolean update(Motorhome motorhome) {
         try{
-            String update = "UPDATE motorhomes SET brand=?,model=?,timesUsed=?,kmDriven=?,extraPrice=?,activeState=?,typeId=? WHERE motorhomeId=?";
+            String update = "UPDATE motorhomes SET brand=?,model=?,timesUsed=?,kmDriven=?,activeState=?,typeId=? WHERE motorhomeId=?";
             PreparedStatement updateStatement = conn.prepareStatement(update);
             updateStatement.setString(1, motorhome.getBrand());
             updateStatement.setString(2, motorhome.getModel());
             updateStatement.setInt(3, motorhome.getTimesUsed());
             updateStatement.setInt(4, motorhome.getKmDriven());
-            updateStatement.setDouble(5, motorhome.getExtraPrice());
-            updateStatement.setInt(6, motorhome.getActiveState());
-            updateStatement.setInt(7, motorhome.getTypeId());
-            updateStatement.setInt(8,motorhome.getId());
+            updateStatement.setInt(5, motorhome.getActiveState());
+            updateStatement.setInt(6, motorhome.getTypeId());
+            updateStatement.setInt(7,motorhome.getId());
             updateStatement.executeUpdate();
             return true;
         }catch(SQLException e){
             e.printStackTrace();
         }
         return false;
+    }
+
+    public double getPrice(Motorhome motorhome, HashMap<String,String> ekstraStuff,Date startDate, Date endDate){
+
+        double totalPrice = 0; //price is in whole euro
+        double dayPrice = 0;
+        long rentedDays = ChronoUnit.DAYS.between(startDate.toInstant(),endDate.toInstant());
+        if (ekstraStuff.containsKey("bedLinen")){
+            totalPrice += 15;
+        }
+        if (ekstraStuff.containsKey("bikeRack")){
+            totalPrice += 25;
+        }
+        if (ekstraStuff.containsKey("childSeat")){
+            totalPrice +=20;
+        }
+        if (ekstraStuff.containsKey("picnicTable")){
+            totalPrice += 20;
+        }
+        if (ekstraStuff.containsKey("chairs")){
+            totalPrice += 20;
+        }
+        try {
+            String getDayPrice = "SELECT price FROM motorhomes INNER JOIN motorhometype ON" +
+                    " motorhomes.typeId = motorhometype.typeId WHERE motorhomes.motorhomeId = ?";
+            PreparedStatement statement = conn.prepareStatement(getDayPrice);
+            statement.setInt(1,motorhome.id);
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()){
+                dayPrice = resultSet.getDouble("price");
+            }
+        }
+        catch (SQLException e){
+            System.out.println("error at totalPrice getPrice");
+            System.out.println(e.getMessage());
+        }
+        totalPrice += (dayPrice * rentedDays);
+        return totalPrice;
+    }
+
+    public boolean newRentDeal(Date startDate, Date endDate, double price, int customerId, int motorhomeId){
+        try {
+            String insertRentDeal = "INSERT INTO custusemotor(startDate, endDate, extraPrice, customerId, motorhomeId) VALUES (?,?,?,?,?)";
+            PreparedStatement statement = conn.prepareStatement(insertRentDeal);
+            statement.setDate(1,new java.sql.Date(startDate.getTime()));
+            statement.setDate(2,new java.sql.Date(startDate.getTime()));
+            statement.setDouble(3,price);
+            statement.setInt(4,customerId);
+            statement.setInt(5,motorhomeId);
+            statement.executeUpdate();
+            return true;
+        }
+        catch (SQLException e){
+            System.out.println("newRentDeal error");
+            System.out.println(e.getMessage());
+        }
+
+    return false;
     }
 
 }

@@ -59,20 +59,28 @@ public class CustomerRepository {
         return custToReturn;
     }
 
-    public boolean create(Customer customer){
+    public int create(Customer customer){
         try {
             String insertString = "INSERT INTO customers (cName, number) VALUES (?,?)";
             PreparedStatement statement = connection.prepareStatement(insertString);
             statement.setString(1,customer.getcName());
             statement.setInt(2,customer.getNumber());
             statement.executeUpdate();
-            return true;
+
+            String selectLast = "SELECT LAST_INSERT_ID()";
+            PreparedStatement statement1 =  connection.prepareStatement(selectLast);
+            ResultSet resultSet = statement1.executeQuery();
+            int id = -1;
+            while (resultSet.next()){
+                id = resultSet.getInt(1);
+            }
+            return id;
         }
         catch (SQLException e){
             System.out.println("error at create() customerRepository");
             System.out.println(e.getMessage());
         }
-        return false;
+        return -1;
     }
 
     public boolean delete(int id){
@@ -88,5 +96,10 @@ public class CustomerRepository {
             System.out.println(e.getMessage());
         }
         return false;
+    }
+
+    public boolean update (Customer customer){
+
+        return true;
     }
 }

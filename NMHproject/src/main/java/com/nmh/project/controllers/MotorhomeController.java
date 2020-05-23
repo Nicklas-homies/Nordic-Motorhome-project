@@ -1,12 +1,17 @@
 package com.nmh.project.controllers;
 
+import com.nmh.project.models.Customer;
 import com.nmh.project.models.Motorhome;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 
 import com.nmh.project.repositories.ActiveMotorhomeRepository;
+import com.nmh.project.repositories.CustomerRepository;
 import com.nmh.project.repositories.MotorhomeRepository;
+import org.hibernate.validator.constraints.pl.REGON;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -18,6 +23,8 @@ import javax.validation.Valid;
 public class MotorhomeController {
     MotorhomeRepository motorhomeRepository = new MotorhomeRepository();
     ActiveMotorhomeRepository activeMotorhomeRepository = new ActiveMotorhomeRepository();
+    CustomerRepository customerRepository = new CustomerRepository();
+    private Date startDate;
 
     @GetMapping("/")
     public String index(){
@@ -48,7 +55,8 @@ public class MotorhomeController {
     }
 
     @PostMapping("/rentMotorhome/available")
-    public String byDateRent(Model model,@RequestParam int typeId,@RequestParam String maxPrice,@RequestParam String minPrice,@RequestParam("startDate") String startDate, @RequestParam("endDate") String endDate, @RequestParam String bikeRack, @RequestParam String bedLinen, @RequestParam String childSeat, @RequestParam String picnicTable, @RequestParam String chairs){
+    public String byDateRent(Model model,@RequestParam int typeId,@RequestParam String maxPrice,@RequestParam String minPrice,
+                             @RequestParam("startDate") String startDate, @RequestParam("endDate") String endDate){
         //tager maxPrice og minPrice som String, så man kan tage et tomt nummer. (ingen maks pris).
 
         //overveje at finde en smart måde at tage alle variablerne.evt. bruge @RequestParam Map<String,String> allRequestParams
@@ -58,15 +66,9 @@ public class MotorhomeController {
         int tempTypeId = -1;
         int tempMinPrice = -1;
         int tempMaxPrice = -1;
-        double price = -1;
         Date tempStartDate = null;
         Date tempEndDate = null;
-        boolean tempBike = false;
-        boolean tempBed = false;
-        boolean tempChild = false;
-        boolean tempPicnic = false;
-        boolean tempChairs = false;
-        double extraPrice = 0;
+
         if (typeId != 0){
             tempTypeId = typeId;
         }if (!maxPrice.equals("")){
@@ -80,35 +82,78 @@ public class MotorhomeController {
             catch (Exception e){
                 //nothing
             }
-        }if (!endDate.equals("")){
+        }
+        if (!endDate.equals("")){
             try {
                 tempEndDate = new SimpleDateFormat("yyyy-MM-dd").parse(endDate);
             }
             catch (Exception e){
                 //nothing
             }
-        }if (bikeRack.equals("true")){
-            tempBike = true;
-            extraPrice += 25.0;
-        }if (bedLinen.equals("true")){
-            tempBed = true;
-            extraPrice += 15.0;
-        }if (childSeat.equals("true")){
-            tempChild = true;
-            extraPrice += 20.0;
-        }if (picnicTable.equals("true")){
-            tempPicnic = true;
-            extraPrice += 20.0;
-        }if (chairs.equals("true")){
-            tempChairs = true;
-            extraPrice += 20.0;
         }
 
-        System.out.println(tempTypeId + ", " + tempMaxPrice + ", " +  tempMinPrice + ", " + tempStartDate + ", " + tempEndDate);
-        System.out.println(extraPrice + " " + tempBike);
-        model.addAttribute("motorhomes", activeMotorhomeRepository.filter(0,extraPrice,tempTypeId, tempMaxPrice, tempMinPrice, tempStartDate, tempEndDate));
 
+        System.out.println(tempTypeId + ", " + tempMaxPrice + ", " +  tempMinPrice + ", " + tempStartDate + ", " + tempEndDate);
+        model.addAttribute("motorhomes", activeMotorhomeRepository.filter(0,tempTypeId, tempMaxPrice, tempMinPrice, tempStartDate, tempEndDate));
+        model.addAttribute("startDate", tempStartDate);
+        model.addAttribute("endDate", tempEndDate);
         return "rentMotorhome/available";
+    }
+
+    //EEE MMM dd HH:mm:ss z yyyy
+    @PostMapping("rentMotorhome/confirm")
+    public String confirmRent(@RequestParam int motorhomeId, @RequestParam String endDate, @RequestParam String startDate, Model model){
+        System.out.println("hello");
+        System.out.println(motorhomeId);
+        System.out.println(endDate);
+        System.out.println(startDate); //forkert format, kan ikke få dem til at foreslå selv i html.
+
+
+        model.addAttribute("motorhome", motorhomeRepository.read(motorhomeId));
+        model.addAttribute("startDate", startDate);
+        model.addAttribute("endDate", endDate);
+        return "rentMotorhome/confirmRent";
+    }
+
+    @PostMapping("/rentMotorhome/confirmed")
+    public String confirmed(@RequestParam HashMap<String, String> allParam, @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") Date startDate,
+                            @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") Date endDate, Model model){
+        System.out.println(allParam);
+        System.out.println(startDate.getTime());
+        System.out.println(endDate.getTime());
+
+        int id = Integer.parseInt(allParam.get("motorhomeId"));
+        Customer customer = new Customer(allParam.get("customerName"),Integer.parseInt(allParam.get("customerNumber")));
+        Motorhome motorhome = motorhomeRepository.read(id);
+        //Set price based on date, and esktra. //call anothermethod from somewhere!
+        //ask user to confirm. //update SQL
+
+
+        double totalPrice = motorhomeRepository.getPrice(motorhome, allParam, startDate, endDate);
+        System.out.println(totalPrice);
+
+        model.addAttribute("motorhome", motorhome);
+        model.addAttribute("startDate", startDate);
+        model.addAttribute("endDate",endDate);
+        model.addAttribute("price",totalPrice);
+        model.addAttribute("customer", customer);
+
+
+        return "rentMotorhome/confirmRentPrice";
+    }
+
+    @PostMapping("/rentMotorhome/newRentConfirmed")
+    public String everythingIsGood(@RequestParam @DateTimeFormat(pattern = "EEE MMM dd HH:mm:ss z yyyy") Date startDate,
+                                   @RequestParam @DateTimeFormat(pattern = "EEE MMM dd HH:mm:ss z yyyy") Date endDate, @RequestParam int motorhomeId,
+                                   @RequestParam double price, @RequestParam String cName, @RequestParam int number,
+                                   @RequestParam HashMap<String,String> allParams){
+        System.out.println(allParams);
+        Customer customer = new Customer(cName,number);
+        int customerId = customerRepository.create(customer);
+        //rep.custusemotor
+        System.out.println(motorhomeRepository.newRentDeal(startDate, endDate, price, customerId, motorhomeId));
+
+        return "rentMotorhome/rent";
     }
 
     @RequestMapping(value = "/rentMotorhome/rent/{id}", method = RequestMethod.GET)

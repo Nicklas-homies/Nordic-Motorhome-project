@@ -1,9 +1,16 @@
 package com.nmh.project.controllers;
 
+import com.nmh.project.models.Customer;
+import com.nmh.project.repositories.CustomerRepository;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
+
 public class CustomerController {
+    CustomerRepository customerRepository;
+
 
     public CustomerController() {
-        CustomerRepository costumerRepository = new CustomerRepository();
+        this.customerRepository = new CustomerRepository();
     }
 
     @GetMapping("/Customer")
@@ -42,7 +49,7 @@ public class CustomerController {
 
     @PostMapping("/customer/edited")
     public String editCustomer(Customer customer){
-        Customer CustomerToEdit = customer;
+        Customer customerToEdit = new Customer();
         boolean found = false;
 
         for (Customer customer2 : customerRepository.readAll()){

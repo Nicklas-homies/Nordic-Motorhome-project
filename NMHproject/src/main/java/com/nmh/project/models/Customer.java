@@ -11,6 +11,11 @@ public class Customer {
         this.number = number;
     }
 
+    public Customer(String cName, int number) {
+        this.cName = cName;
+        this.number = number;
+    }
+
     public Customer() {
     }
 

@@ -57,10 +57,6 @@ public class ActiveMotorhomeRepository extends MotorhomeRepository{
         filteredList = filterByStartDate(filteredList, startDate);
         filteredList = filterByEndDate(filteredList, endDate);
 
-        for (Motorhome motorhome : filteredList) {
-            motorhome.setExtraPrice(extraPrice);
-        }
-
         return filteredList;
     }
 
