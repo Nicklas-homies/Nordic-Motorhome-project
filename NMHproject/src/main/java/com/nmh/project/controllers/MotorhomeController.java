@@ -10,7 +10,6 @@ import java.util.HashMap;
 import com.nmh.project.repositories.ActiveMotorhomeRepository;
 import com.nmh.project.repositories.CustomerRepository;
 import com.nmh.project.repositories.MotorhomeRepository;
-import org.hibernate.validator.constraints.pl.REGON;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -123,13 +122,16 @@ public class MotorhomeController {
         System.out.println(endDate.getTime());
 
         int id = Integer.parseInt(allParam.get("motorhomeId"));
-        Customer customer = new Customer(allParam.get("customerName"),Integer.parseInt(allParam.get("customerNumber")));
+        int customerNumber = Integer.parseInt(allParam.get("customerNumber"));
+        Customer customer = new Customer();
+        customer.setcName(allParam.get("customerName"));
+        customer.setNumber(customerNumber);
         Motorhome motorhome = motorhomeRepository.read(id);
         //Set price based on date, and esktra. //call anothermethod from somewhere!
         //ask user to confirm. //update SQL
 
 
-        double totalPrice = motorhomeRepository.getPrice(motorhome, allParam, startDate, endDate);
+        double totalPrice = motorhomeRepository.getInitialProce(motorhome, allParam, startDate, endDate);
         System.out.println(totalPrice);
 
         model.addAttribute("motorhome", motorhome);
@@ -148,9 +150,11 @@ public class MotorhomeController {
                                    @RequestParam double price, @RequestParam String cName, @RequestParam int number,
                                    @RequestParam HashMap<String,String> allParams){
         System.out.println(allParams);
-        Customer customer = new Customer(cName,number);
+        Customer customer = new Customer();
+        customer.setNumber(number);
+        customer.setcName(cName);
         int customerId = customerRepository.create(customer);
-        //rep.custusemotor
+
         System.out.println(motorhomeRepository.newRentDeal(startDate, endDate, price, customerId, motorhomeId));
 
         return "rentMotorhome/rent";
@@ -217,25 +221,36 @@ public class MotorhomeController {
 
     @RequestMapping("/activeMotorhome/available")
     public String activeMotorhomes(Model model){
-        int tempTypeId = -1;
-        int tempMinPrice = -1;
-        int tempMaxPrice = -1;
-        Date tempStartDate = null;
-        Date tempEndDate = null;
 
-        System.out.println(tempTypeId + ", " + tempMaxPrice + ", " +  tempMinPrice + ", " + tempStartDate + ", " + tempEndDate);
-        model.addAttribute("motorhomes", activeMotorhomeRepository.filter(2,tempTypeId, tempMaxPrice, tempMinPrice, tempStartDate, tempEndDate));
+        model.addAttribute("motorhomes", activeMotorhomeRepository.getActiveMotorhome());
 
         return "activeMotorhome/available";
     }
+//todo: update so rentId follows entire rent part, so we know at the end what custusemotor to remove, since we have to use a unique key.
+//todo: finish the price method.
+//todo: finish the confirm return with price (simply all returnMotorhomeById) at controller.
+
 
     @RequestMapping(value = "/activeMotorhome/return/{id}", method = RequestMethod.GET)
-    public String returnMotorhomePrompt(@PathVariable int id){
+    public String returnMotorhomePrompt(@PathVariable int id,Model model){
+    // give data for return, date, dmg and so on.
+        model.addAttribute("motorhome", motorhomeRepository.read(id));
         return "/activeMotorhome/return";
+    }
+
+    @PostMapping("/activeMotorhome/return/price/{id}")
+    public String getPriceOfReturn(@PathVariable int id, @RequestParam HashMap<String,String> allParams, Model model){
+        //call price with the hashmap..
+        double finalTotalPrice = activeMotorhomeRepository.getFinalPrice(id,allParams);
+
+        model.addAttribute("finalTotalPrice",finalTotalPrice);
+
+        return "activeMotorhome/returnPrice";
     }
 
     @PostMapping("/activeMotorhome/return/yes/{id}")
     public String returnMotorhomeById(@PathVariable int id) {
+        //all data ok and price has been reciecved somwhere.
         Motorhome homeToReturn = motorhomeRepository.read(id);
         homeToReturn.setActiveState(0);
         homeToReturn.setTimesUsed(homeToReturn.getTimesUsed() + 1);

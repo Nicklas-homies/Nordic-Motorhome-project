@@ -133,7 +133,7 @@ public class MotorhomeRepository {
         return false;
     }
 
-    public double getPrice(Motorhome motorhome, HashMap<String,String> ekstraStuff,Date startDate, Date endDate){
+    public double getInitialProce(Motorhome motorhome, HashMap<String,String> ekstraStuff, Date startDate, Date endDate){
 
         double totalPrice = 0; //price is in whole euro
         double dayPrice = 0;

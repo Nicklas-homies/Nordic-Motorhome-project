@@ -10,23 +10,23 @@
 <div class="container">
     <table>
         <tr>
-            <th>ID</th>
+            <th>RentID</th>
+            <th>MotorhomeID</th>
             <th>Brand</th>
             <th>Model</th>
             <th>Times used</th>
             <th>Km driven</th>
-            <th>Extra price</th>
             <th>Type id</th>
             <th></th>
         </tr>
 
-        <tr th:each="motorhome : ${motorhomes}">
+        <tr th:each="entry, rentId : ${motorhomes}" th:with="motorhome=${entry.value}">
+            <td th:text="${entry.key}"></td>
             <td th:text="${motorhome.id}"></td>
             <td th:text="${motorhome.brand}"></td>
             <td th:text="${motorhome.model}"></td>
             <td th:text="${motorhome.timesUsed}"></td>
             <td th:text="${motorhome.kmDriven}"></td>
-            <td th:text="${motorhome.extraPrice}"></td>
             <td th:text="${motorhome.typeId}"></td>
             <td>
                 <a th:href="@{/activeMotorhome/return/__${motorhome.id}__}"><button class="btn">Return motorhome</button></a>

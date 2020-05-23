@@ -4,10 +4,7 @@ import com.nmh.project.models.Motorhome;
 import com.nmh.project.util.DatabaseConnectionManager;
 import org.springframework.format.annotation.DateTimeFormat;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -254,5 +251,42 @@ public class ActiveMotorhomeRepository extends MotorhomeRepository{
         }
         return damages;
     }
+
+    public HashMap<Integer,Motorhome> getActiveMotorhome(){
+        HashMap<Integer,Motorhome> allActiveMotorhome = new HashMap<>();
+        try {
+            String getActiveMotorhomes = "SELECT * FROM custusemotor";
+            PreparedStatement statement = connection.prepareStatement(getActiveMotorhomes);
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()){
+                int tempRentId = resultSet.getInt("rentId");
+                Motorhome tempMotorhome = read(resultSet.getInt("motorhomeId"));
+
+                allActiveMotorhome.put(tempRentId,tempMotorhome);
+            }
+        }
+        catch (SQLException e){
+            System.out.println("error at getActiveMotorhome");
+            System.out.println(e.getMessage());
+        }
+        return allActiveMotorhome;
+    }
+
+    public double getFinalPrice(int motorhomeId, HashMap<String, String> allparams){
+        double totalPrice = 0;
+        try {
+            String getTheFinalPrice = "SELECT * FROM custusemotor WHERE motorhomeId=?";
+            PreparedStatement statement = connection.prepareStatement(getTheFinalPrice);
+            //need to loop up by rentId and not motorhome ID! Making a new method to fitler right activemotorhome/available
+
+        }
+        catch (SQLException e){
+            System.out.println("Error at getFinalPrice()");
+            System.out.println(e.getMessage());
+        }
+
+        return totalPrice;
+    }
+
 
 }
