@@ -9,9 +9,18 @@
 <div th:insert="fragments/menu :: menu"></div>
 
 <div class="container">
-    <h3>Total price for return</h3>
-    
+    <form th:action="@{/activeMotorhome/return/yes/}" method="post">
+    <h3>Total Initial price</h3>
+    <p th:text="${finalTotalPrice.get(0)}"></p>
+        <h3>Initial price after potential return fee's.</h3>
+    <p th:text="${finalTotalPrice.get(1)}"></p>
+    <h3>For a total of (in euro):</h3>
+<h2 th:text="${finalTotalPrice.get(1) - finalTotalPrice.get(0)}"></h2>
 
+        <input type="hidden" name="rentId" id="rentId" th:value="${rentId}">
+
+        <input type="submit" name="submit" value="confirm price is paid and all that" class="btn">
+    </form>
 </div>
 
 <div th:insert="fragments/footer :: footer"></div>

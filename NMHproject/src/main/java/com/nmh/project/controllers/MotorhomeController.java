@@ -3,11 +3,14 @@ package com.nmh.project.controllers;
 import com.nmh.project.models.Customer;
 import com.nmh.project.models.Motorhome;
 
+import java.lang.reflect.Array;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 
+import com.nmh.project.models.RentAgreementDataHolder;
 import com.nmh.project.repositories.ActiveMotorhomeRepository;
 import com.nmh.project.repositories.CustomerRepository;
 import com.nmh.project.repositories.MotorhomeRepository;
@@ -230,7 +233,8 @@ public class MotorhomeController {
     @RequestMapping("/activeMotorhome/available")
     public String activeMotorhomes(Model model){
 
-        model.addAttribute("motorhomes", activeMotorhomeRepository.getActiveMotorhome());
+        ArrayList<RentAgreementDataHolder> allActiveMotorhome = activeMotorhomeRepository.getActiveMotorhome();
+        model.addAttribute("motorhomes", allActiveMotorhome);
 
         return "activeMotorhome/available";
     }
@@ -239,30 +243,38 @@ public class MotorhomeController {
 //todo: finish the confirm return with price (simply all returnMotorhomeById) at controller.
 
 
-    @RequestMapping(value = "/activeMotorhome/return/{id}", method = RequestMethod.GET)
-    public String returnMotorhomePrompt(@PathVariable int id,Model model){
+    @PostMapping(value = "/activeMotorhome/return/{id}")
+    public String returnMotorhomePrompt(@PathVariable("id") int rentId, @RequestParam int motorhomeId, Model model){
     // give data for return, date, dmg and so on.
-        model.addAttribute("motorhome", motorhomeRepository.read(id));
+
+        model.addAttribute("motorhome", motorhomeRepository.read(motorhomeId));
+        model.addAttribute("rentId",rentId);
         return "/activeMotorhome/return";
     }
 
     @PostMapping("/activeMotorhome/return/price/{id}")
-    public String getPriceOfReturn(@PathVariable int id, @RequestParam HashMap<String,String> allParams, Model model){
-        //call price with the hashmap..
-        double finalTotalPrice = activeMotorhomeRepository.getFinalPrice(id,allParams);
+    public String getPriceOfReturn(@PathVariable("id") int rentId, @RequestParam HashMap<String,String> allParams, Model model){
+        if(!allParams.get("damage").equals("")){
+            String theDamage = allParams.get("damage");
+            System.out.println(theDamage);
+            int motorhomeId = Integer.parseInt(allParams.get("motorhomeId"));
+            System.out.println(motorhomeId);
+            activeMotorhomeRepository.addDamage(theDamage,motorhomeId);
 
+
+        }
+        ArrayList<Double> finalTotalPrice = activeMotorhomeRepository.getFinalPrice(rentId,allParams); //first price is initial price, last is totalprice
+        System.out.println(allParams);
         model.addAttribute("finalTotalPrice",finalTotalPrice);
+        model.addAttribute("rentId", rentId);
 
         return "activeMotorhome/returnPrice";
     }
 
-    @PostMapping("/activeMotorhome/return/yes/{id}")
-    public String returnMotorhomeById(@PathVariable int id) {
-        //all data ok and price has been reciecved somwhere.
-        Motorhome homeToReturn = motorhomeRepository.read(id);
-        homeToReturn.setActiveState(0);
-        homeToReturn.setTimesUsed(homeToReturn.getTimesUsed() + 1);
-        motorhomeRepository.update(homeToReturn);
+    @PostMapping("/activeMotorhome/return/yes")
+    public String returnMotorhomeById(@RequestParam("rentId") int rentId) {
+        //all checked, home returned and all that.
+        activeMotorhomeRepository.homeReturned(rentId);
         return "redirect:/activeMotorhome/available";
     }
 }

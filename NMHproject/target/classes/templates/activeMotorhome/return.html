@@ -28,12 +28,12 @@
             <td th:text="${motorhome.typeId}"></td>
     </table>
 
-    <form th:action="@{/activeMotorhome/return/price/__${motorhome.id}__}" method="post">
+    <form th:action="@{/activeMotorhome/return/price/__${rentId}__}" method="post">
 
         <h3>Fill return information</h3>
 
-        <h4>Was the tank full?</h4>
-        <label style="{float:left}" for="tankFull">Tank full:</label>
+        <h4>Was the tank empty/less than half full?</h4>
+        <label style="{float:left}" for="tankFull">Tank empty:</label>
         <input style="{float: left}" type="checkbox" name="tankFull" id="tankFull">
 
         <h4>How many km has the moterhome driven:</h4>
@@ -48,7 +48,7 @@
         <label for="damage"></label>
         <input name="damage" id="damage" type="text">
 
-
+        <input type="hidden" name="motorhomeId" th:value="${motorhome.id}" id="motorhomeId">
         <input id="submit" name="submit" value="confirm data" type="submit" class="btn">
     </form>
 </div>

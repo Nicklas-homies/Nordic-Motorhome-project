@@ -12,25 +12,30 @@
         <tr>
             <th>RentID</th>
             <th>MotorhomeID</th>
+            <th>customerID</th>
             <th>Brand</th>
             <th>Model</th>
-            <th>Times used</th>
-            <th>Km driven</th>
-            <th>Type id</th>
+            <th>start of rent</th>
+            <th>end of rent</th>
+
             <th></th>
         </tr>
 
-        <tr th:each="entry, rentId : ${motorhomes}" th:with="motorhome=${entry.value}">
-            <td th:text="${entry.key}"></td>
-            <td th:text="${motorhome.id}"></td>
+       <!-- <tr th:each="entry, rentId : ${motorhomes}" th:with="motorhome=${entry.value}"> -->
+        <tr th:each="motorhome : ${motorhomes}">
+            <td th:text="${motorhome.rentId}"></td>
+            <td th:text="${motorhome.motorhomeId}"></td>
+            <td th:text="${motorhome.customer.id}"></td>
             <td th:text="${motorhome.brand}"></td>
             <td th:text="${motorhome.model}"></td>
-            <td th:text="${motorhome.timesUsed}"></td>
-            <td th:text="${motorhome.kmDriven}"></td>
-            <td th:text="${motorhome.typeId}"></td>
+            <td th:text="${motorhome.startDate}"></td>
+            <td th:text="${motorhome.endDate}"></td>
             <td>
-                <a th:href="@{/activeMotorhome/return/__${motorhome.id}__}"><button class="btn">Return motorhome</button></a>
-                <a th:href="@{/activeMotorhome/edit/__${motorhome.id}__}"><button class="btn-del btn">Edit</button></a>
+                <form th:action="@{/activeMotorhome/return/__${motorhome.rentId}__}" method="post">
+                    <input type="hidden" name="motorhomeId" th:value="${motorhome.motorhomeId}">
+                <input class="btn" type="submit" name="submit" id="submit" value="Return">
+                </form>
+                <a th:href="@{/activeMotorhome/edit/__${motorhome.motorhomeId}__}"><button class="btn-del btn">Edit</button></a>
             </td>
         </tr>
     </table>

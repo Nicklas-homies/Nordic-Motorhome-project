@@ -1,6 +1,7 @@
 package com.nmh.project.repositories;
 
 import com.nmh.project.models.Motorhome;
+import com.nmh.project.models.RentAgreementDataHolder;
 import com.nmh.project.util.DatabaseConnectionManager;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -13,6 +14,7 @@ import java.util.List;
 
 public class ActiveMotorhomeRepository extends MotorhomeRepository{
     private Connection connection;
+    CustomerRepository customerRepository = new CustomerRepository();
 
     public ActiveMotorhomeRepository(){
             this.connection = DatabaseConnectionManager.getDatabaseConnection();
@@ -289,17 +291,23 @@ public class ActiveMotorhomeRepository extends MotorhomeRepository{
         return damages;
     }
 
-    public HashMap<Integer,Motorhome> getActiveMotorhome(){
-        HashMap<Integer,Motorhome> allActiveMotorhome = new HashMap<>();
+    public ArrayList<RentAgreementDataHolder> getActiveMotorhome(){
+        ArrayList<RentAgreementDataHolder> allActiveMotorhome = new ArrayList<>();
         try {
             String getActiveMotorhomes = "SELECT * FROM custusemotor";
             PreparedStatement statement = connection.prepareStatement(getActiveMotorhomes);
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()){
+                RentAgreementDataHolder tempRentAgreementDataHolder = new RentAgreementDataHolder();
                 int tempRentId = resultSet.getInt("rentId");
                 Motorhome tempMotorhome = read(resultSet.getInt("motorhomeId"));
-
-                allActiveMotorhome.put(tempRentId,tempMotorhome);
+                //sets data for the holder.
+                tempRentAgreementDataHolder.rentId = resultSet.getInt("rentId");
+                tempRentAgreementDataHolder.customer = customerRepository.read(resultSet.getInt("customerId"));
+                tempRentAgreementDataHolder.setMotorhomeData(tempMotorhome);
+                tempRentAgreementDataHolder.startDate = resultSet.getDate("startDate");
+                tempRentAgreementDataHolder.endDate = resultSet.getDate("endDate");
+                allActiveMotorhome.add(tempRentAgreementDataHolder);
             }
         }
         catch (SQLException e){
@@ -309,21 +317,65 @@ public class ActiveMotorhomeRepository extends MotorhomeRepository{
         return allActiveMotorhome;
     }
 
-    public double getFinalPrice(int motorhomeId, HashMap<String, String> allparams){
+    public ArrayList<Double> getFinalPrice(int rentId, HashMap<String, String> allparams){
+        ArrayList<Double> prices = new ArrayList<>();
+        int tankPrice = 70;
+        double kmDropPrice = 0.7;
+        double kmDrivenOver = 1;
         double totalPrice = 0;
+        int daysOfRent = 0; //hopefully changed in try to something that makes sense.
         try {
-            String getTheFinalPrice = "SELECT * FROM custusemotor WHERE motorhomeId=?";
+            String getTheFinalPrice = "SELECT datediff(endDate,startDate),extraPrice FROM custusemotor WHERE rentId=?";
             PreparedStatement statement = connection.prepareStatement(getTheFinalPrice);
+            statement.setInt(1,rentId);
             //need to loop up by rentId and not motorhome ID! Making a new method to fitler right activemotorhome/available
-
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()){
+                totalPrice+=resultSet.getDouble(2);
+                daysOfRent = resultSet.getInt(1);
+                prices.add(resultSet.getDouble(2));
+            }
         }
         catch (SQLException e){
             System.out.println("Error at getFinalPrice()");
             System.out.println(e.getMessage());
         }
-
-        return totalPrice;
+        if (allparams.containsKey("tankFull")){ //if tank less than half full this will be here
+            totalPrice += tankPrice;
+        }
+        if (!allparams.get("kmDropDriven").equals("")){  //if not dropped off at offices, this will be here
+            int kmDropDriven = Integer.parseInt(allparams.get("kmDropDriven"));
+            totalPrice += kmDropPrice * kmDropDriven;
+        }
+        if (daysOfRent==0){
+            daysOfRent = 1;
+            //this is if someone rented and returned a motorhome the same day
+            //could also indicate error since mysql querry should change this number if it has been rented for more than one day.
+        }
+        //check km over allowed 400 km per day.
+        Motorhome motorhome = read(Integer.parseInt(allparams.get("motorhomeId")));
+        int oldKmDriven = motorhome.getKmDriven();
+        int newKmDriven = Integer.parseInt(allparams.get("kmDriven"));
+        double drivenPerDay = (newKmDriven - oldKmDriven) / daysOfRent;
+        if (drivenPerDay > 400){
+            totalPrice += (drivenPerDay - 400) * kmDrivenOver;
+        }
+        prices.add(totalPrice);
+        return prices;
     }
 
-
+    public boolean homeReturned(int rentId){
+        try{
+            String deleteFromCustusemotor = "DELETE FROM custusemotor WHERE rentId=?";
+            PreparedStatement statement = connection.prepareStatement(deleteFromCustusemotor);
+            statement.setInt(1,rentId);
+            statement.executeUpdate();
+            return true;
+        }
+        catch (SQLException e){
+            System.out.println("error at homeReturned");
+            System.out.println(e.getMessage());
+        }
+        return false;
+    }
 }
