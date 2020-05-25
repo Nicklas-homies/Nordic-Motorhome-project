@@ -19,6 +19,13 @@
                 <a class="dropdown-a" href="/createMotorhome">New Motorhome</a>
             </div>
         </div>
+        <div class="dropdown a-topNav-border" th:classappend="${#httpServletRequest.getRequestURI().startsWith('/customer') ? 'active':''}">
+            <button>Customer ↓</button>
+            <div class="dropdown-content" >
+                <a class="dropdown-a" href="/customer/create">New customer</a>
+                <a class="dropdown-a" href="/customer/list">Customer list</a>
+            </div>
+        </div>
 
 
     </div>

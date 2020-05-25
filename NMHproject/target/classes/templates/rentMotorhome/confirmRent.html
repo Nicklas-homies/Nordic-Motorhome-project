@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Confirm rent data</title>
@@ -44,20 +44,20 @@
                 <table>
                     <tr>
                         <th>Return of motorhome</th>
-                        <td><input type="Date" name="endDate" id="endDate" th:field="*{endDate}" required></td>
+                        <td><input type="Date" name="endDate" id="endDate" th:value="*{endDate}" required></td>
                     </tr>
                 </table>
             </div>
 
         </div>
-        <h3>Ekstra tilkøb:</h3>
+        <h3>Extra price:</h3>
         <div>
             <table>
                 <tr>
                     <th>Bike Rack +25€</th>
                     <th>Bed linen +15€</th>
-                    <th>Child seat + 20€</th>
-                    <th>Picnic table + 20€</th>
+                    <th>Child seat +20€</th>
+                    <th>Picnic table +20€</th>
                     <th>Chairs +20€</th>
                 </tr>
                 <tr>
@@ -70,7 +70,7 @@
             </table>
         </div>
 
-        <h3>Kunde information</h3>
+        <h3>Customer information</h3>
 
         <div>
             <table>
@@ -85,7 +85,8 @@
             </table>
         </div>
 
-        <input type="submit" class="btn" name="submit" id="submit" value="confirm and rent">
+        <br>
+        <input type="submit" class="fill-btn-input btn" name="submit" id="submit" value="confirm and rent">
     </form>
 </div>
 

@@ -3,6 +3,7 @@ package com.nmh.project.controllers;
 import com.nmh.project.models.Customer;
 import com.nmh.project.models.Motorhome;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
@@ -78,16 +79,16 @@ public class MotorhomeController {
             try {
                 tempStartDate = new SimpleDateFormat("yyyy-MM-dd").parse(startDate);
             }
-            catch (Exception e){
-                //nothing
+            catch (ParseException e){
+                e.printStackTrace();
             }
         }
         if (!endDate.equals("")){
             try {
                 tempEndDate = new SimpleDateFormat("yyyy-MM-dd").parse(endDate);
             }
-            catch (Exception e){
-                //nothing
+            catch (ParseException e){
+                e.printStackTrace();
             }
         }
 
@@ -117,9 +118,9 @@ public class MotorhomeController {
     @PostMapping("/rentMotorhome/confirmed")
     public String confirmed(@RequestParam HashMap<String, String> allParam, @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") Date startDate,
                             @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") Date endDate, Model model){
-        System.out.println(allParam);
-        System.out.println(startDate.getTime());
-        System.out.println(endDate.getTime());
+        System.out.println("1 " + allParam);
+        System.out.println("2 " + startDate);
+        System.out.println("3 " + endDate);
 
         int id = Integer.parseInt(allParam.get("motorhomeId"));
         int customerNumber = Integer.parseInt(allParam.get("customerNumber"));
@@ -145,8 +146,8 @@ public class MotorhomeController {
     }
 
     @PostMapping("/rentMotorhome/newRentConfirmed")
-    public String everythingIsGood(@RequestParam @DateTimeFormat(pattern = "EEE MMM dd HH:mm:ss z yyyy") Date startDate,
-                                   @RequestParam @DateTimeFormat(pattern = "EEE MMM dd HH:mm:ss z yyyy") Date endDate, @RequestParam int motorhomeId,
+    public String everythingIsGood(@RequestParam @DateTimeFormat(pattern = "EEE MMM dd HH:mm:ss z yyyy") String startDate,
+                                   @RequestParam @DateTimeFormat(pattern = "EEE MMM dd HH:mm:ss z yyyy") String endDate, @RequestParam int motorhomeId,
                                    @RequestParam double price, @RequestParam String cName, @RequestParam int number,
                                    @RequestParam HashMap<String,String> allParams){
         System.out.println(allParams);
@@ -154,8 +155,15 @@ public class MotorhomeController {
         customer.setNumber(number);
         customer.setcName(cName);
         int customerId = customerRepository.create(customer);
+        try {
+            Date tempStartDate = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy").parse(startDate);
+            Date tempEndDate = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy").parse(endDate);
 
-        System.out.println(motorhomeRepository.newRentDeal(startDate, endDate, price, customerId, motorhomeId));
+            System.out.println(motorhomeRepository.newRentDeal(tempStartDate, tempEndDate, price, customerId, motorhomeId));
+        }catch (ParseException e){
+            System.out.println("Error at motorhomeController : everythingIsGood()");
+            e.printStackTrace();
+        }
 
         return "rentMotorhome/rent";
     }

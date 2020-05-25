@@ -176,7 +176,7 @@ public class MotorhomeRepository {
             String insertRentDeal = "INSERT INTO custusemotor(startDate, endDate, extraPrice, customerId, motorhomeId) VALUES (?,?,?,?,?)";
             PreparedStatement statement = conn.prepareStatement(insertRentDeal);
             statement.setDate(1,new java.sql.Date(startDate.getTime()));
-            statement.setDate(2,new java.sql.Date(startDate.getTime()));
+            statement.setDate(2,new java.sql.Date(endDate.getTime()));
             statement.setDouble(3,price);
             statement.setInt(4,customerId);
             statement.setInt(5,motorhomeId);

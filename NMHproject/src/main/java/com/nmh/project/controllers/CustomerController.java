@@ -2,9 +2,11 @@ package com.nmh.project.controllers;
 
 import com.nmh.project.models.Customer;
 import com.nmh.project.repositories.CustomerRepository;
+import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+@Controller
 public class CustomerController {
     CustomerRepository customerRepository;
 
@@ -13,11 +15,17 @@ public class CustomerController {
         this.customerRepository = new CustomerRepository();
     }
 
-    @GetMapping("/Customer")
+    @GetMapping("/customer")
     @ResponseBody
     public String getCustomerByParameter(@RequestParam int id) {
         Customer cus = customerRepository.read(id);
         return "This id belongs to " + cus.getcName() + " " + cus.getNumber();
+    }
+
+    @GetMapping("/customer/list")
+    public String getCustomers(Model model){
+        model.addAttribute("customers", customerRepository.readAll());
+        return "/customer/list";
     }
 
     @RequestMapping(value = "/customer/detail/{id}", method = RequestMethod.GET)

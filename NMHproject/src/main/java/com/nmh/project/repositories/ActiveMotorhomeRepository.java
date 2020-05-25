@@ -45,18 +45,6 @@ public class ActiveMotorhomeRepository extends MotorhomeRepository{
         return filteredList;
     }
 
-    public ArrayList<Motorhome> filter(int activeState, double extraPrice, int typeId, int maxPrice, int minPrice, @DateTimeFormat(pattern = "yyyy-MM-dd") Date startDate,
-                                       @DateTimeFormat(pattern = "yyyy-MM-dd") Date endDate){
-        ArrayList<Motorhome> filteredList = returnAvailableMotorhomeByState(activeState);
-        filteredList = filterByTypeId(filteredList, typeId);
-        filteredList = filterByMaxPrice(filteredList, maxPrice);
-        filteredList = filterByMinPrice(filteredList, minPrice);
-        filteredList = filterByStartDate(filteredList, startDate);
-        filteredList = filterByEndDate(filteredList, endDate);
-
-        return filteredList;
-    }
-
     public ArrayList<Motorhome> filterByEndDate(ArrayList<Motorhome> theList, @DateTimeFormat(pattern = "yyyy-MM-dd") Date endDate){
         if (endDate == null){
             return theList;

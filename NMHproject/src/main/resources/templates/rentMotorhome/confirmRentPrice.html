@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>confirm the price pls</title>
@@ -86,9 +86,10 @@
         <input type="hidden" name="cName" th:value="${customer.cName}">
         <input type="hidden" name="number" th:value="${customer.number}">
 
-        <input type="submit" name="submit" id="submit" class="btn" value="Everything is good, reserve motorhome">
+        <input type="submit" name="submit" id="submit" class="fill-btn-input btn" value="Everything is good, reserve motorhome">
     </form>
-    <button class="btn-del btn"><a href="/rentMotorhome/rent">No thanks, return</a></button>
+    <br>
+    <a href="/rentMotorhome/rent"><button class="fill-btn-input btn-del btn">No thanks, return</button></a>
 </div>
 
 <div th:insert="fragments/footer :: footer"></div>
