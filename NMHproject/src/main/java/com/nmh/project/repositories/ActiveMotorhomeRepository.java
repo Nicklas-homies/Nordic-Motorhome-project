@@ -5,6 +5,7 @@ import com.nmh.project.util.DatabaseConnectionManager;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.sql.*;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -40,49 +41,97 @@ public class ActiveMotorhomeRepository extends MotorhomeRepository{
         filteredList = filterByTypeId(filteredList, typeId);
         filteredList = filterByMaxPrice(filteredList, maxPrice);
         filteredList = filterByMinPrice(filteredList, minPrice);
-        filteredList = filterByStartDate(filteredList, startDate);
-        filteredList = filterByEndDate(filteredList, endDate);
+//        filteredList = filterByStartDate(filteredList, startDate);
+//        filteredList = filterByEndDate(filteredList, endDate);
+        filteredList = filterByTwoDate(filteredList, startDate, endDate);
         return filteredList;
     }
 
-    public ArrayList<Motorhome> filterByEndDate(ArrayList<Motorhome> theList, @DateTimeFormat(pattern = "yyyy-MM-dd") Date endDate){
-        if (endDate == null){
-            return theList;
-        }
-        ArrayList<Motorhome> found = new ArrayList<>();
-        try {
-            String filterString = "SELECT * FROM motorhomes INNER JOIN custusemotor ON motorhomes.motorhomeId = custusemotor.motorhomeId " +
-                    "WHERE ? < startDate OR ? > endDate";
-            PreparedStatement statement = connection.prepareStatement(filterString);
-            statement.setDate(1,new java.sql.Date(endDate.getTime()));
-            statement.setDate(2,new java.sql.Date(endDate.getTime()));
-            ResultSet resultSet = statement.executeQuery();
-            while (resultSet.next()){
-                for (Motorhome home : theList){
-                    if (home.getId() == resultSet.getInt(1)){
-                        found.add(home);
-                    }
-                }
-            }
-        }
-        catch (SQLException e){
-            System.out.println(e.getMessage());
-        }
-        theList.removeAll(found);
-        return theList;
-    }
+//    public ArrayList<Motorhome> filterByEndDate(ArrayList<Motorhome> theList, @DateTimeFormat(pattern = "yyyy-MM-dd") Date endDate){
+//        if (endDate == null){
+//            return theList;
+//        }
+//        ArrayList<Motorhome> found = new ArrayList<>();
+//        try {
+//            String filterString = "SELECT * FROM motorhomes INNER JOIN custusemotor ON motorhomes.motorhomeId = custusemotor.motorhomeId " +
+//                    "WHERE startDate < ? AND endDate > ?";
+//            PreparedStatement statement = connection.prepareStatement(filterString);
+//
+//            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss") ;
+//            String currentDateTime = format.format(endDate);
+//
+//            statement.setString(1, currentDateTime);
+//            statement.setString(2,currentDateTime);
+//            ResultSet resultSet = statement.executeQuery();
+//            while (resultSet.next()){
+//                for (Motorhome home : theList){
+//                    if (home.getId() == resultSet.getInt(1)){
+//                        found.add(home);
+//                    }
+//                }
+//            }
+//        }
+//        catch (SQLException e){
+//            System.out.println(e.getMessage());
+//        }
+//        theList.removeAll(found);
+//        return theList;
+//    }
+//
+//    public ArrayList<Motorhome> filterByStartDate(ArrayList<Motorhome> theList, @DateTimeFormat(pattern = "yyyy-MM-dd") Date startDate){
+//        if (startDate == null){
+//            return theList;
+//        }
+//        ArrayList<Motorhome> found = new ArrayList<>();
+//        try {
+//            String filterString = "SELECT * FROM motorhomes INNER JOIN custusemotor ON motorhomes.motorhomeId = custusemotor.motorhomeId " +
+//                    "WHERE startDate < ? AND endDate > ?";
+//            PreparedStatement statement = connection.prepareStatement(filterString);
+//
+//            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss") ;
+//            String currentDateTime = format.format(startDate);
+//
+//            statement.setString(1, currentDateTime);
+//            statement.setString(2,currentDateTime);
+//            ResultSet resultSet = statement.executeQuery();
+//            while (resultSet.next()){
+//                for (Motorhome home : theList){
+//                    if (home.getId() == resultSet.getInt(1)){
+//                        found.add(home);
+//                    }
+//                }
+//            }
+//        }
+//        catch (SQLException e){
+//            System.out.println(e.getMessage());
+//        }
+//        theList.removeAll(found);
+//        return theList;
+//    }
 
-    public ArrayList<Motorhome> filterByStartDate(ArrayList<Motorhome> theList, @DateTimeFormat(pattern = "yyyy-MM-dd") Date startDate){
-        if (startDate == null){
+    public ArrayList<Motorhome> filterByTwoDate(ArrayList<Motorhome> theList, @DateTimeFormat(pattern = "yyyy-MM-dd") Date startDate, @DateTimeFormat(pattern = "yyyy-MM-dd") Date endDate){
+        if (endDate == null && startDate == null){
             return theList;
         }
         ArrayList<Motorhome> found = new ArrayList<>();
         try {
-            String filterString = "SELECT * FROM motorhomes INNER JOIN custusemotor ON motorhomes.motorhomeId = custusemotor.motorhomeId " +
-                    "WHERE startDate < ? OR endDate > ?";
+            String filterString = "SELECT * FROM motorhomes INNER JOIN custusemotor ON motorhomes.motorhomeId = custusemotor.motorhomeId" +
+                    " WHERE (? between startDate and endDate) OR (? between startDate and endDate) OR (startDate between ? and ?)" +
+                    " OR (endDate between ? and ?);";
             PreparedStatement statement = connection.prepareStatement(filterString);
-            statement.setDate(1,new java.sql.Date(startDate.getTime()));
-            statement.setDate(2,new java.sql.Date(startDate.getTime()));
+
+            SimpleDateFormat startDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss") ;
+            String currentStartDateTime = startDateFormat.format(startDate);
+
+            SimpleDateFormat endDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss") ;
+            String currentEndDateTime = endDateFormat.format(endDate);
+
+            statement.setString(1, currentStartDateTime);
+            statement.setString(2,currentEndDateTime);
+            statement.setString(3,currentStartDateTime);
+            statement.setString(4,currentEndDateTime);
+            statement.setString(5,currentStartDateTime);
+            statement.setString(6,currentEndDateTime);
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()){
                 for (Motorhome home : theList){

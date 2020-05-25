@@ -45,7 +45,7 @@ public class CustomerController {
     @GetMapping("/customer/delete/yes/{id}")
     public String delCustomer(@PathVariable int id){
         customerRepository.delete(id);
-        return "redirect:/";
+        return "redirect:/customer/list";
     }
 
     @RequestMapping(value = "/customer/edit/{id}", method = RequestMethod.GET)
@@ -68,7 +68,7 @@ public class CustomerController {
             }
         }
         if (!found){
-            return "redirect:/";
+            return "redirect:/customer/list";
         }
         if (!customer.getcName().equals("")){
             customerToEdit.setcName(customer.getcName());
