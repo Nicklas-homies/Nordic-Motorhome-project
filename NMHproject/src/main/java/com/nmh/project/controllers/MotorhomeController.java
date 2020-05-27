@@ -293,10 +293,22 @@ public class MotorhomeController {
 
         return "activeMotorhome/available";
     }
-//todo: update so rentId follows entire rent part, so we know at the end what custusemotor to remove, since we have to use a unique key.
-//todo: finish the price method.
-//todo: finish the confirm return with price (simply all returnMotorhomeById) at controller.
 
+    @RequestMapping(value = "/activeMotorhome/cancel",method = RequestMethod.POST)
+    public String cancelRent(@RequestParam int rentId, @RequestParam int motorhomeId,Model model){
+        ArrayList<Double> cancelPrices = activeMotorhomeRepository.getCancelPrice(rentId);
+
+        model.addAttribute("cancelPrices", cancelPrices);
+        model.addAttribute("rentId", rentId);
+        return "/activeMotorhome/cancel";
+    }
+
+    @RequestMapping(value = "/activeMotorhome/cancel/yes",method = RequestMethod.POST)
+    public String cancelYesRent(@RequestParam int rentId){
+        activeMotorhomeRepository.cancelRentAgreement(rentId);
+
+        return "activeMotorhome/available";
+    }
 
 //    @RequestMapping(value = "activeMotorhome/edit/{id}", method = RequestMethod.GET)
 //    public String editActiveMotorhomeById(@PathVariable("id") int rentId, Model model){

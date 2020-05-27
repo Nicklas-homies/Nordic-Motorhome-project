@@ -41,8 +41,4 @@ public class rentAHomeTest {
         Assertions.assertTrue(activeMotorhomeRepository.homeReturned(rentId));
 
     }
-
-
-
-
 }
