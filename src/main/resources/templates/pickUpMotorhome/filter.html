@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Filter pick up</title>
+    <link rel="stylesheet" type="text/css" href="/css/styles.css">
+</head>
+<body>
+<div th:insert="fragments/menu :: menu"></div>
+<div class="container">
+    <!-- tænker at man laver 1 input from ting, som kan bruges til at filtre i et table man laver nedenunder. -->
+    <!-- det kræver 1 at man kan tage form, og give den samme side tilbage med redigerede arrayliste at vise -->
+    <form action="/pickUpMotorhome/available" method="post">
+        <table>
+            <tr>
+                <th>From date:</th>
+                <td><input name="startDate" type="date" id="startDate"></td>
+            </tr>
+
+            <tr>
+                <th>To date:</th>
+                <td><input name="endDate" id="endDate" type="date"></td>
+            </tr>
+        </table>
+        <br>
+        <input class="fill-btn-input btn" type="submit" name="submit" id="submit">
+    </form>
+</div>
+<div th:insert="fragments/footer :: footer"></div>
+</body>
+</html>

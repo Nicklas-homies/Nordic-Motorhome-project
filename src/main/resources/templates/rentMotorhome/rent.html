@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Rent page</title>
+    <link rel="stylesheet" type="text/css" href="/css/styles.css">
+</head>
+<body>
+<div th:insert="fragments/menu :: menu"></div>
+<div class="container">
+    <!-- tænker at man laver 1 input from ting, som kan bruges til at filtre i et table man laver nedenunder. -->
+    <!-- det kræver 1 at man kan tage form, og give den samme side tilbage med redigerede arrayliste at vise -->
+    <h3>Rent information</h3>
+    <form action="/rentMotorhome/available" method="post">
+        <table>
+            <tr>
+                <th>From date:</th>
+                <td><input name="startDate" type="date" id="startDate" required></td>
+            </tr>
+
+            <tr>
+                <th>To date:</th>
+                <td><input name="endDate" id="endDate" type="date" required></td>
+            </tr>
+
+            <tr>
+                <TH>Max price:</TH>
+                <td><input type="text" name="maxPrice" id="maxPrice"></td>
+            </tr>
+
+            <tr>
+                <th>Min price:</th>
+                <td><input type="text" id="minPrice" name="minPrice"></td>
+            </tr>
+
+            <tr>
+                <th>Type id:</th>
+                <td><input required type="number" name="typeId" id="typeId" step="1" max="8" min="0" placeholder="1-8, 0 for all types"></td>
+            </tr>
+        </table>
+
+
+        <br>
+        <input class="fill-btn-input btn" type="submit" name="submit" id="submit">
+    </form>
+</div>
+<div th:insert="fragments/footer :: footer"></div>
+</body>
+</html>
