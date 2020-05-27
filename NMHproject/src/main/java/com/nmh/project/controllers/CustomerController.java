@@ -97,7 +97,7 @@ public class CustomerController {
     @PostMapping("/customer/created")
     public String createCustomer(Customer customer){
         customerRepository.create(customer);
-        return "redirect:/";
+        return "redirect:/customer/list";
     }
 
 }

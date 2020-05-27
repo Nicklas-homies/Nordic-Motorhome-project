@@ -8,7 +8,7 @@
 <body>
 <div th:insert="fragments/menu :: menu"></div>
 <div class="container">
-    <h3>Selected motorhome to return</h3>
+    <h2>Selected motorhome to return</h2>
     <table>
         <tr>
             <th>ID</th>
@@ -33,16 +33,22 @@
         <h3>Fill return information</h3>
 
         <h4>Was the tank empty/less than half full?</h4>
-        <label style="{float:left}" for="tankFull">Tank empty:</label>
-        <input style="{float: left}" type="checkbox" name="tankFull" id="tankFull">
+
+        <table style="width: 50%">
+            <tr>
+                <th><label style="float:left; color: #000000" for="tankFull">Tank empty:</label></th>
+                <td><input class="doubleSize" style="float: left;" type="checkbox" name="tankFull" id="tankFull"></td>
+            </tr>
+        </table>
 
         <h4>How many km has the moterhome driven:</h4>
         <label for="kmDriven">Current km on km counter:</label>
         <input name="kmDriven" id="kmDriven" type="number" required min="0">
 
         <h4>Fill in if motorhome was dropped outside office</h4>
-        <labal for="kmDropDriven">Total km to dropoff</labal>
+        <label for="kmDropDriven">Total km to dropoff</label>
         <input type="number" name="kmDropDriven" id="kmDropDriven" min="0">
+
 
         <h4>Was there any damage on the motorhome?</h4>
         <label for="damage"></label>

@@ -2,44 +2,64 @@
     text-align: justify;
     overflow: auto;
 }
+
 .block_container input {
     box-sizing: border-box; /*prevents input overflow into other cells*/
 }
+
 .block {
     display: inline-block;
     vertical-align: middle;
     width: 49%; /* if 50 %, there isn't enough space*/
 }
+
+.center {
+    margin: 0;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+}
+
 .topNav {
     background-color: #333;
 }
+
 .dropdown {
     display: inline-block;
     position: relative; /*makes the dropdown be relative to button*/
 }
+
 .topNav a:hover {
     background-color: #dddddd;
     color: black;
 }
+
 .dropdown-a {
     font-size: 16px !important; /*makes dropdown a links smaller, looks better. sorta*/
     width: 100%;
 }
+
 .dropdown-content{ /*can't see content*/
     display: none;
     position: absolute;
 }
+
 .dropdown:hover .dropdown-content{ /*can see content when hover*/
     display: block;
     width: 100%;
 }
+
 .dropdown-content a{ /*makes it go down instead of sideways*/
     display: block;
 }
+
 .topNav button:hover{
     background-color: #dddddd;
     color: black;
 }
+
 .topNav button{
     color: #f2f2f2;
     text-align: center;
@@ -50,6 +70,7 @@
     outline: none;
     border: none;
 }
+
 .topNav a{
     float: left;
     color: #f2f2f2;
@@ -60,41 +81,77 @@
     overflow: visible; /*allows dropdown a to be visible*/
     background-color: #333; /* changes color on hover */
 }
+
 .a-topNav-border {
     border-right-style: double;
     border-color: #f2f2f2;
 }
+
 .topNav .active {
     background-color: #4CAF50;
     color: papayawhip;
 }
 
+footer {
+    text-align: right;
+    color: grey;
+    font-size: 12px;
+}
+
+.footer {
+    color: #666666;
+    font-style: italic;
+
+    position: fixed;
+    width: 100%;
+    right:5px;
+    bottom:0;
+    width:15%;
+}
 
 body {
     font-family: arial, sans-serif;
     margin: 0;
     padding: 0;
-    background-color: #99999910;
+    /*background-color: #99999910;*/
+    background-image: url("../motorhomeHomepage.jpg");
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
 }
-footer {
-    text-align: center;
-    color: grey;
-    font-size: 12px;
+
+h1, h2, h3, h4, h5, h6, p, label {
+    color: white;
 }
+
+.doubleSize
+{
+    /* Double-sized Checkboxes */
+    -ms-transform: scale(2); /* IE */
+    -moz-transform: scale(2); /* FF */
+    -webkit-transform: scale(2); /* Safari and Chrome */
+    -o-transform: scale(2); /* Opera */
+    transform: scale(2);
+    padding: 10px;
+}
+
 .mainTitle {
     text-align: center;
     color: #555555;
 }
+
 .container {
     width: 1024px;
     margin: 0 auto;
 }
+
 /*https://www.w3schools.com/TAgs/tag_nav.asp*/
 nav {
     background-color: #222;
     padding-bottom: 15px;
     padding-top: 15px;
 }
+
 nav a {
     color: white;
     padding: 10px 15px;
@@ -104,15 +161,6 @@ nav a {
 #logo {
     font-weight: bold;
     font-size: 1.2em;
-}
-
-.footer {
-    padding-top: 20px;
-    padding-right: 5px;
-    text-align: right;
-    color: #666666;
-    font-style: italic;
-
 }
 
 .pad-left {
@@ -140,7 +188,6 @@ tr:nth-child(even) {
 tr:nth-child(odd) {
     background-color: white;
 }
-
 
 input {
     display: block;
@@ -177,6 +224,10 @@ input {
     transition-duration: 0.1s;
 }
 
+.big-btn{
+    font-size: 20px;
+}
+
 .btn-create {
     background-color: #4CAF50;
 }
@@ -205,19 +256,3 @@ input {
 .w {
     width: 20%;
 }
-
-/* input fields */
-
-/*this shit makes a dropdown menu given the right html:
-    <div>
-        <div class="dropdown">
-            <button ">Dropdown</button>
-            <div class="dropdown-content">
-                <a href="#">Link 1</a>
-                <a href="#">Link 2</a>
-                <a href="#">Link 3</a>
-            </div>
-        </div>
-    </div>
- */
-

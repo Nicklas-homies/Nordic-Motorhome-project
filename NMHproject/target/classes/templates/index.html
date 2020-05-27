@@ -6,13 +6,17 @@
     <link href="css/styles.css" rel="stylesheet" type="text/css">
 </head>
 <body>
-<div th:insert="fragments/menu :: menu"></div>
-<div class="container">
-    <a href="/rentMotorhome/rent"><button class="btn">Rent motorhome</button></a>
-    <a href="/createMotorhome"><button class="btn">Create new motorhome</button></a>
-    <a href="/pickUpMotorhome/filter"><button class="btn">Pick up motorhome</button></a>
-    <a href="/activeMotorhome/available"><button class="btn">Active motorhomes</button></a>
-</div>
-<div th:insert="fragments/footer :: footer"></div>
+    <div th:insert="fragments/menu :: menu"></div>
+
+    <div class="container">
+        <div class="center">
+            <a href="/rentMotorhome/rent"><button class="big-btn btn">Rent<br/>motorhome</button></a>
+            <a href="/createMotorhome"><button class="big-btn btn">Create<br/>new motorhome</button></a>
+            <a href="/activeMotorhome/available"><button class="big-btn btn">Active<br/>motorhomes</button></a>
+            <a href="/customer/list"><button class="big-btn btn">Customer<br/>list</button> </a>
+        </div>
+    </div>
+
+    <div th:insert="fragments/footer :: footer"></div>
 </body>
 </html>
