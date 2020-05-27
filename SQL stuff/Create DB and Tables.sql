@@ -98,10 +98,10 @@ ENGINE = InnoDB;
 DROP TABLE IF EXISTS `NMH_company`.`season` ;
 
 CREATE TABLE IF NOT EXISTS `NMH_company`.`season` (
-  `seasonId` INT NOT NULL,
-  `startDate` DATE NOT NULL,
-  `endDate` DATE NOT NULL,
-  `type` VARCHAR(10) NOT NULL,
+  `seasonId` INT NOT NULL AUTO_INCREMENT,
+  `startMonth` INT NOT NULL,
+  `endMonth` INT NOT NULL,
+  `seasonTypeId` INT NOT NULL,
   PRIMARY KEY (`seasonId`))
 ENGINE = InnoDB;
 
@@ -112,7 +112,7 @@ ENGINE = InnoDB;
 DROP TABLE IF EXISTS `NMH_company`.`damages` ;
 
 CREATE TABLE IF NOT EXISTS `NMH_company`.`damages` (
-  `damageId` INT NOT NULL,
+  `damageId` INT NOT NULL AUTO_INCREMENT,
   `damageDesc` VARCHAR(500) NULL,
   `motorhomeDmgId` INT NOT NULL,
   PRIMARY KEY (`damageId`),
@@ -169,6 +169,11 @@ INSERT INTO motorhomes (brand, model, timesUsed, kmDriven, typeId) VALUES ('Conc
 INSERT INTO customers (cName, number) VALUES ('John Smith', '12345678');
 INSERT INTO customers (cName, number) VALUES ('Jane Doe', '90123456');
 INSERT INTO customers (cName, number) VALUES ('John Doe', '78901234');
+
+INSERT INTO season (startMonth, endMonth, seasonTypeId) VALUES (1, 2, 1);
+INSERT INTO season (startMonth, endMonth, seasonTypeId) VALUES (10, 12, 1);
+INSERT INTO season (startMonth, endMonth, seasonTypeId) VALUES (3, 5, 2);
+INSERT INTO season (startMonth, endMonth, seasonTypeId) VALUES (6, 9, 3);
 
 
 SET SQL_MODE=@OLD_SQL_MODE;
