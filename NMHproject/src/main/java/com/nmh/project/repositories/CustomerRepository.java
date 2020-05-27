@@ -99,7 +99,17 @@ public class CustomerRepository {
     }
 
     public boolean update (Customer customer){
-
-        return true;
+        try{
+            String update = "UPDATE customers SET cName=?, number=? WHERE customerId=?";
+            PreparedStatement updateStatement = connection.prepareStatement(update);
+            updateStatement.setString(1, customer.getcName());
+            updateStatement.setInt(2, customer.getNumber());
+            updateStatement.setInt(3, customer.getId());
+            updateStatement.executeUpdate();
+            return true;
+        }catch(SQLException e){
+            e.printStackTrace();
+        }
+        return false;
     }
 }

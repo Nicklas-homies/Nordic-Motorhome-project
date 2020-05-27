@@ -38,18 +38,19 @@
 
         <h4>How many km has the moterhome driven:</h4>
         <label for="kmDriven">Current km on km counter:</label>
-        <input name="kmDriven" id="kmDriven" type="number" required>
+        <input name="kmDriven" id="kmDriven" type="number" required min="0">
 
         <h4>Fill in if motorhome was dropped outside office</h4>
-        <labal for="kmDropDriven">Total km to dropoff</labal>'
-        <input type="number" name="kmDropDriven" id="kmDropDriven">
+        <labal for="kmDropDriven">Total km to dropoff</labal>
+        <input type="number" name="kmDropDriven" id="kmDropDriven" min="0">
 
         <h4>Was there any damage on the motorhome?</h4>
         <label for="damage"></label>
         <input name="damage" id="damage" type="text">
 
         <input type="hidden" name="motorhomeId" th:value="${motorhome.id}" id="motorhomeId">
-        <input id="submit" name="submit" value="confirm data" type="submit" class="btn">
+        <br>
+        <input id="submit" name="submit" value="Confirm data" type="submit" class="fill-btn-input btn">
     </form>
 </div>
 

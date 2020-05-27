@@ -1,24 +1,32 @@
 package com.nmh.project;
 
 import com.nmh.project.models.Motorhome;
-import com.nmh.project.util.DatabaseConnectionManager;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
-
-import java.sql.Connection;
-import java.sql.SQLException;
-import java.sql.Statement;
 
 @SpringBootTest
 class NmHprojectApplicationTests {
 
 
     @Test
-    void setup() throws SQLException { //fails if throws Exception, so no need to handle it futher.
+    void contextLoads() {
+    }
 
-        Connection connection = DatabaseConnectionManager.getDatabaseConnection();
-        Assertions.assertTrue(connection.isValid(10)); //fails if failed to connect within 10 sec.
+    @Test
+    void assertTest(){
+        Assertions.assertEquals(2,2);
+    }
+
+    @Test
+    void assertTest3(){
+        Assertions.assertEquals(4,1);
+    }
+
+    @Test
+    public void assertTest4(){
+        Motorhome motorhome = new Motorhome();
+        Assertions.assertEquals(null,motorhome.brand);
     }
 }

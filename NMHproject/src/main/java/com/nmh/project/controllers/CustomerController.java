@@ -36,7 +36,7 @@ public class CustomerController {
     }
 
     @RequestMapping(value = "/customer/delete/{id}", method = RequestMethod.GET)
-    public String getStudentByDeleteParam(@PathVariable int id, Model model) {
+    public String getCustomerByDeleteParam(@PathVariable int id, Model model) {
         Customer cus = customerRepository.read(id);
         model.addAttribute("customer", cus);
         return "/customer/delete";
@@ -44,8 +44,17 @@ public class CustomerController {
 
     @GetMapping("/customer/delete/yes/{id}")
     public String delCustomer(@PathVariable int id){
-        customerRepository.delete(id);
-        return "redirect:/customer/list";
+        if (customerRepository.delete(id)){
+            return "redirect:/customer/list";
+        }else{
+            return "redirect:/customer/errorDel";
+        }
+
+    }
+
+    @GetMapping("/customer/errorDel")
+    public String delCustError(){
+        return "customer/errorDel";
     }
 
     @RequestMapping(value = "/customer/edit/{id}", method = RequestMethod.GET)
@@ -68,13 +77,15 @@ public class CustomerController {
             }
         }
         if (!found){
-            return "redirect:/customer/list";
+            return "redirect:/";
         }
         if (!customer.getcName().equals("")){
             customerToEdit.setcName(customer.getcName());
+        }if (customer.getNumber() != 00000000){
+            customerToEdit.setNumber(customer.getNumber());
         }
         customerRepository.update(customerToEdit);
-        return "redirect:/";
+        return "redirect:/customer/list";
     }
 
     //Create mapping

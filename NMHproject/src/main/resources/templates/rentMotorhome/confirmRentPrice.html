@@ -49,7 +49,7 @@
                 <div class="block">
                     <table>
                         <tr>
-                            <th>Start of rent</th>
+                            <th>End of rent</th>
                             <td th:text="${endDate}"></td>
 
                         </tr>
@@ -63,12 +63,14 @@
             <h3>Confirm customer information</h3>
             <table>
                 <tr>
+                    <th>Customer id</th>
                     <th>Name</th>
                     <th>Number</th>
                 </tr>
                 <tr>
-                    <td th:text="${customer.cName}"></td>
-                    <td th:text="${customer.number}"></td>
+                    <td th:text="${customer.getId()}"></td>
+                    <td th:text="${customer.getcName()}"></td>
+                    <td th:text="${customer.getNumber()}"></td>
                 </tr>
             </table>
         </div>
@@ -83,6 +85,7 @@
         <input type="hidden" name="startDate" th:value="${startDate}">
         <input type="hidden" name="endDate" th:value="${endDate}">
         <input type="hidden" name="price" th:value="${price}">
+        <input type="hidden" name="customerId" th:value="${customer.id}">
         <input type="hidden" name="cName" th:value="${customer.cName}">
         <input type="hidden" name="number" th:value="${customer.number}">
 

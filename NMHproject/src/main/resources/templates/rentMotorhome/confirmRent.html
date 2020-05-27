@@ -73,20 +73,36 @@
         <h3>Customer information</h3>
 
         <div>
+            <h4>List of customers</h4>
+
             <table>
                 <tr>
-                    <th>Customer Name</th>
-                    <th>Customer Number</th>
+                    <th>Customer id</th>
+                    <th>Customer name</th>
+                    <th>Customer number</th>
                 </tr>
-                <tr>
-                    <td><input type="text" name="customerName" required></td>
-                    <td><input type="number" name="customerNumber" required></td> <!-- should do a check if real number-->
+
+                <tr th:each="customer : ${customers}">
+                    <td th:text="${customer.getId()}"></td>
+                    <td th:text="${customer.getcName()}"></td>
+                    <td th:text="${customer.getNumber()}"></td>
                 </tr>
             </table>
         </div>
 
+        <div>
+            <table>
+                <tr>
+                    <th>Customer id</th>
+               </tr>
+                <tr>
+                    <td><input type="number" name="customerId" required placeholder="Get id from list above" min="1"></td>
+               </tr>
+            </table>
+        </div>
+
         <br>
-        <input type="submit" class="fill-btn-input btn" name="submit" id="submit" value="confirm and rent">
+        <input type="submit" class="fill-btn-input btn" name="submit" id="submit" value="Confirm and rent">
     </form>
 </div>
 

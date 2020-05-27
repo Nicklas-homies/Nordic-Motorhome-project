@@ -23,6 +23,7 @@
 }
 .dropdown-a {
     font-size: 16px !important; /*makes dropdown a links smaller, looks better. sorta*/
+    width: 100%;
 }
 .dropdown-content{ /*can't see content*/
     display: none;
@@ -30,6 +31,7 @@
 }
 .dropdown:hover .dropdown-content{ /*can see content when hover*/
     display: block;
+    width: 100%;
 }
 .dropdown-content a{ /*makes it go down instead of sideways*/
     display: block;

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
@@ -14,12 +14,14 @@
     <p th:text="${finalTotalPrice.get(0)}"></p>
         <h3>Initial price after potential return fee's.</h3>
     <p th:text="${finalTotalPrice.get(1)}"></p>
-    <h3>For a total of (in euro):</h3>
+    <h3>Return fee's (in euro):</h3>
 <h2 th:text="${finalTotalPrice.get(1) - finalTotalPrice.get(0)}"></h2>
 
-        <input type="hidden" name="rentId" id="rentId" th:value="${rentId}">
 
-        <input type="submit" name="submit" value="confirm price is paid and all that" class="btn">
+        <input type="hidden" name="rentId" id="rentId" th:value="${rentId}">
+        <input type="hidden" name="kmDriven" id="kmDriven" th:value="${kmDriven}">
+
+        <input type="submit" name="submit" value="Confirm price is paid and all that" class="btn">
     </form>
 </div>
 

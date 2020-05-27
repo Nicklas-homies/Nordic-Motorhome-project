@@ -7,7 +7,7 @@
 </head>
 <body>
 <div th:insert="fragments/menu :: menu"></div>
-<div class="pad-left container">
+<div class="container">
     <h1>Current information</h1>
 
     <table>
@@ -30,7 +30,7 @@
         <input type="number" name="Number" id="number" value="00000000">
         <input type="hidden" name="id" id="id" th:value="${customer.getId()}">
         <br>
-        <input class="btn" type="submit" name="submit form via POST">
+        <input class="fill-btn-input btn" type="submit" name="submit form via POST">
     </form>
 </div>
 <div th:insert="fragments/footer :: footer"></div>

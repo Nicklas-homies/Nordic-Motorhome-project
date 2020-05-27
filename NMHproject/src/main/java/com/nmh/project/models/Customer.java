@@ -19,6 +19,15 @@ public class Customer {
     public Customer() {
     }
 
+    @Override
+    public String toString() {
+        return "Customer{" +
+                "id=" + id +
+                ", cName='" + cName + '\'' +
+                ", number=" + number +
+                '}';
+    }
+
     //----------------------------------------------------------------------------------------------------------------------------------
     // getters and setters
 
