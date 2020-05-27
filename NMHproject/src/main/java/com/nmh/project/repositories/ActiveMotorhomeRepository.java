@@ -203,6 +203,7 @@ public class ActiveMotorhomeRepository extends MotorhomeRepository{
     }
 
     public ArrayList<Motorhome> filterByTypeId(ArrayList<Motorhome> theList, int typeId){
+        //removes motorhomes with given typeId.
         if (typeId == -1){
             return theList;
         }
@@ -254,9 +255,10 @@ public class ActiveMotorhomeRepository extends MotorhomeRepository{
         return motorhomeAvailableByDate;
     }
 
-    public boolean rentHome(int motorhomeID, int customerID, Date startDate, Date endDate){
+    public int rentHome(int motorhomeID, int customerID, Date startDate, Date endDate){
         //warning warning:
         //  THERE SHOULD BE A CHECK IF THE HOME IS AVAILABLE AT THE GIVEN TIME!!! CURRENTLY THERE ISNt!
+        int motorhomeId = -1; // -1 if fail.
         try {
             String insertString = "INSERT INTO custusemotor(startDate, endDate, customerId, motorhomeId) values (?,?,?,?)";
             PreparedStatement statement = connection.prepareStatement(insertString);
@@ -265,13 +267,20 @@ public class ActiveMotorhomeRepository extends MotorhomeRepository{
             statement.setDate(1,new java.sql.Date(startDate.getTime()));
             statement.setDate(2,new java.sql.Date(endDate.getTime()));
             statement.executeUpdate();
-            return true;
+
+            String selectLast = "SELECT LAST_INSERT_ID()";
+            PreparedStatement statement1 =  connection.prepareStatement(selectLast);
+            ResultSet resultSet = statement1.executeQuery();
+            while (resultSet.next()){
+                motorhomeId = resultSet.getInt(1);
+            }
+            return motorhomeId;
         }
         catch (SQLException e){
             System.out.println("error at rentHome");
             System.out.println(e.getMessage());
         }
-        return false;
+        return motorhomeId;
     }
 
     public HashMap<Integer,String> getAllDmg(){
@@ -365,6 +374,68 @@ public class ActiveMotorhomeRepository extends MotorhomeRepository{
     }
 
     public boolean homeReturned(int rentId){
+        try{
+            String deleteFromCustusemotor = "DELETE FROM custusemotor WHERE rentId=?";
+            PreparedStatement statement = connection.prepareStatement(deleteFromCustusemotor);
+            statement.setInt(1,rentId);
+            statement.executeUpdate();
+            return true;
+        }
+        catch (SQLException e){
+            System.out.println("error at homeReturned");
+            System.out.println(e.getMessage());
+        }
+        return false;
+    }
+
+    public ArrayList<Double> getCancelPrice(int rentId){
+        //first price is initial price, 2nd price is % of price reduction, last price is the actual final priec.
+        double initialPrice = -1;
+        double percentToPay;
+        double finalCancelPrice;
+        int daysUntilCancel = 51;
+        ArrayList<Double> cancelPrices = new ArrayList<>();
+        try {
+            String getCustusemotor ="SELECT extraPrice,DATEDIFF(CURRENT_DATE,startDate) FROM custusemotor WHERE rentId=?";
+            PreparedStatement statement = connection.prepareStatement(getCustusemotor);
+
+            statement.setInt(1,rentId);
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()){
+                initialPrice = resultSet.getDouble("extraPrice");
+                daysUntilCancel = resultSet.getInt(2);
+            }
+
+        }
+        catch (SQLException e){
+            System.out.println("error at getCancelPrice");
+            System.out.println(e.getMessage());
+        }
+        if (daysUntilCancel <= 1){
+            percentToPay = 0.95;
+        }
+        else if (daysUntilCancel <= 15){
+            percentToPay = 0.8;
+        }
+        else if (daysUntilCancel <= 49){
+            percentToPay = 0.5;
+        }
+        else {
+            percentToPay = 0.2;
+        }
+        finalCancelPrice = initialPrice * percentToPay;
+        if (finalCancelPrice < 200){
+            finalCancelPrice = 200;
+        }
+        cancelPrices.add(initialPrice);
+        cancelPrices.add(percentToPay);
+        cancelPrices.add(finalCancelPrice);
+        return cancelPrices;
+    }
+
+    public boolean cancelRentAgreement (int rentId){
+        //atm same method as homeReturned method. However this should not be the case forever.
+        //since homeReturned and cancel is not exactly the same so the methods might change drasticly in the future.
         try{
             String deleteFromCustusemotor = "DELETE FROM custusemotor WHERE rentId=?";
             PreparedStatement statement = connection.prepareStatement(deleteFromCustusemotor);

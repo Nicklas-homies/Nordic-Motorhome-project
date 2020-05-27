@@ -19,6 +19,8 @@
             <th>end of rent</th>
 
             <th></th>
+            <th></th>
+            <th></th>
         </tr>
 
        <!-- <tr th:each="entry, rentId : ${motorhomes}" th:with="motorhome=${entry.value}"> -->
@@ -35,7 +37,17 @@
                     <input type="hidden" name="motorhomeId" th:value="${motorhome.motorhomeId}">
                 <input class="btn" type="submit" name="submit" id="submit" value="Return">
                 </form>
+            </td>
+            <td>
                 <a th:href="@{/activeMotorhome/edit/__${motorhome.motorhomeId}__}"><button class="btn-del btn">Edit</button></a>
+            </td>
+            <td>
+                <form th:action="@{/activeMotorhome/cancel}" method="post">
+                    <input type="hidden" name="rentId" id="rentId" th:value="${motorhome.rentId}">
+                    <input type="hidden" name="motorhomeId" id="motorhomeId" th:value="${motorhome.motorhomeId}">
+
+                    <input type="submit" name="submit" id="submit" value="Cancel" class="btn">
+                </form>
             </td>
         </tr>
     </table>

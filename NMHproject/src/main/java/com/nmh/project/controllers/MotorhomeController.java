@@ -14,6 +14,7 @@ import com.nmh.project.models.RentAgreementDataHolder;
 import com.nmh.project.repositories.ActiveMotorhomeRepository;
 import com.nmh.project.repositories.CustomerRepository;
 import com.nmh.project.repositories.MotorhomeRepository;
+import org.hibernate.validator.constraints.pl.REGON;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -238,10 +239,6 @@ public class MotorhomeController {
 
         return "activeMotorhome/available";
     }
-//todo: update so rentId follows entire rent part, so we know at the end what custusemotor to remove, since we have to use a unique key.
-//todo: finish the price method.
-//todo: finish the confirm return with price (simply all returnMotorhomeById) at controller.
-
 
     @PostMapping(value = "/activeMotorhome/return/{id}")
     public String returnMotorhomePrompt(@PathVariable("id") int rentId, @RequestParam int motorhomeId, Model model){
@@ -276,5 +273,21 @@ public class MotorhomeController {
         //all checked, home returned and all that.
         activeMotorhomeRepository.homeReturned(rentId);
         return "redirect:/activeMotorhome/available";
+    }
+
+    @RequestMapping(value = "/activeMotorhome/cancel",method = RequestMethod.POST)
+    public String cancelRent(@RequestParam int rentId, @RequestParam int motorhomeId,Model model){
+        ArrayList<Double> cancelPrices = activeMotorhomeRepository.getCancelPrice(rentId);
+
+        model.addAttribute("cancelPrices", cancelPrices);
+        model.addAttribute("rentId", rentId);
+        return "/activeMotorhome/cancel";
+    }
+
+    @RequestMapping(value = "/activeMotorhome/cancel/yes",method = RequestMethod.POST)
+    public String cancelYesRent(@RequestParam int rentId){
+        activeMotorhomeRepository.cancelRentAgreement(rentId);
+
+        return "activeMotorhome/available";
     }
 }
