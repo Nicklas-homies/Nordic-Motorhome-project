@@ -1,40 +1,33 @@
 package com.nmh.project.models;
 
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
-import java.sql.ResultSet;
 import java.util.Date;
 
 public class RentAgreementDataHolder {
+    //NOTE: AUTHORS OF THIS CLASS: JACOB
  //not sure if this is good code. But it seemed easier to save all data here and then get it for the loop. Also seems easier for future updates...
 
-    public int motorhomeId;
-    public String brand;
-    public String model;
-    public int timesUsed;
-    public int kmDriven;
-    public int price;
-    public int activeState;
-    public int typeId;
-    public Customer customer;
-    public Date startDate;
-    public Date endDate;
-    public int rentId;
+    private int motorhomeId;
+    private String brand;
+    private String model;
+    private int timesUsed;
+    private int kmDriven;
+    private int price;
+    private int typeId;
+    private Customer customer;
+    private Date startDate;
+    private Date endDate;
+    private int rentId;
 
     public RentAgreementDataHolder() {
     }
 
-
-
     public boolean setMotorhomeData (Motorhome motorhome){
-        this.motorhomeId = motorhome.id;
-        this.brand = motorhome.brand;
-        this.model = motorhome.model;
-        this.kmDriven = motorhome.kmDriven;
-        this.timesUsed = motorhome.timesUsed;
-        this.typeId = motorhome.typeId;
+        this.motorhomeId = motorhome.getId();
+        this.brand = motorhome.getBrand();
+        this.model = motorhome.getModel();
+        this.kmDriven = motorhome.getKmDriven();
+        this.timesUsed = motorhome.getTimesUsed();
+        this.typeId = motorhome.getTypeId();
         return true;
     }
 
@@ -84,14 +77,6 @@ public class RentAgreementDataHolder {
 
     public void setPrice(int price) {
         this.price = price;
-    }
-
-    public int getActiveState() {
-        return activeState;
-    }
-
-    public void setActiveState(int activeState) {
-        this.activeState = activeState;
     }
 
     public int getTypeId() {

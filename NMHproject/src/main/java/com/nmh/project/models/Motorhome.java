@@ -6,22 +6,22 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
 public class Motorhome {
-
-    public int id;
+    //NOTE: AUTHORS OF THIS CLASS: ALLE
+    private int id;
     @NotEmpty
-    public String brand;
+    private String brand;
     @NotEmpty
-    public String model;
+    private String model;
     @NotNull
-    public int timesUsed;
+    private int timesUsed;
     @NotNull
-    public int kmDriven;
-    public int price;
-    public int activeState;
+    private int kmDriven;
+    private int price;
+    private int activeState;
     @NotNull
     @Min(1)
     @Max(8)
-    public int typeId;
+    private int typeId;
 
     public Motorhome(int id, String brand, String model, int timesUsed, int kmDriven, int price, int typeId) {
         //will atleast be used when reading from repository

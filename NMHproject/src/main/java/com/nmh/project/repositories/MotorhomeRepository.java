@@ -1,24 +1,24 @@
 package com.nmh.project.repositories;
 
-import com.nmh.project.models.Customer;
 import com.nmh.project.models.Motorhome;
 import com.nmh.project.util.DatabaseConnectionManager;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.sql.*;
-import java.time.Duration;
+import java.text.SimpleDateFormat;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 
 public class MotorhomeRepository {
-    private Connection conn;
+    //NOTE: AUTHORS OF THIS CLASS: ALLE
+    private Connection connection;
 
     public MotorhomeRepository() {
-        this.conn = DatabaseConnectionManager.getDatabaseConnection();
+        this.connection = DatabaseConnectionManager.getDatabaseConnection();
     }
+    private SeasonRepository seasonRepository = new SeasonRepository();
 
     public ArrayList<Motorhome> returnAvailableMotorhomeByState(int activeState){
         ArrayList<Motorhome> tempAllMotorhome = readAll();
@@ -35,7 +35,7 @@ public class MotorhomeRepository {
         ArrayList<Motorhome> allHomes = new ArrayList<>();
         try{
             String selectAll = "SELECT * FROM motorhomes";
-            PreparedStatement statement = conn.prepareStatement(selectAll);
+            PreparedStatement statement = connection.prepareStatement(selectAll);
             ResultSet results = statement.executeQuery();
             while (results.next()){
                 Motorhome tempHome = new Motorhome();
@@ -60,7 +60,7 @@ public class MotorhomeRepository {
         Motorhome homeToReturn = new Motorhome();
         try{
             String getById = "SELECT * FROM motorhomes WHERE motorhomeId=?";
-            PreparedStatement statement = conn.prepareStatement(getById);
+            PreparedStatement statement = connection.prepareStatement(getById);
             statement.setInt(1, id);
             ResultSet results = statement.executeQuery();
             while(results.next()){
@@ -83,7 +83,7 @@ public class MotorhomeRepository {
     public boolean create(Motorhome motorhome){
         try {
             String insertString = "INSERT INTO motorhomes (brand,model,timesUsed,kmDriven,typeId) VALUES (?,?,?,?,?)";
-            PreparedStatement statement = conn.prepareStatement(insertString);
+            PreparedStatement statement = connection.prepareStatement(insertString);
             statement.setString(1,motorhome.getBrand());
             statement.setString(2,motorhome.getModel());
             statement.setInt(3,motorhome.getTimesUsed());
@@ -102,7 +102,7 @@ public class MotorhomeRepository {
     public boolean delete(int id){
         String deleteString = "DELETE FROM motorhomes WHERE motorhomeId=?";
         try {
-            PreparedStatement statement = conn.prepareStatement(deleteString);
+            PreparedStatement statement = connection.prepareStatement(deleteString);
             statement.setInt(1,id);
             statement.executeUpdate();
             return true;
@@ -117,7 +117,7 @@ public class MotorhomeRepository {
     public boolean update(Motorhome motorhome) {
         try{
             String update = "UPDATE motorhomes SET brand=?,model=?,timesUsed=?,kmDriven=?,activeState=?,typeId=? WHERE motorhomeId=?";
-            PreparedStatement updateStatement = conn.prepareStatement(update);
+            PreparedStatement updateStatement = connection.prepareStatement(update);
             updateStatement.setString(1, motorhome.getBrand());
             updateStatement.setString(2, motorhome.getModel());
             updateStatement.setInt(3, motorhome.getTimesUsed());
@@ -133,11 +133,31 @@ public class MotorhomeRepository {
         return false;
     }
 
-    public double getInitialProce(Motorhome motorhome, HashMap<String,String> ekstraStuff, Date startDate, Date endDate){
+    public double getInitialPrice(Motorhome motorhome, HashMap<String,String> ekstraStuff, Date startDate, Date endDate){
 
         double totalPrice = 0; //price is in whole euro
         double dayPrice = 0;
         long rentedDays = ChronoUnit.DAYS.between(startDate.toInstant(),endDate.toInstant());
+
+        try {
+            String getDayPrice = "SELECT price FROM motorhomes INNER JOIN motorhometype ON" +
+                    " motorhomes.typeId = motorhometype.typeId WHERE motorhomes.motorhomeId = ?";
+            PreparedStatement statement = connection.prepareStatement(getDayPrice);
+            statement.setInt(1,motorhome.getId());
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()){
+                dayPrice = resultSet.getDouble("price");
+            }
+        }
+        catch (SQLException e){
+            System.out.println("error in MotorhomeRepository : at getInitialPrice()");
+            System.out.println(e.getMessage());
+        }
+
+        dayPrice *= seasonRepository.seasonPrice(seasonRepository.seasonType(startDate.getMonth() + 1, endDate.getMonth() + 1));
+
+        totalPrice += (dayPrice * rentedDays);
+
         if (ekstraStuff.containsKey("bedLinen")){
             totalPrice += 15;
         }
@@ -145,7 +165,7 @@ public class MotorhomeRepository {
             totalPrice += 25;
         }
         if (ekstraStuff.containsKey("childSeat")){
-            totalPrice +=20;
+            totalPrice += 20;
         }
         if (ekstraStuff.containsKey("picnicTable")){
             totalPrice += 20;
@@ -153,28 +173,14 @@ public class MotorhomeRepository {
         if (ekstraStuff.containsKey("chairs")){
             totalPrice += 20;
         }
-        try {
-            String getDayPrice = "SELECT price FROM motorhomes INNER JOIN motorhometype ON" +
-                    " motorhomes.typeId = motorhometype.typeId WHERE motorhomes.motorhomeId = ?";
-            PreparedStatement statement = conn.prepareStatement(getDayPrice);
-            statement.setInt(1,motorhome.id);
-            ResultSet resultSet = statement.executeQuery();
-            while (resultSet.next()){
-                dayPrice = resultSet.getDouble("price");
-            }
-        }
-        catch (SQLException e){
-            System.out.println("error at totalPrice getPrice");
-            System.out.println(e.getMessage());
-        }
-        totalPrice += (dayPrice * rentedDays);
+
         return totalPrice;
     }
 
     public boolean newRentDeal(Date startDate, Date endDate, double price, int customerId, int motorhomeId){
         try {
             String insertRentDeal = "INSERT INTO custusemotor(startDate, endDate, extraPrice, customerId, motorhomeId) VALUES (?,?,?,?,?)";
-            PreparedStatement statement = conn.prepareStatement(insertRentDeal);
+            PreparedStatement statement = connection.prepareStatement(insertRentDeal);
             statement.setDate(1,new java.sql.Date(startDate.getTime()));
             statement.setDate(2,new java.sql.Date(endDate.getTime()));
             statement.setDouble(3,price);
@@ -191,4 +197,131 @@ public class MotorhomeRepository {
     return false;
     }
 
+    // Filter methods, should they be in a different class? how do we do this when thinking of grasp and smart design?
+    public ArrayList<Motorhome> filter(int activeState, int typeId, int maxPrice, int minPrice, @DateTimeFormat(pattern = "yyyy-MM-dd") Date startDate,
+                                       @DateTimeFormat(pattern = "yyyy-MM-dd") Date endDate){
+        ArrayList<Motorhome> filteredList = returnAvailableMotorhomeByState(activeState);
+        filteredList = filterByTypeId(filteredList, typeId);
+        filteredList = filterByMaxPrice(filteredList, maxPrice);
+        filteredList = filterByMinPrice(filteredList, minPrice);
+        filteredList = filterByTwoDate(filteredList, startDate, endDate);
+        return filteredList;
+    }
+
+    public ArrayList<Motorhome> filterByTwoDate(ArrayList<Motorhome> theList, @DateTimeFormat(pattern = "yyyy-MM-dd") Date startDate, @DateTimeFormat(pattern = "yyyy-MM-dd") Date endDate){
+        if (endDate == null && startDate == null){
+            return theList;
+        }
+        ArrayList<Motorhome> found = new ArrayList<>();
+        try {
+            String filterString = "SELECT * FROM motorhomes INNER JOIN custusemotor ON motorhomes.motorhomeId = custusemotor.motorhomeId" +
+                    " WHERE (? between startDate and endDate) OR (? between startDate and endDate) OR (startDate between ? and ?)" +
+                    " OR (endDate between ? and ?);";
+            PreparedStatement statement = connection.prepareStatement(filterString);
+
+            SimpleDateFormat startDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss") ;
+            String currentStartDateTime = startDateFormat.format(startDate);
+
+            SimpleDateFormat endDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss") ;
+            String currentEndDateTime = endDateFormat.format(endDate);
+
+            statement.setString(1, currentStartDateTime);
+            statement.setString(2,currentEndDateTime);
+            statement.setString(3,currentStartDateTime);
+            statement.setString(4,currentEndDateTime);
+            statement.setString(5,currentStartDateTime);
+            statement.setString(6,currentEndDateTime);
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()){
+                for (Motorhome home : theList){
+                    if (home.getId() == resultSet.getInt(1)){
+                        found.add(home);
+                    }
+                }
+            }
+        }
+        catch (SQLException e){
+            System.out.println(e.getMessage());
+        }
+        theList.removeAll(found);
+        return theList;
+    }
+
+    public ArrayList<Motorhome> filterByMinPrice(ArrayList<Motorhome> theList, int minPrice){
+        if (minPrice == -1){
+            return theList;
+        }
+        ArrayList<Motorhome> found = new ArrayList<>();
+        try {
+            String filterString = "SELECT * FROM motorhomes INNER JOIN motorhometype ON motorhomes.typeId = motorhometype.typeId" +
+                    " WHERE motorhometype.price < ?"; //finds stuff under min price
+            PreparedStatement statement = connection.prepareStatement(filterString);
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()){
+                for (Motorhome home : theList){
+                    if (home.getId() == resultSet.getInt(1)){
+                        found.add(home);
+                    }
+                }
+            }
+        }
+        catch (SQLException e){
+            System.out.println(e.getMessage());
+        }
+        theList.removeAll(found); //remove found homes.
+        return theList;
+    }
+
+    public ArrayList<Motorhome> filterByMaxPrice(ArrayList<Motorhome> theList, int maxPrice){
+        if (maxPrice == -1){
+            return theList;
+        }
+        ArrayList<Motorhome> found = new ArrayList<>();
+        try {
+            String filterString = "SELECT * FROM motorhomes INNER JOIN motorhometype ON motorhomes.typeId = motorhometype.typeId" +
+                    " WHERE motorhometype.price > ?";
+            //finds all that are over price
+            PreparedStatement statement = connection.prepareStatement(filterString);
+            statement.setInt(1,maxPrice);
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()){
+                for (Motorhome home : theList){ //has to go through loop, because the list might have been modified by other filters.
+                    if (home.getId() == resultSet.getInt(1)){
+                        found.add(home);
+                    }
+                }
+            }
+        }
+        catch (SQLException e){
+            System.out.println(e.getMessage());
+        }
+        theList.removeAll(found);
+        return theList;
+    }
+
+    public ArrayList<Motorhome> filterByTypeId(ArrayList<Motorhome> theList, int typeId){
+        if (typeId == -1){
+            return theList;
+        }
+        ArrayList<Motorhome> found = new ArrayList<>();
+        try {
+            String filterString = "SELECT * FROM motorhomes INNER JOIN motorhometype ON motorhomes.typeId = motorhometype.typeId" +
+                    " WHERE motorhometype.typeId != ?";
+            PreparedStatement statement = connection.prepareStatement(filterString);
+            statement.setInt(1,typeId);
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()){
+                for (Motorhome home : theList){ //has to go through loop, because the list might have been modified by other filters.
+                    if (home.getId() == resultSet.getInt(1)){
+                        found.add(home);
+                    }
+                }
+            }
+        }
+        catch (SQLException e){
+            System.out.println(e.getMessage());
+        }
+        theList.removeAll(found);
+        return theList;
+    }
 }

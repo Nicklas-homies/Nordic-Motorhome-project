@@ -3,18 +3,16 @@ package com.nmh.project;
 
 import com.nmh.project.models.Customer;
 import com.nmh.project.repositories.CustomerRepository;
-import com.nmh.project.util.DatabaseConnectionManager;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import org.springframework.boot.test.context.SpringBootTest;
 
-import java.sql.Connection;
-import java.sql.SQLException;
 import java.util.ArrayList;
 
 @SpringBootTest
 public class customerTests {
+    //NOTE: AUTHORS OF THIS CLASS: JACOB
 //this test tests if you can Rent a home and return it. Makes a test customer and such on the way, since you need a customer etc. to rent soemthing.
 
 

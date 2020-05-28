@@ -1,9 +1,7 @@
 package com.nmh.project;
 
-import com.nmh.project.models.Motorhome;
 import com.nmh.project.util.DatabaseConnectionManager;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -12,7 +10,7 @@ import java.sql.SQLException;
 
 @SpringBootTest
 class NmHprojectApplicationTests {
-
+    //NOTE: AUTHORS OF THIS CLASS: JACOB
 
     @Test
     void setup() throws SQLException { //fails if throws Exception, so no need to handle it futher.

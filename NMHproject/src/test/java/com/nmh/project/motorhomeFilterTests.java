@@ -11,18 +11,19 @@ import java.util.ArrayList;
 
 @SpringBootTest
 public class motorhomeFilterTests {
+    //NOTE: AUTHORS OF THIS CLASS: JACOB
     //used to test if filtermethod is filtering stuff out correctly.
     //no test of date, since there are no good way to check rentagreements against dates atm. *In trump voice - sad, very sad. huge. it's fakenews
 
-    MotorhomeRepository motorhomeRepository = new MotorhomeRepository();
-    ArrayList<Motorhome> allMotorhomes = motorhomeRepository.readAll(); //used in several methods. Should not change since junit has no method dependencies.
-    ActiveMotorhomeRepository activeMotorhomeRepository = new ActiveMotorhomeRepository();
+    private MotorhomeRepository motorhomeRepository = new MotorhomeRepository();
+    private ArrayList<Motorhome> allMotorhomes = motorhomeRepository.readAll(); //used in several methods. Should not change since junit has no method dependencies.
+    private ActiveMotorhomeRepository activeMotorhomeRepository = new ActiveMotorhomeRepository();
 
     @Test
     void testOfTypeFilter(){
         allMotorhomes = activeMotorhomeRepository.filterByTypeId(allMotorhomes,1);
         for (Motorhome motorhome : allMotorhomes){
-            Assertions.assertEquals(1,motorhome.typeId);
+            Assertions.assertEquals(1,motorhome.getTypeId());
         }
     }
 
@@ -33,7 +34,7 @@ public class motorhomeFilterTests {
         //if test fails, check prices hasn't been changed.
         allMotorhomes = activeMotorhomeRepository.filterByMaxPrice(allMotorhomes,1900); //should remove type 7 and 8.
         for (Motorhome motorhome : allMotorhomes){
-            Assertions.assertFalse(motorhome.typeId == 7 || motorhome.typeId == 8);
+            Assertions.assertFalse(motorhome.getTypeId() == 7 || motorhome.getTypeId() == 8);
         }
     }
 }

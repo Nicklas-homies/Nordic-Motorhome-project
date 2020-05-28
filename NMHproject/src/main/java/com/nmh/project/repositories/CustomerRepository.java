@@ -1,7 +1,6 @@
 package com.nmh.project.repositories;
 
 import com.nmh.project.models.Customer;
-import com.nmh.project.models.Motorhome;
 import com.nmh.project.util.DatabaseConnectionManager;
 
 import java.sql.Connection;
@@ -11,7 +10,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class CustomerRepository {
-
+    //NOTE: AUTHORS OF THIS CLASS: ALLE
     private Connection connection;
 
     public CustomerRepository() {

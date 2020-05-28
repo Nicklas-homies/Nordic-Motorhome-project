@@ -5,18 +5,23 @@
     <title>NMH index</title>
     <link href="css/styles.css" rel="stylesheet" type="text/css">
 </head>
+<!--NOTE: AUTHORS OF THIS CLASS: ALLE-->
 <body>
-    <div th:insert="fragments/menu :: menu"></div>
-
-    <div class="container">
-        <div class="center">
-            <a href="/rentMotorhome/rent"><button class="big-btn btn">Rent<br/>motorhome</button></a>
-            <a href="/createMotorhome"><button class="big-btn btn">Create<br/>new motorhome</button></a>
-            <a href="/activeMotorhome/available"><button class="big-btn btn">Active<br/>motorhomes</button></a>
-            <a href="/customer/list"><button class="big-btn btn">Customer<br/>list</button> </a>
+    <div class="container" style="width: 40%">
+        <div class="center" style="width: 40%">
+            <h1>Nordic Motorhome</h1>
+            <p>Nordic Motorhome Rental is a Danish company that rents out motorhomes. Nordic Motorhome Rental was founded in 2019
+                and is situated just outside Copenhagen. So far there are 8 employees, but the company is very successful,
+                and the two owners expect to hire more people in the near future</p>
+            <br>
+            <h3>Our fleet</h3>
+            <p>Nordic Motorhome Rental has a fleet of 32 motorhomes available for hire. Nordic Motorhome Rental currently offers 8
+               different types of motorhomes. These are of various brands and models. Some are small compact campers for 2 persons
+               and others are large with up to 6 beds.</p>
         </div>
     </div>
 
+    <div th:insert="fragments/menu :: menu"></div>
     <div th:insert="fragments/footer :: footer"></div>
 </body>
 </html>

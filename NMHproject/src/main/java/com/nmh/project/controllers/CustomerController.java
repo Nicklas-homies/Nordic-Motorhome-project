@@ -8,7 +8,8 @@ import org.springframework.web.bind.annotation.*;
 
 @Controller
 public class CustomerController {
-    CustomerRepository customerRepository;
+    //NOTE: AUTHORS OF THIS CLASS: ALLE
+    private CustomerRepository customerRepository;
 
 
     public CustomerController() {

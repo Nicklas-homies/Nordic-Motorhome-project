@@ -1,9 +1,10 @@
 package com.nmh.project.models;
 
 public class Customer {
-    public int id;
-    public String cName;
-    public int number;
+    //NOTE: AUTHORS OF THIS CLASS: ALLE
+    private int id;
+    private String cName;
+    private int number;
 
     public Customer(int id, String cName, int number) {
         this.id = id;

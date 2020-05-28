@@ -2,9 +2,10 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>confirm the price pls</title>
+    <title>Confirm rent price</title>
     <link rel="stylesheet" type="text/css" href="/css/styles.css">
 </head>
+<!--NOTE: AUTHORS OF THIS CLASS: ALLE-->
 <body>
 <div th:insert="fragments/menu :: menu"></div>
 <div class="container">
@@ -25,12 +26,12 @@
             </tr>
 
             <tr>
-                <td th:text="${motorhome.id}"></td>
-                <td th:text="${motorhome.brand}"></td>
-                <td th:text="${motorhome.model}"></td>
-                <td th:text="${motorhome.timesUsed}"></td>
-                <td th:text="${motorhome.kmDriven}"></td>
-                <td th:text="${motorhome.typeId}"></td>
+                <td th:text="${motorhome.getId()}"></td>
+                <td th:text="${motorhome.getBrand()}"></td>
+                <td th:text="${motorhome.getModel()}"></td>
+                <td th:text="${motorhome.getTimesUsed()}"></td>
+                <td th:text="${motorhome.getKmDriven()}"></td>
+                <td th:text="${motorhome.getTypeId()}"></td>
         </table>
         </div>
 

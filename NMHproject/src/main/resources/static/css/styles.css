@@ -1,3 +1,4 @@
+/*NOTE: AUTHORS OF THIS CLASS: ALLE*/
 .block_container {
     text-align: justify;
     overflow: auto;
@@ -16,7 +17,7 @@
 .center {
     margin: 0;
     position: absolute;
-    top: 50%;
+    top: 33%;
     left: 50%;
     -ms-transform: translate(-50%, -50%);
     transform: translate(-50%, -50%);
@@ -113,8 +114,7 @@ body {
     font-family: arial, sans-serif;
     margin: 0;
     padding: 0;
-    /*background-color: #99999910;*/
-    background-image: url("../motorhomeHomepage.jpg");
+    background-image: url("../motorhomeHomepage.jpg"); /*http://wallpapercrafter.com/uploads/posts/16009-___camper-campervan-motorhome-and-vehicle-hd.jpg*/
     background-attachment: fixed;
     background-repeat: no-repeat;
     background-size: 100% 100%;
@@ -228,16 +228,12 @@ input {
     font-size: 20px;
 }
 
+/*Green*/
 .btn-create {
     background-color: #4CAF50;
 }
 
-/* Green */
-.btn-details {
-    background-color: #555555;
-}
-
-/* Black */
+/* Blue */
 .btn-ed {
     background-color: #008CBA;
 }
@@ -246,8 +242,6 @@ input {
 .btn-del {
     background-color: #f44336;
 }
-
-/* Red */
 
 .btn:hover {
     box-shadow: 2px 2px 2px #888888;

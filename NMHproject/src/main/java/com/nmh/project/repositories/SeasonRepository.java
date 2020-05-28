@@ -10,7 +10,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class SeasonRepository {
-
+    //NOTE: AUTHORS OF THIS CLASS: JONAS OG JONATHAN
     private Connection connection;
 
     public SeasonRepository() {
@@ -37,27 +37,6 @@ public class SeasonRepository {
             System.out.println(e.getMessage());
         }
         return allSeasons;
-    }
-
-    public Season read(int id){
-        Season seasonToReturn = new Season();
-        try{
-            String getById = "SELECT * FROM season WHERE seasonId = ?";
-            PreparedStatement statement = connection.prepareStatement(getById);
-            statement.setInt(1, id);
-            ResultSet results = statement.executeQuery();
-            while(results.next()){
-                seasonToReturn.setSeasonId(results.getInt(1));
-                seasonToReturn.setStartMonth(results.getInt(2));
-                seasonToReturn.setEndMonth(results.getInt(3));
-                seasonToReturn.setSeasonTypeId(results.getInt(4));
-            }
-        }
-        catch (SQLException e){
-            System.out.println("error at seasonRepository, read()");
-            System.out.println(e.getMessage());
-        }
-        return seasonToReturn;
     }
 
     public int seasonType(int startMonth, int endMonth){

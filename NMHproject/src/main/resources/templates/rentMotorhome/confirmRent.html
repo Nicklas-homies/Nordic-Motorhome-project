@@ -5,11 +5,12 @@
     <title>Confirm rent data</title>
     <link rel="stylesheet" type="text/css" href="/css/styles.css">
 </head>
+<!--NOTE: AUTHORS OF THIS CLASS: ALLE-->
 <body>
 <div th:insert="fragments/menu :: menu"></div>
 <div class="container">
     <form action="/rentMotorhome/confirmed" method="post">
-        <input type="hidden" name="motorhomeId" id="motorhomeId" th:value="${motorhome.id}">
+        <input type="hidden" name="motorhomeId" id="motorhomeId" th:value="${motorhome.getId()}">
         <h3>Selected motorhome</h3>
         <table>
             <tr>
@@ -22,12 +23,12 @@
             </tr>
 
             <tr>
-                <td th:text="${motorhome.id}"></td>
-                <td th:text="${motorhome.brand}"></td>
-                <td th:text="${motorhome.model}"></td>
-                <td th:text="${motorhome.timesUsed}"></td>
-                <td th:text="${motorhome.kmDriven}"></td>
-                <td th:text="${motorhome.typeId}"></td>
+                <td th:text="${motorhome.getId()}"></td>
+                <td th:text="${motorhome.getBrand()}"></td>
+                <td th:text="${motorhome.getModel()}"></td>
+                <td th:text="${motorhome.getTimesUsed()}"></td>
+                <td th:text="${motorhome.getKmDriven()}"></td>
+                <td th:text="${motorhome.getTypeId()}"></td>
         </table>
 
         <h3>Confirm date:</h3>

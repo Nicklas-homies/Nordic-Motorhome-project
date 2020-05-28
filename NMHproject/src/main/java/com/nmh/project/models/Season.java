@@ -1,17 +1,12 @@
 package com.nmh.project.models;
 
 public class Season {
-    public int seasonId;
-    public int startMonth;
-    public int endMonth;
-    public int seasonTypeId;
+    //NOTE: AUTHORS OF THIS CLASS: ALLE
+    private int seasonId;
+    private int startMonth;
+    private int endMonth;
+    private int seasonTypeId;
 
-    public Season(int seasonId, int startMonth, int endMonth, int seasonTypeId) {
-        this.seasonId = seasonId;
-        this.startMonth = startMonth;
-        this.endMonth = endMonth;
-        this.seasonTypeId = seasonTypeId;
-    }
 
     public Season() {
     }

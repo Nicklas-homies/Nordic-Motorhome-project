@@ -5,6 +5,7 @@
     <title>Rented motorhomes</title>
     <link rel="stylesheet" type="text/css" href="/css/styles.css">
 </head>
+<!--NOTE: AUTHORS OF THIS CLASS: ALLE-->
 <body>
 <div th:insert="fragments/menu :: menu"></div>
 <div class="container">
@@ -25,16 +26,16 @@
 
        <!-- <tr th:each="entry, rentId : ${motorhomes}" th:with="motorhome=${entry.value}"> -->
         <tr th:each="motorhome : ${motorhomes}">
-            <td th:text="${motorhome.rentId}"></td>
-            <td th:text="${motorhome.motorhomeId}"></td>
+            <td th:text="${motorhome.getRentId()}"></td>
+            <td th:text="${motorhome.getId()}"></td>
             <td th:text="${motorhome.customer.id}"></td>
-            <td th:text="${motorhome.brand}"></td>
-            <td th:text="${motorhome.model}"></td>
-            <td th:text="${motorhome.startDate}"></td>
-            <td th:text="${motorhome.endDate}"></td>
+            <td th:text="${motorhome.getBrand()}"></td>
+            <td th:text="${motorhome.getModel()}"></td>
+            <td th:text="${motorhome.getStartDate()}"></td>
+            <td th:text="${motorhome.getEndDate()}"></td>
             <td>
                 <form th:action="@{/activeMotorhome/return/__${motorhome.rentId}__}" method="post">
-                    <input type="hidden" name="motorhomeId" th:value="${motorhome.motorhomeId}">
+                    <input type="hidden" name="motorhomeId" th:value="${motorhome.getId()}">
                 <input class="btn" type="submit" name="submit" id="submit" value="Return">
                 </form>
             </td>
@@ -43,8 +44,8 @@
             </td>
             <td>
                 <form th:action="@{/activeMotorhome/cancel}" method="post">
-                    <input type="hidden" name="rentId" id="rentId" th:value="${motorhome.rentId}">
-                    <input type="hidden" name="motorhomeId" id="motorhomeId" th:value="${motorhome.motorhomeId}">
+                    <input type="hidden" name="rentId" id="rentId" th:value="${motorhome.getRentId()}">
+                    <input type="hidden" name="motorhomeId" id="motorhomeId" th:value="${motorhome.getId()}">
 
                     <input type="submit" name="submit" id="submit" value="Cancel" class="btn">
                 </form>

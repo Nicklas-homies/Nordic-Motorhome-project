@@ -9,6 +9,7 @@ import java.sql.SQLException;
 import java.util.Properties;
 
 public class DatabaseConnectionManager {
+    //NOTE: AUTHORS OF THIS CLASS: ALLE
     private static String user;
     private static String password;
     private static String url;
