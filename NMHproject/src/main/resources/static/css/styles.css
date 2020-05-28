@@ -14,10 +14,19 @@
     width: 49%; /* if 50 %, there isn't enough space*/
 }
 
-.center {
+.center-index {
     margin: 0;
     position: absolute;
     top: 33%;
+    left: 50%;
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+}
+
+.center {
+    margin: 0;
+    position: absolute;
+    top: 30%;
     left: 50%;
     -ms-transform: translate(-50%, -50%);
     transform: translate(-50%, -50%);
