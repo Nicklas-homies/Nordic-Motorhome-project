@@ -25,24 +25,23 @@ public class customerTests {
 
         Customer testCustomer = new Customer();
         Assertions.assertNotNull(testCustomer); //Is this even needed? Since if this fails, program propable crashes since there would be error in constructor
-        int customerId = customerRepository.create(testCustomer);
+        boolean customerCreated = customerRepository.create(testCustomer);
         //should be fail since we don't want customers without information uploaded to our database.
-        Assertions.assertEquals(-1,customerId); //will be -1 if SQL failed.
+        Assertions.assertTrue(customerCreated); //will be false if SQL failed.
 
     }
 
     @Test
     void testCustomerCreateAndDelete(){
         //testing both create and delete so we don't have a test customer floating in our database.
-        int customerId;
+        boolean customerId;
         Customer testCustomer = new Customer();
         testCustomer.setcName("FrankenTESTin");
         testCustomer.setNumber(12345678);
 
-        customerId = customerRepository.create(testCustomer);
-        Assertions.assertNotEquals(-1,customerId); //is -1 if SQL failed
+        Assertions.assertTrue(customerRepository.create(testCustomer)); //is false if SQL failed
 
-        Assertions.assertTrue(customerRepository.delete(customerId));
+        Assertions.assertTrue(customerRepository.delete(testCustomer.getId()));
     }
 
     @Test

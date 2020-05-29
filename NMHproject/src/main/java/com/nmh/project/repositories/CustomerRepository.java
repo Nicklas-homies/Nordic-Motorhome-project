@@ -9,7 +9,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-public class CustomerRepository {
+public class CustomerRepository implements ICustomerRepo {
     //NOTE: AUTHORS OF THIS CLASS: ALLE
     private Connection connection;
 
@@ -17,6 +17,7 @@ public class CustomerRepository {
         this.connection = DatabaseConnectionManager.getDatabaseConnection();
     }
 
+    @Override
     public ArrayList<Customer> readAll(){
         ArrayList<Customer> allCust = new ArrayList<>();
         try{
@@ -38,6 +39,7 @@ public class CustomerRepository {
         return allCust;
     }
 
+    @Override
     public Customer read(int id){
         Customer custToReturn = new Customer();
         try{
@@ -58,7 +60,8 @@ public class CustomerRepository {
         return custToReturn;
     }
 
-    public int create(Customer customer){
+    @Override
+    public boolean create(Customer customer){
         try {
             String insertString = "INSERT INTO customers (cName, number) VALUES (?,?)";
             PreparedStatement statement = connection.prepareStatement(insertString);
@@ -66,22 +69,16 @@ public class CustomerRepository {
             statement.setInt(2,customer.getNumber());
             statement.executeUpdate();
 
-            String selectLast = "SELECT LAST_INSERT_ID()";
-            PreparedStatement statement1 =  connection.prepareStatement(selectLast);
-            ResultSet resultSet = statement1.executeQuery();
-            int id = -1;
-            while (resultSet.next()){
-                id = resultSet.getInt(1);
-            }
-            return id;
+            return true;
         }
         catch (SQLException e){
             System.out.println("error at create() customerRepository");
             System.out.println(e.getMessage());
         }
-        return -1;
+        return false;
     }
 
+    @Override
     public boolean delete(int id){
         String deleteString = "DELETE FROM customers WHERE customerId=?";
         try {
@@ -97,6 +94,7 @@ public class CustomerRepository {
         return false;
     }
 
+    @Override
     public boolean update (Customer customer){
         try{
             String update = "UPDATE customers SET cName=?, number=? WHERE customerId=?";

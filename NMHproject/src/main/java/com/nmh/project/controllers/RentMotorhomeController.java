@@ -2,10 +2,9 @@ package com.nmh.project.controllers;
 
 import com.nmh.project.models.Customer;
 import com.nmh.project.models.Motorhome;
-import com.nmh.project.repositories.ActiveMotorhomeRepository;
 import com.nmh.project.repositories.CustomerRepository;
+import com.nmh.project.repositories.FilterRepository;
 import com.nmh.project.repositories.MotorhomeRepository;
-import com.nmh.project.repositories.SeasonRepository;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,9 +18,8 @@ import java.util.HashMap;
 @Controller
 public class RentMotorhomeController {
     private MotorhomeRepository motorhomeRepository = new MotorhomeRepository();
-    private ActiveMotorhomeRepository activeMotorhomeRepository = new ActiveMotorhomeRepository();
     private CustomerRepository customerRepository = new CustomerRepository();
-    private SeasonRepository seasonRepository = new SeasonRepository();
+    private FilterRepository filterRepository = new FilterRepository();
 
     @RequestMapping(value = "/rentMotorhome/rent",method = RequestMethod.GET)
     public String rentPage(){
@@ -68,7 +66,7 @@ public class RentMotorhomeController {
 
 
         System.out.println(tempTypeId + ", " + tempMaxPrice + ", " +  tempMinPrice + ", " + tempStartDate + ", " + tempEndDate);
-        model.addAttribute("motorhomes", motorhomeRepository.filter(0,tempTypeId, tempMaxPrice, tempMinPrice, tempStartDate, tempEndDate));
+        model.addAttribute("motorhomes", filterRepository.filter(0,tempTypeId, tempMaxPrice, tempMinPrice, tempStartDate, tempEndDate));
         model.addAttribute("startDate", tempStartDate);
         model.addAttribute("endDate", tempEndDate);
         return "rentMotorhome/available";

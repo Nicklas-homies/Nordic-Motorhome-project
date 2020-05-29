@@ -3,10 +3,8 @@ package com.nmh.project.repositories;
 import com.nmh.project.models.Motorhome;
 import com.nmh.project.models.RentAgreementDataHolder;
 import com.nmh.project.util.DatabaseConnectionManager;
-import org.springframework.format.annotation.DateTimeFormat;
 
 import java.sql.*;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
