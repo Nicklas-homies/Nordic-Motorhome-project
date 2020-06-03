@@ -36,7 +36,7 @@ public class rentAHomeTest {
         int rentId = activeMotorhomeRepository.rentHome(motorhome.getId(),customer.getId(),startDate,endDate);
         Assertions.assertNotEquals(-1,rentId);
 
-        Assertions.assertTrue(activeMotorhomeRepository.homeReturned(rentId));
+        Assertions.assertTrue(activeMotorhomeRepository.homeReturned(rentId,motorhome.getKmDriven()));
 
     }
 }
