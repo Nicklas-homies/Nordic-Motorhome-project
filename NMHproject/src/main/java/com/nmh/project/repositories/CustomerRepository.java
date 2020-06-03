@@ -61,7 +61,8 @@ public class CustomerRepository implements ICustomerRepo {
     }
 
     @Override
-    public boolean create(Customer customer){
+    public int create(Customer customer){
+        int customerId = -1;
         try {
             String insertString = "INSERT INTO customers (cName, number) VALUES (?,?)";
             PreparedStatement statement = connection.prepareStatement(insertString);
@@ -69,13 +70,21 @@ public class CustomerRepository implements ICustomerRepo {
             statement.setInt(2,customer.getNumber());
             statement.executeUpdate();
 
-            return true;
+            //gets last customer Id used for tests
+            String getLastInsertedId = "SELECT customerId FROM customers WHERE customerId=(SELECT LAST_INSERT_ID())";
+            PreparedStatement statement1 = connection.prepareStatement(getLastInsertedId);
+            ResultSet resultSet = statement1.executeQuery();
+            while (resultSet.next()){
+                customerId = resultSet.getInt(1);
+            }
+
+            return customerId;
         }
         catch (SQLException e){
             System.out.println("error at create() customerRepository");
             System.out.println(e.getMessage());
         }
-        return false;
+        return customerId;
     }
 
     @Override

@@ -169,21 +169,7 @@ public class ActiveMotorhomeRepository extends MotorhomeRepository{
         return false;
     }
 
-    //TODO: den nedenstående er lavet da test gav fejl, testen skal laves om så den tester ovenstående
-    public boolean homeReturned(int rentId){
-        try{
-            String deleteFromCustusemotor = "DELETE FROM custusemotor WHERE rentId=?";
-            PreparedStatement statement = connection.prepareStatement(deleteFromCustusemotor);
-            statement.setInt(1,rentId);
-            statement.executeUpdate();
-            return true;
-        }
-        catch (SQLException e){
-            System.out.println("error at homeReturned");
-            System.out.println(e.getMessage());
-        }
-        return false;
-    }
+
 
     public boolean homeReturnedByMotorhomeId(int motorhomeId){
         try{
