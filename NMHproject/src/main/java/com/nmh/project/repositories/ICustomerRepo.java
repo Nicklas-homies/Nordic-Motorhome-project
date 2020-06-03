@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface ICustomerRepo {
 
-    public boolean create(Customer customer);
+    public int create(Customer customer);
 
     public Customer read(int id);
 
