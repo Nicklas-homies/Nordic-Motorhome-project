@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit active Motorhome</title>
+    <link rel="stylesheet" type="text/css" href="/css/style.css">
+</head>
+<body>
+
+    <div th:insert="fragments/menu :: menu"></div>
+    <div class="container">
+        <h1>Current information</h1>
+        <table>
+            <tr>
+                <th>ID</th>
+                <th>Brand</th>
+                <th>Model</th>
+                <th>Start date</th>
+                <th>End date</th>
+            </tr>
+
+            <tr>
+                <td th:text="${motorhome.getId()}"></td>
+                <td th:text="${motorhome.getBrand()}"></td>
+                <td th:text="${motorhome.getModel()}"></td>
+                <td th:text="${motorhome.getStartDate()}"></td>
+                <td th:text="${motorhome.getEndDate()}"></td>
+            </tr>
+        </table>
+
+        <h1>New information</h1>
+        <form action="/activeMotorhome/edited" method="post">
+            <p>Start date:</p>
+            <input type="date" name="startDate" id="startDate" >
+            <p>End date:</p>
+            <input type="date" name="endDate" id="endDate">
+            <input type="hidden" name="id" id="id" th:value="${motorhome.getId()}">
+            <br>
+            <input class="fill-btn-input btn" type="submit" name="submit form via POST">
+        </form>
+    </div>
+    <div th:insert="fragments/footer :: footer"></div>
+
+</body>
+</html>

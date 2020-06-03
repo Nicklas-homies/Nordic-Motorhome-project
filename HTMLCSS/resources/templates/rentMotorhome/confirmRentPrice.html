@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Confirm rent price</title>
+    <link rel="stylesheet" type="text/css" href="/css/style.css">
+</head>
+<!--NOTE: AUTHORS OF THIS CLASS: ALLE-->
+<body>
+<div th:insert="fragments/menu :: menu"></div>
+<div class="container">
+
+    <h2>check that information is correct.</h2>
+    <form action="/rentMotorhome/newRentConfirmed" method="post">
+
+        <h3>Selected motorhome</h3>
+        <div>
+        <table>
+            <tr>
+                <th>ID</th>
+                <th>Brand</th>
+                <th>Model</th>
+                <th>Times used</th>
+                <th>Km driven</th>
+                <th>Type id</th>
+            </tr>
+
+            <tr>
+                <td th:text="${motorhome.getId()}"></td>
+                <td th:text="${motorhome.getBrand()}"></td>
+                <td th:text="${motorhome.getModel()}"></td>
+                <td th:text="${motorhome.getTimesUsed()}"></td>
+                <td th:text="${motorhome.getKmDriven()}"></td>
+                <td th:text="${motorhome.getTypeId()}"></td>
+        </table>
+        </div>
+
+        <h3>Confirm selected Date:</h3>
+        <div>
+            <div class="block_container">
+                <div class="block">
+                    <table>
+                        <tr>
+                            <th>Start of rent</th>
+                            <td th:text="${startDate}"></td>
+
+                        </tr>
+                    </table>
+                </div>
+                <div class="block">
+                    <table>
+                        <tr>
+                            <th>End of rent</th>
+                            <td th:text="${endDate}"></td>
+
+                        </tr>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+
+        <div>
+            <h3>Confirm customer information</h3>
+            <table>
+                <tr>
+                    <th>Customer id</th>
+                    <th>Name</th>
+                    <th>Number</th>
+                </tr>
+                <tr>
+                    <td th:text="${customer.getId()}"></td>
+                    <td th:text="${customer.getcName()}"></td>
+                    <td th:text="${customer.getNumber()}"></td>
+                </tr>
+            </table>
+        </div>
+
+        <div>
+            <h3>Total price:</h3>
+            <h4 th:text="${price}"></h4>
+        </div>
+
+
+        <input type="hidden" name="motorhomeId" id="motorhomeId" th:value="${motorhome.id}">
+        <input type="hidden" name="startDate" th:value="${startDate}">
+        <input type="hidden" name="endDate" th:value="${endDate}">
+        <input type="hidden" name="price" th:value="${price}">
+        <input type="hidden" name="customerId" th:value="${customer.id}">
+        <input type="hidden" name="cName" th:value="${customer.cName}">
+        <input type="hidden" name="number" th:value="${customer.number}">
+
+        <input type="submit" name="submit" id="submit" class="fill-btn-input btn" value="Everything is good, reserve motorhome">
+    </form>
+    <br>
+    <a href="/rentMotorhome/rent"><button class="fill-btn-input btn-del btn">No thanks, return</button></a>
+</div>
+
+<div th:insert="fragments/footer :: footer"></div>
+</body>
+</html>

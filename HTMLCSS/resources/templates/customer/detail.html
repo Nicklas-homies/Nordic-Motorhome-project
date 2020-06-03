@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+
+    <meta charset="UTF-8">
+    <title>Customer details</title>
+    <link href="/css/style.css" rel="stylesheet" type="text/css">
+
+</head>
+<!--NOTE: AUTHORS OF THIS CLASS: JONAS-->
+<body>
+<div th:insert="fragments/menu :: menu"></div>
+<div class="container">
+
+    <h1>Details</h1>
+    <table>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Number</th>
+        </tr>
+
+        <tr>
+            <td th:text="${customer.getId()}"></td>
+            <td th:text="${customer.getcName()}"></td>
+            <td th:text="${customer.getNumber()}"></td>
+        </tr>
+    </table>
+</div>
+<div th:insert="fragments/footer :: footer"></div>
+</body>
+</html>

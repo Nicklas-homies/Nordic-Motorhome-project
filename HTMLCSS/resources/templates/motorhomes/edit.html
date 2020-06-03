@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit motorhome</title>
+    <link rel="stylesheet" type="text/css" href="/css/style.css">
+</head>
+<!--NOTE: AUTHORS OF THIS CLASS: JONAS OG JONATHAN-->
+<body>
+
+<div th:insert="fragments/menu :: menu"></div>
+<div class="container">
+    <h1>Current information</h1>
+
+    <table>
+        <tr>
+            <th>ID</th>
+            <th>Brand</th>
+            <th>Model</th>
+            <th>Times used</th>
+            <th>Km driven</th>
+            <th>Type id</th>
+        </tr>
+
+        <tr>
+            <td th:text="${motorhome.getId()}"></td>
+            <td th:text="${motorhome.getBrand()}"></td>
+            <td th:text="${motorhome.getModel()}"></td>
+            <td th:text="${motorhome.getTimesUsed()}"></td>
+            <td th:text="${motorhome.getKmDriven()}"></td>
+            <td th:text="${motorhome.getTypeId()}"></td>
+        </tr>
+    </table>
+    <br>
+    <table>
+        <tr>
+            <th>Damages</th>
+            <th></th>
+        </tr>
+        <tr th:each="damage : ${damages}">
+            <td th:text="${damage.getValue()}"></td>
+            <td>
+                <form action="/motorhomes/deleteDmg" method="post">
+                    <input type="hidden" name="dmgId" id="dmgId" th:value="${damage.getKey()}">
+                    <input type="hidden" name="motorhomeId", id="motorhomeId" th:value="${motorhome.getId()}">
+                    <input class="buttonNew" type="submit" name="submit form via POST" value="Delete">
+                </form>
+            </td>
+        </tr>
+    </table>
+    <br>
+    <a th:href="@{/motorhomes/addDmg/__${motorhome.getId()}__}"><button class="fill-btn-input btn-create btn">Add damage</button></a>
+
+    <h1>New information</h1>
+    <form action="/motorhomes/edited" method="post">
+        <p>Brand:</p>
+        <input type="text" name="brand" id="brand">
+        <p>Model:</p>
+        <input type="text" name="model" id="model">
+        <p>Times used:</p>
+        <input type="number" required name="timesUsed" id="timesUsed" placeholder="-1 to not change" min="-1" step="1">
+        <p>Km driven:</p>
+        <input type="number" required name="kmDriven" id="kmDriven" placeholder="-1 to not change" min="-1">
+        <p>Type id:</p>
+        <input type="number" required name="typeId" id="typeId" placeholder="0 to not change" min="0" step="1">
+        <input type="hidden" name="id" id="id" th:value="${motorhome.getId()}">
+        <br>
+        <input class="fill-btn-input btn" type="submit" name="submit form via POST">
+    </form>
+</div>
+<div th:insert="fragments/footer :: footer"></div>
+</body>
+</html>

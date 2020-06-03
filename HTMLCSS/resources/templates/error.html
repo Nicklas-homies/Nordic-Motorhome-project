@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Something went wrong</title>
+    <link href="../../css/style.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+    <div class="container">
+        <div class="center">
+            <h1>Error</h1>
+            <h2 th:text="${message}"></h2>
+            <h3 th:text="${stringError}"></h3>
+        </div>
+    </div>
+    <div th:insert="fragments/menu :: menu"></div>
+    <div th:insert="fragments/footer :: footer"></div>
+</body>
+</html>

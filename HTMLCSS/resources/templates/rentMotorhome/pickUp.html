@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Choose car to pick up</title>
+    <link rel="stylesheet" type="text/css" href="/css/style.css">
+</head>
+<body>
+<div th:insert="fragments/menu :: menu"></div>
+    <div>
+        <table>
+            <tr>
+                <th>ID</th>
+                <th>Brand</th>
+                <th>Model</th>
+                <th>Times used</th>
+                <th>Km driven</th>
+                <th>Extra price</th>
+                <th>Type id</th>
+            </tr>
+
+            <tr th:each="motorhome : ${motorhomes}">
+                <td th:text="${motorhome.id}"></td>
+                <td th:text="${motorhome.brand}"></td>
+                <td th:text="${motorhome.model}"></td>
+                <td th:text="${motorhome.timesUsed}"></td>
+                <td th:text="${motorhome.kmDriven}"></td>
+                <td th:text="${motorhome.extraPrice}"></td>
+                <td th:text="${motorhome.typeId}"></td>
+            </tr>
+        </table>
+    </div>
+<div th:insert="fragments/footer :: footer"></div>
+</body>
+</html>

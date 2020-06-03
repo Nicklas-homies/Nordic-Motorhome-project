@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Rent page</title>
+    <link rel="stylesheet" type="text/css" href="/css/style.css">
+    <script src="https://kit.fontawesome.com/7898533ecb.js" crossorigin="anonymous"></script>
+</head>
+<!--NOTE: AUTHORS OF THIS CLASS: ALLE-->
+<body>
+<div th:insert="fragments/menu :: menu"></div>
+    <div class="myTextBox">
+        <form action="/rentMotorhome/available" method="post">
+            <h1><i class="fas fa-file-alt"></i> Rent Information </h1>
+            <div class="txtb">
+                <label>From date: </label>
+                <td><input name="startDate" type="date" id="startDate" required></td>
+            </div>
+            <div class="txtb">
+                <label>To date: </label>
+                <td><input name="endDate" id="endDate" type="date" required></td>
+            </div>
+            <div class="txtb">
+                <label>Max price: </label>
+                <td><input type="text" name="maxPrice" id="maxPrice"></td>
+            </div>
+            <div class="txtb">
+                <label>Min price: </label>
+                <td><input type="text" id="minPrice" name="minPrice"></td>
+            </div>
+            <div class="txtb">
+                <label>Type ID: </label>
+                <td><input required type="number" name="typeId" id="typeId" step="1" max="8" min="0" placeholder="1-8, 0 for all types"></td>
+            </div>
+
+            <input class="buttonNew" type="submit" name="submit" id="submit" value="Search Motorhome">
+</div>
+<div th:insert="fragments/footer :: footer"></div>
+</body>
+</html>

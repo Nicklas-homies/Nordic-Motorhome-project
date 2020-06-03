@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>List of all motorhomes</title>
+    <link rel="stylesheet" type="text/css" href="/css/style.css">
+</head>
+<!--NOTE: AUTHORS OF THIS CLASS: ALLE-->
+<body>
+
+    <div th:insert="fragments/menu :: menu"></div>
+    <div class="container">
+        <h1>Motorhome administration</h1>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Brand</th>
+                    <th>Model</th>
+                    <th>Times used</th>
+                    <th>Km driven</th>
+                    <th>Type id</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="motorhome : ${motorhomes}">
+                    <td th:text="${motorhome.getId()}"></td>
+                    <td th:text="${motorhome.getBrand()}"></td>
+                    <td th:text="${motorhome.getModel()}"></td>
+                    <td th:text="${motorhome.getTimesUsed()}"></td>
+                    <td th:text="${motorhome.getKmDriven()}"></td>
+                    <td th:text="${motorhome.getTypeId()}"></td>
+                    <td>
+                        <a th:href="@{/motorhomes/detail/__${motorhome.getId()}__}"><button class="btn">Details</button></a>
+                        <a th:href="@{/motorhomes/edit/__${motorhome.getId()}__}"><button class="btn-ed btn">Edit</button></a>
+                        <a th:href="@{/motorhomes/delete/__${motorhome.getId()}__}"><button class="btn-del btn">Delete</button></a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        </div>
+    <div th:insert="fragments/footer :: footer"></div>
+</body>
+</html>

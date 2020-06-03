@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Confirm rent data</title>
+    <link rel="stylesheet" type="text/css" href="/css/style.css">
+</head>
+<!--NOTE: AUTHORS OF THIS CLASS: ALLE-->
+<body>
+<div th:insert="fragments/menu :: menu"></div>
+<div class="container">
+    <form action="/rentMotorhome/confirmed" method="post">
+        <input type="hidden" name="motorhomeId" id="motorhomeId" th:value="${motorhome.getId()}">
+        <h3>Selected motorhome</h3>
+        <table>
+            <tr>
+                <th>ID</th>
+                <th>Brand</th>
+                <th>Model</th>
+                <th>Times used</th>
+                <th>Km driven</th>
+                <th>Type id</th>
+            </tr>
+
+            <tr>
+                <td th:text="${motorhome.getId()}"></td>
+                <td th:text="${motorhome.getBrand()}"></td>
+                <td th:text="${motorhome.getModel()}"></td>
+                <td th:text="${motorhome.getTimesUsed()}"></td>
+                <td th:text="${motorhome.getKmDriven()}"></td>
+                <td th:text="${motorhome.getTypeId()}"></td>
+        </table>
+
+        <h3>Confirm date:</h3>
+        <div class="block_container">
+            <div class="block" >
+                <table>
+                    <tr>
+                        <th>Start of Renting</th>
+                        <td><input type="Date" name="startDate" id="startDate" th:value="*{startDate}" required></td>
+                    </tr>
+                </table>
+            </div>
+            <div class="block" >
+                <table>
+                    <tr>
+                        <th>Return of motorhome</th>
+                        <td><input type="Date" name="endDate" id="endDate" th:value="*{endDate}" required></td>
+                    </tr>
+                </table>
+            </div>
+
+        </div>
+        <h3>Extra price:</h3>
+        <div>
+            <table>
+                <tr>
+                    <th>Bike Rack +25€</th>
+                    <th>Bed linen +15€</th>
+                    <th>Child seat +20€</th>
+                    <th>Picnic table +20€</th>
+                    <th>Chairs +20€</th>
+                </tr>
+                <tr>
+                    <td><input type="checkbox" name="bikeRack" id="bikeRack"></td>
+                    <td><input type="checkbox" name="bedLinen" id="bedLinen"></td>
+                    <td><input type="checkbox" name="childSeat" id="childSeat"></td>
+                    <td><input type="checkbox" name="picnicTable" id="picnicTable"></td>
+                    <td><input type="checkbox" name="chairs" id="chairs"></td>
+                </tr>
+            </table>
+        </div>
+
+        <h3>Customer information</h3>
+
+        <div>
+            <h4>List of customers</h4>
+
+            <table>
+                <tr>
+                    <th>Customer id</th>
+                    <th>Customer name</th>
+                    <th>Customer number</th>
+                </tr>
+
+                <tr th:each="customer : ${customers}">
+                    <td th:text="${customer.getId()}"></td>
+                    <td th:text="${customer.getcName()}"></td>
+                    <td th:text="${customer.getNumber()}"></td>
+                </tr>
+            </table>
+        </div>
+
+        <div>
+            <table>
+                <tr>
+                    <th>Customer id</th>
+               </tr>
+                <tr>
+                    <td><input type="number" name="customerId" required placeholder="Get id from list above" min="1"></td>
+               </tr>
+            </table>
+        </div>
+
+        <br>
+        <input type="submit" class="fill-btn-input btn" name="submit" id="submit" value="Confirm and rent">
+    </form>
+</div>
+
+<div th:insert="fragments/footer :: footer"></div>
+</body>
+</html>

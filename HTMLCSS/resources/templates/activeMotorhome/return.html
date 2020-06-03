@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Return motorhome</title>
+    <link rel="stylesheet" type="text/css" href="/css/style.css">
+</head>
+<!--NOTE: AUTHORS OF THIS CLASS: ALLE-->
+<body>
+<div th:insert="fragments/menu :: menu"></div>
+<div class="container">
+    <h2>Selected motorhome to return</h2>
+    <table>
+        <tr>
+            <th>ID</th>
+            <th>Brand</th>
+            <th>Model</th>
+            <th>Times used</th>
+            <th>Km driven</th>
+            <th>Type id</th>
+        </tr>
+
+        <tr>
+            <td th:text="${motorhome.getId()}"></td>
+            <td th:text="${motorhome.getBrand()}"></td>
+            <td th:text="${motorhome.getModel()}"></td>
+            <td th:text="${motorhome.getTimesUsed()}"></td>
+            <td th:text="${motorhome.getKmDriven()}"></td>
+            <td th:text="${motorhome.getTypeId()}"></td>
+    </table>
+
+    <form th:action="@{/activeMotorhome/return/price/__${rentId}__}" method="post">
+
+        <h3>Fill return information</h3>
+
+        <h4>Was the tank empty/less than half full?</h4>
+
+        <table style="width: 50%">
+            <tr>
+                <th><label style="float:left; color: #000000" for="tankFull">Tank empty:</label></th>
+                <td><input class="doubleSize" style="float: left;" type="checkbox" name="tankFull" id="tankFull"></td>
+            </tr>
+        </table>
+
+        <h4>How many km has the moterhome driven:</h4>
+        <label for="kmDriven">Current km on km counter:</label>
+        <input name="kmDriven" id="kmDriven" type="number" required min="0">
+
+        <h4>Fill in if motorhome was dropped outside office</h4>
+        <label for="kmDropDriven">Total km to dropoff</label>
+        <input type="number" name="kmDropDriven" id="kmDropDriven" min="0">
+
+
+        <h4>Was there any damage on the motorhome?</h4>
+        <label for="damage"></label>
+        <input name="damage" id="damage" type="text">
+
+        <input type="hidden" name="motorhomeId" th:value="${motorhome.getId()}" id="motorhomeId">
+        <br>
+        <input id="submit" name="submit" value="Confirm data" type="submit" class="fill-btn-input btn">
+    </form>
+</div>
+
+    <div th:insert="fragments/footer :: footer"></div>
+</body>
+</html>

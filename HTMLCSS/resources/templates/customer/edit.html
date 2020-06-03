@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"><head>
+    <meta charset="UTF-8">
+    <title>Edit customer information</title>
+    <link rel="stylesheet" type="text/css" href="/css/style.css">
+</head>
+<!--NOTE: AUTHORS OF THIS CLASS: JONAS-->
+<body>
+<div th:insert="fragments/menu :: menu"></div>
+<div class="container">
+    <h1>Current information</h1>
+
+    <table>
+        <tr>
+            <th>Name</th>
+            <th>Number</th>
+        </tr>
+
+        <tr>
+            <td th:text="${customer.getcName()}"></td>
+            <td th:text="${customer.getNumber()}"></td>
+        </tr>
+    </table>
+
+    <h1>New information</h1>
+    <form action="/customer/edited" method="post">
+        <p>Name:</p>
+        <input type="text" name="cName" id="cName">
+        <p>Number:</p>
+        <input type="number" name="Number" id="number" value="00000000">
+        <input type="hidden" name="id" id="id" th:value="${customer.getId()}">
+        <br>
+        <input class="fill-btn-input btn" type="submit" name="submit form via POST">
+    </form>
+
+</div>
+<div th:insert="fragments/footer :: footer"></div>
+</body>
+</html>

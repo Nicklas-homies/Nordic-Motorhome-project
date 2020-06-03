@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Add damage to motorhome</title>
+    <link rel="stylesheet" type="text/css" href="/css/style.css">
+</head>
+<!--NOTE: AUTHORS OF THIS CLASS: JONATHAN-->
+<body>
+
+<div th:insert="fragments/menu :: menu"></div>
+    <div class="container">
+        <h1>Damage description</h1>
+        <form th:action="@{/motorhomes/addDmg/yes/__${motorhome.getId()}__}" method="post">
+            <input name="damage" id="damage" type="text">
+            <br>
+            <input id="submit" name="submit" value="confirm data" type="submit" class="fill-btn-input btn">
+        </form>
+    </div>
+
+<div th:insert="fragments/footer :: footer"></div>
+
+</body>
+</html>

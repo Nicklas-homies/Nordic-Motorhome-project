@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Available motorhomes</title>
+    <link rel="stylesheet" type="text/css" href="/css/style.css">
+</head>
+<!--NOTE: AUTHORS OF THIS CLASS: ALLE-->
+<body>
+<div th:insert="fragments/menu :: menu"></div>
+    <div class="container">
+        <table>
+            <tr>
+                <th>ID</th>
+                <th>Brand</th>
+                <th>Model</th>
+                <th>Times used</th>
+                <th>Km driven</th>
+                <th>Type id</th>
+                <th></th>
+            </tr>
+
+            <tr th:each="motorhome : ${motorhomes}">
+                <td th:text="${motorhome.getId()}"></td>
+                <td th:text="${motorhome.getBrand()}"></td>
+                <td th:text="${motorhome.getModel()}"></td>
+                <td th:text="${motorhome.getTimesUsed()}"></td>
+                <td th:text="${motorhome.getKmDriven()}"></td>
+                <td th:text="${motorhome.getTypeId()}"></td>
+                <td>
+
+                    <form action="/rentMotorhome/confirm" method="post">
+                        <input type="hidden" id="startDate" name="startDate" th:value="${startDate}">
+                        <input type="hidden" id="endDate" name="endDate" th:value="${endDate}">
+                        <input type="hidden" id="motorhomeId" name="motorhomeId" th:value="${motorhome.id}">
+                    <input class="btn" type="submit" id="submit" value="Rent">
+                    </form>
+
+                </td>
+
+
+            </tr>
+        </table>
+    </div>
+<div th:insert="fragments/footer :: footer"></div>
+</body>
+</html>

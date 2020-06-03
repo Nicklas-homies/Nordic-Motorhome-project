@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Motorhome details</title>
+    <link href="/css/style.css" rel="stylesheet" type="text/css">
+</head>
+<!--NOTE: AUTHORS OF THIS CLASS: ALLE-->
+<body>
+
+<div th:insert="fragments/menu :: menu"></div>
+<div class="container">
+
+    <h1>Details</h1>
+    <table>
+        <tr>
+            <th>ID</th>
+            <th>Brand</th>
+            <th>Model</th>
+            <th>Times used</th>
+            <th>Km driven</th>
+            <th>Type id</th>
+        </tr>
+
+        <tr>
+            <td th:text="${motorhome.getId()}"></td>
+            <td th:text="${motorhome.getBrand()}"></td>
+            <td th:text="${motorhome.getModel()}"></td>
+            <td th:text="${motorhome.getTimesUsed()}"></td>
+            <td th:text="${motorhome.getKmDriven()}"></td>
+            <td th:text="${motorhome.getTypeId()}"></td>
+        </tr>
+    </table>
+    <br>
+    <table>
+        <tr>
+            <th>Damages</th>
+        </tr>
+        <tr th:each="damage : ${damages}">
+            <td th:text="${damage.getValue()}"></td>
+        </tr>
+    </table>
+</div>
+<div th:insert="fragments/footer :: footer"></div>
+
+</body>
+</html>

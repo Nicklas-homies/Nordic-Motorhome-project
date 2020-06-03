@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>NMH index</title>
+    <link href="css\style.css" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css2?family=Lobster&display=swap" rel="stylesheet">
+</head>
+<!--NOTE: AUTHORS OF THIS CLASS: ALLE-->
+<body>
+<div th:insert="fragments/menu :: menu"></div>
+    <div class="container" style="width: 40%" >
+        <div class="center-index" style="width: 40%">
+            <h1 id="frontTxt">Nordic Motorhome</h1>
+            <p id="frontTxt">Nordic Motorhome Rental is a Danish company that rents out motorhomes. Nordic Motorhome Rental was founded in 2019
+                and is situated just outside Copenhagen. So far there are 8 employees, but the company is very successful,
+                and the two owners expect to hire more people in the near future</p>
+            <br>
+            <h3 id="frontTxt">Our fleet</h3>
+            <p id="frontTxt">Nordic Motorhome Rental has a fleet of 32 motorhomes available for hire. Nordic Motorhome Rental currently offers 8
+               different types of motorhomes. These are of various brands and models. Some are small compact campers for 2 persons
+               and others are large with up to 6 beds.</p>
+        </div>
+    </div>
+
+    <div th:insert="fragments/footer :: footer"></div>
+</body>
+</html>

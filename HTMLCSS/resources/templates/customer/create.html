@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Create new customer</title>
+    <link rel="stylesheet" type="text/css" href="/css/style.css">
+    <script src="https://kit.fontawesome.com/7898533ecb.js" crossorigin="anonymous"></script>
+</head>
+<!--NOTE: AUTHORS OF THIS CLASS: JONAS-->
+<body>
+<div th:insert="fragments/menu :: menu"></div>
+
+<div class="myTextBox">
+    <h1><i class="fas fa-user"></i> Create Customer</h1>
+    <div class="txtb">
+        <label>Name: </label>
+        <input type="text" name="cName"  required placeholder="Name">
+    </div>
+    <div class="txtb">
+        <label>Number: </label>
+        <input type="number" name="Number"  min="0" required placeholder="Telephone Number">
+    </div>
+    <input class="buttonNew" type="submit" name="submit form via POST" value="Create">
+</div>
+
+<div th:insert="fragments/footer :: footer"></div>
+</body>
+
+</html>

@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" type="text/css" href="/css/style.css">
+</head>
+<!--NOTE: AUTHORS OF THIS CLASS: ALLE-->
+<body>
+<div th:insert="fragments/menu :: menu"></div>
+
+<div class="container">
+    <form th:action="@{/activeMotorhome/return/yes/}" method="post">
+    <h3>Total Initial price</h3>
+    <p th:text="${finalTotalPrice.get(0)}"></p>
+        <h3>Initial price after potential return fee's.</h3>
+    <p th:text="${finalTotalPrice.get(1)}"></p>
+    <h3>Return fee's (in euro):</h3>
+<h2 th:text="${finalTotalPrice.get(1) - finalTotalPrice.get(0)}"></h2>
+
+
+        <input type="hidden" name="rentId" id="rentId" th:value="${rentId}">
+        <input type="hidden" name="kmDriven" id="kmDriven" th:value="${kmDriven}">
+
+        <input type="submit" name="submit" value="Confirm price is paid and all that" class="btn">
+    </form>
+</div>
+
+<div th:insert="fragments/footer :: footer"></div>
+</body>
+</html>
