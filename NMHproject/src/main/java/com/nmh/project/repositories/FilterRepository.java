@@ -89,6 +89,7 @@ public class FilterRepository {
             String filterString = "SELECT * FROM motorhomes INNER JOIN motorhometype ON motorhomes.typeId = motorhometype.typeId" +
                     " WHERE motorhometype.price < ?"; //finds stuff under min price
             PreparedStatement statement = connection.prepareStatement(filterString);
+            statement.setInt(1,minPrice);
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()){
                 for (Motorhome home : theList){
