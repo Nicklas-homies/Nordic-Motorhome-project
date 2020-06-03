@@ -3,56 +3,51 @@
 <head>
     <meta charset="UTF-8">
     <title>Rented motorhomes</title>
-    <link rel="stylesheet" type="text/css" href="/css/styles.css">
+    <link rel="stylesheet" type="text/css" href="/css/style.css">
 </head>
 <!--NOTE: AUTHORS OF THIS CLASS: ALLE-->
 <body>
 <div th:insert="fragments/menu :: menu"></div>
-<div class="container">
-    <table>
-        <tr>
-            <th>RentID</th>
-            <th>MotorhomeID</th>
-            <th>customerID</th>
-            <th>Brand</th>
-            <th>Model</th>
-            <th>start of rent</th>
-            <th>end of rent</th>
+    <div class="container">
+        <table>
+            <tr>
+                <th>ID</th>
+                <th>Brand</th>
+                <th>Model</th>
+                <th>Times used</th>
+                <th>Km driven</th>
+                <th>Type id</th>
+                <th></th>
+                <th></th>
+            </tr>
 
-            <th></th>
-            <th></th>
-            <th></th>
-        </tr>
+            <tr th:each="motorhome : ${motorhomes}">
+                <td th:text="${motorhome.getId()}"></td>
+                <td th:text="${motorhome.getBrand()}"></td>
+                <td th:text="${motorhome.getModel()}"></td>
+                <td th:text="${motorhome.getTimesUsed()}"></td>
+                <td th:text="${motorhome.getKmDriven()}"></td>
+                <td th:text="${motorhome.getTypeId()}"></td>
+                <td>
+                    <form th:action="@{/activeMotorhome/return/__${motorhome.rentId}__}" method="post">
+                        <input type="hidden" name="motorhomeId" th:value="${motorhome.getId()}">
+                        <input class="btn" type="submit" name="submit" id="submit" value="Return">
+                    </form>
+                </td>
 
-       <!-- <tr th:each="entry, rentId : ${motorhomes}" th:with="motorhome=${entry.value}"> -->
-        <tr th:each="motorhome : ${motorhomes}">
-            <td th:text="${motorhome.getRentId()}"></td>
-            <td th:text="${motorhome.getId()}"></td>
-            <td th:text="${motorhome.customer.id}"></td>
-            <td th:text="${motorhome.getBrand()}"></td>
-            <td th:text="${motorhome.getModel()}"></td>
-            <td th:text="${motorhome.getStartDate()}"></td>
-            <td th:text="${motorhome.getEndDate()}"></td>
-            <td>
-                <form th:action="@{/activeMotorhome/return/__${motorhome.rentId}__}" method="post">
-                    <input type="hidden" name="motorhomeId" th:value="${motorhome.getId()}">
-                <input class="btn" type="submit" name="submit" id="submit" value="Return">
-                </form>
-            </td>
-            <td>
-<!--                <a th:href="@{/activeMotorhome/edit/__${motorhome.rentId}__}"><button class="fill-btn-input btn-ed btn">Edit</button></a>-->
-            </td>
-            <td>
-                <form th:action="@{/activeMotorhome/cancel}" method="post">
-                    <input type="hidden" name="rentId" id="rentId" th:value="${motorhome.getRentId()}">
-                    <input type="hidden" name="motorhomeId" id="motorhomeId" th:value="${motorhome.getId()}">
+                <td>
+                    <form th:action="@{/activeMotorhome/cancel}" method="post">
+                        <input type="hidden" name="rentId" id="rentId" th:value="${motorhome.getRentId()}">
+                        <input type="hidden" name="motorhomeId" id="motorhomeId" th:value="${motorhome.getId()}">
 
-                    <input type="submit" name="submit" id="submit" value="Cancel" class="btn">
-                </form>
-            </td>
-        </tr>
-    </table>
-</div>
+                        <input type="submit" name="submit" id="submit" value="Cancel" class="btn">
+                    </form>
+                </td>
+
+
+            </tr>
+        </table>
+    </div>
 <div th:insert="fragments/footer :: footer"></div>
 </body>
 </html>

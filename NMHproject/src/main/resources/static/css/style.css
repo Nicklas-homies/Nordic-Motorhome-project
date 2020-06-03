@@ -1,0 +1,326 @@
+/*NOTE: AUTHORS OF THIS CLASS: ALLE*/
+html{
+    margin: 0 auto;
+}
+
+body {
+    font-family: arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-image: url("../motorhomeHomepage.jpg"); /*https://unsplash.com/photos/-Avc2AiE1_Q*/
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+}
+
+h1, h2, h3, h4, h5, h6, p, label {
+    color: white;
+}
+
+#frontTxt {
+    font-family: Lobster;
+}
+
+/*-------https://css-tricks.com/solved-with-css-dropdown-menus/-------------*/
+/*------------------------------NAVIGATION MENU-----------------------------*/
+
+nav {
+    width: 1024px;
+    margin: 0 auto;
+    background-color: #333;
+}
+
+nav ul {
+    padding: 0;
+    margin: 0;
+    list-style: none;
+    position: relative;
+}
+
+nav ul li {
+    display:inline-block;
+    background-color: #333;
+    z-index: 10;
+}
+
+nav a {
+    display:block;
+    padding:0 10px;
+    color:#FFF;
+    font-size:20px;
+    line-height: 60px;
+    text-decoration:none;
+}
+
+nav a:hover {
+    background-color: cadetblue;
+    transition: 0.5s;
+}
+
+/* Hide Dropdowns by Default */
+nav ul ul {
+    display: none;
+    position: absolute;
+    top: 60px; /* the height of the main nav */
+}
+
+/* Display Dropdowns on Hover */
+nav ul li:hover > ul {
+    display:inherit;
+}
+
+/* First Tier Dropdown */
+nav ul ul li {
+    width:170px;
+    float:none;
+    display:list-item;
+    position: relative;
+}
+
+nav ul ul ul li {
+    position: relative;
+    top:-60px;
+    left:170px;
+}
+
+/* Change this in order to change the Dropdown symbol */
+li > a:after { content:  ' ↓'; }
+li > a:only-child:after { content: ''; }
+
+.topNav .active {
+    background-color: #4CAF50;
+    color: papayawhip;
+}
+
+/*---------------------------------- De tre bokse på Rent, Create Motorhome & Create Customer -----------------------------*/
+
+.myTextBox {
+    width: 50%;
+    max-width: 500px;
+    background: rgba(255, 255, 255, 0.9);
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    padding: 10px 30px;
+    box-sizing: border-box;
+    border-color: #008CBA;
+    border-radius: 0px 15px 0px 15px;
+    text-align: center;
+    box-shadow: 0 0 10px #dddddd;
+    z-index: 1;
+}
+
+.myTextBox h1 {
+    font-weight: bold;
+    color: black;
+    margin-top: 0;
+    font-weight: 200;
+}
+
+.txtb{
+    border: 1px solid black;
+    height: 50px;
+    margin: 8px 0;
+    padding: 2px 3px;
+    border-radius: 8px;
+}
+
+.txtb label{
+    display: block;
+    text-align: left;
+    color: #333;
+    text-transform: uppercase;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.txtb input, .txtb textarea{
+    width: 100%;
+    height: 15px;
+    border: none;
+    background: none;
+    outline: none;
+    font-size: 14px;
+    margin-top: 10px;
+}
+
+.buttonNew{
+    display: inline-block;
+    background: #E64A19;
+    padding: 10px 0;
+    color: white;
+    text-transform: uppercase;
+    cursor: pointer;
+    margin-top: 8px;
+    width: 50%;
+    border: none;
+}
+
+.buttonNew:hover {
+    background-color: #b43108;
+    transition: 0.3s;
+}
+
+/*-----------------------------------------Container---------------------------------------*/
+
+.container {
+    width: 1024px;
+    margin: 0 auto;
+}
+
+.block_container {
+    text-align: justify;
+    overflow: auto;
+}
+
+.block_container input {
+    box-sizing: border-box; /*prevents input overflow into other cells*/
+}
+
+.block {
+    display: inline-block;
+    vertical-align: middle;
+    width: 49%; /* if 50 %, there isn't enough space*/
+}
+
+.center-index {
+    margin: 0;
+    position: absolute;
+    top: 33%;
+    left: 50%;
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+}
+
+.center {
+    margin: 0;
+    position: absolute;
+    top: 30%;
+    left: 50%;
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+}
+
+/*------------------------------------------Footer------------------------------------------*/
+
+footer {
+    text-align: right;
+    color: grey;
+    font-size: 12px;
+}
+
+.footer {
+    color: #666666;
+    font-family: "Courier New";
+    position: fixed;
+    width: 150px;
+    right:5px;
+    bottom:0;
+}
+
+.footerLeft {
+    text-align: left;
+    font-size: 15px;
+    font-family: "Courier New";
+    color: #666666;
+    position: fixed;
+    width: 100px;
+    left:5px;
+    bottom:0;
+    height: 65px;
+}
+
+.doubleSize {
+    /* Double-sized Checkboxes */
+    -ms-transform: scale(2); /* IE */
+    -moz-transform: scale(2); /* FF */
+    -webkit-transform: scale(2); /* Safari and Chrome */
+    -o-transform: scale(2); /* Opera */
+    transform: scale(2);
+    padding: 10px;
+}
+
+/*----------------------------------------------------table styles-------------------------------------*/
+/* https://www.w3schools.com/html/html_tables.asp */
+
+table {
+    border-collapse: collapse; /*https://www.w3schools.com/CSSref/tryit.asp?filename=trycss_border-collapse3*/
+    width: 100%;
+}
+
+td, th {
+    border: 1px solid #dddddd;
+    text-align: left;
+    padding: 5px 8px 5px 8px; /*https://www.w3schools.com/csS/css_padding.asp*/
+}
+
+tr:nth-child(even) {
+    background-color: #dddddd;
+}
+
+tr:nth-child(odd) {
+    background-color: white;
+}
+
+input {
+    display: block;
+    width: 96%;
+    padding: .5rem .75rem;
+    font-size: 1rem;
+    line-height: 1.25;
+    color: #495057;
+    background-color: #fff;
+    background-image: none;
+    background-clip: padding-box;
+    border: 1px solid rgba(0, 0, 0, .15);
+    border-radius: .25rem;
+}
+
+.fill-btn-input {
+    width: 100%;
+}
+
+/*---------------------------------------------------------Buttons-----------------------------------------*/
+/* https://www.w3schools.com/css/css3_buttons.asp */
+
+.btn {
+    background-color: #4CAF50; /* Green */
+    border: none;
+    color: white;
+    padding: 7px 10px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 12px;
+    border-radius: 5px; /* https://www.w3schools.com/css/css3_borders.asp */
+    box-shadow: 1px 1px 1px #888888;
+    transition-duration: 0.1s;
+}
+
+.big-btn{
+    font-size: 20px;
+}
+
+/*Green*/
+.btn-create {
+    background-color: #4CAF50;
+}
+
+/* Blue */
+.btn-ed {
+    background-color: #008CBA;
+}
+
+/* red */
+.btn-del {
+    background-color: #f44336;
+}
+
+.btn:hover {
+    box-shadow: 2px 2px 2px #888888;
+}
+
+.w {
+    width: 20%;
+}

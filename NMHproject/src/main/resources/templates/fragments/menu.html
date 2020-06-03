@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <title>Menu of everything! NICE</title>
+    <link rel="stylesheet" type="text/css" href="/css/style.css">
 </head>
 <!--NOTE: AUTHORS OF THIS CLASS: ALLE-->
 <body>
-
+<!--
 <div th:fragment="menu">
-    <div class="container topNav">
-        <!-- th if startsWith and then what they link to to get the active class on the right menu -->
+    <div class="container topNav"><>
         <a href="/" class="a-topNav-border" th:classappend="${#httpServletRequest.getRequestURI().matches('/') ? 'active' : ''}">Home</a>
         <a href="/rentMotorhome/rent" class="a-topNav-border" th:classappend="${#httpServletRequest.getRequestURI().startsWith('/rentMotorhome') ? 'active':''}"  >Rent</a>
         <a href="/activeMotorhome/available" class="a-topNav-border" th:classappend="${#httpServletRequest.getRequestURI().startsWith('/activeMotorhome') ? 'active':''}"  >Active</a>
@@ -31,6 +31,34 @@
 
     </div>
 </div>
+-->
+
+<!--https://css-tricks.com/solved-with-css-dropdown-menus/-->
+
+    <nav th:fragment="menu">
+        <div class="container topNav">
+        <ul>
+            <li><a href="/" th:classappend="${#httpServletRequest.getRequestURI().matches('/') ? 'active' : ''}">Home</a></li>
+            <li><a href="/rentMotorhome/rent"  th:classappend="${#httpServletRequest.getRequestURI().startsWith('/rentMotorhome') ? 'active':''}">Rent</a></li>
+            <li><a href="/activeMotorhome/available"  th:classappend="${#httpServletRequest.getRequestURI().startsWith('/activeMotorhome') ? 'active':''}">Active</a></li>
+            <li><a href="#">Motorhome</a>
+                <!-- First Tier Drop Down -->
+                <ul>
+                    <li><a href="/motorhomes/createMotorhome" th:classappend="${#httpServletRequest.getRequestURI().startsWith('/motorhomes') ? 'active':''}">New Motorhome</a></li>
+                    <li><a href="/motorhomes/list" th:classappend="${#httpServletRequest.getRequestURI().startsWith('/motorhomes') ? 'active':''}">Motorhome List</a></li>
+                </ul>
+            </li>
+            <li><a href="#">Customer</a>
+                <!-- First Tier Drop Down -->
+                <ul>
+                    <li><a href="/customer/create" th:classappend="${#httpServletRequest.getRequestURI().startsWith('/customer') ? 'active':''}">New Customer</a></li>
+                    <li><a href="/customer/list" th:classappend="${#httpServletRequest.getRequestURI().startsWith('/customer') ? 'active':''}">Customer List</a></li>
+                </ul>
+            </li>
+        </ul>
+        </div>
+    </nav>
+
 
 </body>
 </html>

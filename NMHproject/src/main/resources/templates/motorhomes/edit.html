@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Edit motorhome</title>
-    <link rel="stylesheet" type="text/css" href="/css/styles.css">
+    <link rel="stylesheet" type="text/css" href="/css/style.css">
 </head>
 <!--NOTE: AUTHORS OF THIS CLASS: JONAS OG JONATHAN-->
 <body>
@@ -43,7 +43,7 @@
                 <form action="/motorhomes/deleteDmg" method="post">
                     <input type="hidden" name="dmgId" id="dmgId" th:value="${damage.getKey()}">
                     <input type="hidden" name="motorhomeId", id="motorhomeId" th:value="${motorhome.getId()}">
-                    <input class="btn-del btn" type="submit" name="submit form via POST" value="Delete">
+                    <input class="buttonNew" type="submit" name="submit form via POST" value="Delete">
                 </form>
             </td>
         </tr>

@@ -3,57 +3,47 @@
 <head>
     <meta charset="UTF-8">
     <title>add a brand new motorhome</title>
-    <link rel="stylesheet" type="text/css" href="/css/styles.css">
+    <link rel="stylesheet" type="text/css" href="/css/style.css">
+    <script src="https://kit.fontawesome.com/7898533ecb.js" crossorigin="anonymous"></script>
 </head>
 <!--NOTE: AUTHORS OF THIS CLASS: ALLE-->
 <body>
 
 <div th:insert="fragments/menu :: menu"></div>
 
-<div class="container">
-    <h1>New motorhome information</h1>
+<div class="myTextBox">
     <form action="/motorhomes/createMotorhome/add" th:object="${motorhome}" method="post">
-        <table>
-            <tr>
-                <th>Brand name:</th>
-                <td><input type="text" th:field="*{brand}"></td>
-                <td th:if="${#fields.hasErrors('brand')}" th:errors="*{brand}">brand Error</td>
-            </tr>
+    <h1><i class="fas fa-shuttle-van"></i> Create Motorhome </h1>
+    <div class="txtb">
+        <label>Brand name: </label>
+        <td><input type="text" th:field="*{brand}"></td>
+        <td th:if="${#fields.hasErrors('brand')}" th:errors="*{brand}">brand Error</td>
+    </div>
+    <div class="txtb">
+        <label>Model name: </label>
+        <td><input type="text" th:field="*{model}"></td>
+        <td th:if="${#fields.hasErrors('model')}" th:errors="*{model}">model Error</td>
+    </div>
+    <div class="txtb">
+        <label>Time used: </label>
+        <td><input type="number" th:field="*{timesUsed}"></td>
+        <td th:if="${#fields.hasErrors('timesUsed')}" th:errors="*{timesUsed}">timesUsed error</td>
+    </div>
+    <div class="txtb">
+        <label>Km driven: </label>
+        <td><input type="number" th:field="*{kmDriven}"></td>
+        <td th:if="${#fields.hasErrors('kmDriven')}" th:errors="*{kmDriven}">kmDriven error</td>
+    </div>
+    <div class="txtb">
+        <label>Type ID: </label>
+        <td><input type="number" th:field="*{typeId}" value="1" min="1" step="1"></td>
+        <td th:if="${#fields.hasErrors('typeId')}" th:errors="*{typeId}">typeId error</td>
+    </div>
 
-            <tr>
-                <th>Model name:</th>
-                <td><input type="text" th:field="*{model}"></td>
-                <td th:if="${#fields.hasErrors('model')}" th:errors="*{model}">model Error</td>
-            </tr>
-
-            <tr>
-                <th>Times used:</th>
-                <td><input type="number" th:field="*{timesUsed}"></td>
-                <td th:if="${#fields.hasErrors('timesUsed')}" th:errors="*{timesUsed}">timesUsed error</td>
-            </tr>
-
-            <tr>
-                <th>km driven:</th>
-                <td><input type="number" th:field="*{kmDriven}"></td>
-                <td th:if="${#fields.hasErrors('kmDriven')}" th:errors="*{kmDriven}">kmDriven error</td>
-            </tr>
-
-            <tr>
-                <th>type ID:</th>
-                <td><input type="number" th:field="*{typeId}" value="1" min="1" step="1"></td>
-                <td th:if="${#fields.hasErrors('typeId')}" th:errors="*{typeId}">typeId error</td>
-            </tr>
-
-            <tr>
-
-            </tr>
-
-        </table>
-        <br>
-        <input class="fill-btn-input btn" type="submit" name="submit form via POST">
+    <input class="buttonNew" type="submit" name="submit form via POST" value="Create">
     </form>
-
 </div>
+
 <div th:insert="fragments/footer :: footer"></div>
 
 </body>
