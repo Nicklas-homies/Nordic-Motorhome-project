@@ -16,11 +16,11 @@ CREATE SCHEMA IF NOT EXISTS `NMH_company` DEFAULT CHARACTER SET utf8 ;
 USE `NMH_company` ;
 
 -- -----------------------------------------------------
--- Table `NMH_company`.`motorhomeType`
+-- Table `NMH_company`.`motorhometype`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `NMH_company`.`motorhomeType` ;
+DROP TABLE IF EXISTS `NMH_company`.`motorhometype` ;
 
-CREATE TABLE IF NOT EXISTS `NMH_company`.`motorhomeType` (
+CREATE TABLE IF NOT EXISTS `NMH_company`.`motorhometype` (
   `typeId` INT NOT NULL,
   `capacity` INT NOT NULL,
   `price` INT NOT NULL,
@@ -45,7 +45,7 @@ CREATE TABLE IF NOT EXISTS `NMH_company`.`motorhomes` (
   INDEX `typeId_idx` (`typeId` ASC) VISIBLE,
   CONSTRAINT `typeId`
     FOREIGN KEY (`typeId`)
-    REFERENCES `NMH_company`.`motorhomeType` (`typeId`)
+    REFERENCES `NMH_company`.`motorhometype` (`typeId`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
