@@ -67,9 +67,9 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 -- Table `NMH_company`.`custUseMotor`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `NMH_company`.`custUseMotor` ;
+DROP TABLE IF EXISTS `NMH_company`.`custusemotor` ;
 
-CREATE TABLE IF NOT EXISTS `NMH_company`.`custUseMotor` (
+CREATE TABLE IF NOT EXISTS `NMH_company`.`custusemotor` (
   `rentId` INT NOT NULL AUTO_INCREMENT,
   `startDate` DATE NOT NULL,
   `endDate` DATE NOT NULL,
